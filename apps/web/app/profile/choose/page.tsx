@@ -16,7 +16,23 @@ export default function ProfileChoosePage() {
           <p className="text-slate-600 mt-2">Choose the method that works best for you</p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <Card className="p-6">
+            <CardHeader>
+              <CardTitle>View Profile</CardTitle>
+              <CardDescription className="mt-2">
+                See your existing profile and edit it.
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <p className="text-sm text-slate-600">Open your saved profile page to view or update details.</p>
+            </CardContent>
+            <CardFooter className="justify-start">
+              <Link href="/profile">
+                <Button variant="outline">View Profile</Button>
+              </Link>
+            </CardFooter>
+          </Card>
           <Card className="p-6">
             <CardHeader>
               <CardTitle>Upload Your CV</CardTitle>

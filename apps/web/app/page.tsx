@@ -6,11 +6,15 @@ export default function Home() {
       <h1 className="text-4xl font-bold mb-8">Welcome to Careersie Platform</h1>
 
       <div className="space-x-4">
-        <Button className="bg-blue-600 hover:bg-blue-700 text-white">
-          Primary Button
+        <Button asChild>
+          <a href="/profile/choose" className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">
+            Profile
+          </a>
         </Button>
-        <Button className="bg-gray-200 hover:bg-gray-300 text-gray-800">
-          Secondary Button
+        <Button asChild>
+          <a href="/dashboard" className="bg-gray-200 hover:bg-gray-300 text-gray-800 px-4 py-2 rounded">
+            Dashboard
+          </a>
         </Button>
       </div>
 
