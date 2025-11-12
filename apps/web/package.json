@@ -4,8 +4,9 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
+  "dev": "next dev",
+  "prebuild": "node ./scripts/verify-env.js || true",
+  "build": "node ./scripts/verify-env.js && next build",
     "start": "next start"
   },
   "dependencies": {
