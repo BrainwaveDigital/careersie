@@ -19,6 +19,34 @@ export default function AuthCallbackPage() {
           return
         }
 
+        // Mirror the session into a cookie so server-rendered pages can access it
+        try {
+          const sessionRes = await supabaseClient.auth.getSession()
+          const session = (sessionRes as any)?.data?.session
+          if (session && session.access_token) {
+            try {
+              await fetch('/api/auth/mirror', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ session }),
+                credentials: 'same-origin',
+              })
+            } catch (e) {
+              // fallback to client-side cookie
+              const cookieVal = encodeURIComponent(JSON.stringify(session))
+              const secure = typeof window !== 'undefined' && window.location.protocol === 'https:' ? 'Secure;SameSite=Strict;' : 'SameSite=Lax;'
+              let expires = ''
+              if (session.expires_at) {
+                const dt = new Date(session.expires_at * 1000)
+                expires = `; Expires=${dt.toUTCString()}`
+              }
+              document.cookie = `supabase-auth-token=${cookieVal}; Path=/; ${secure}${expires}`
+            }
+          }
+        } catch (e) {
+          console.warn('Failed to mirror session to cookie after OAuth callback', e)
+        }
+
         // Redirect to dashboard on success
         router.push('/dashboard')
       } catch (err) {

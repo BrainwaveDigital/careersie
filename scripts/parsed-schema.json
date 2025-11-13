@@ -1,0 +1,52 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Parsed CV payload",
+  "type": "object",
+  "properties": {
+    "profile": {
+      "type": "object",
+      "properties": {
+        "full_name": { "type": "string" },
+        "display_name": { "type": "string" },
+        "email": { "type": "string", "format": "email" },
+        "headline": { "type": "string" },
+        "location": { "type": "string" }
+      },
+      "additionalProperties": true
+    },
+    "experiences": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "title": { "type": "string" },
+          "company": { "type": "string" },
+          "start_date": { "type": ["string", "null"] },
+          "end_date": { "type": ["string", "null"] },
+          "is_current": { "type": "boolean" },
+          "description": { "type": "string" }
+        },
+        "additionalProperties": true
+      }
+    },
+    "education": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "school": { "type": "string" },
+          "degree": { "type": "string" },
+          "start_year": { "type": ["string", "number", "null"] },
+          "end_year": { "type": ["string", "number", "null"] },
+          "description": { "type": "string" }
+        },
+        "additionalProperties": true
+      }
+    },
+    "skills": {
+      "type": "array",
+      "items": { "anyOf": [{"type": "string"}, {"type": "object"}] }
+    }
+  },
+  "additionalProperties": false
+}

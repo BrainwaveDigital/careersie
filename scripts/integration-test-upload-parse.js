@@ -29,7 +29,29 @@ const supabase = createClient(SUPABASE_URL, SERVICE_KEY)
 
 async function main() {
   // create a tiny sample resume file
-  const userId = 'integration-test-user'
+  // use a valid UUID for user_id (parsed_documents.user_id is uuid type)
+  const { randomUUID } = require('crypto')
+  // Try to create a test auth user (service role) so we can reference a real user_id
+  let userId = null
+  try {
+    const testEmail = `integration-${Date.now()}@example.com`
+    const testPassword = `TestPass!${Date.now()}`
+    if (supabase.auth && supabase.auth.admin && typeof supabase.auth.admin.createUser === 'function') {
+      const { data: createdUser, error: createErr } = await supabase.auth.admin.createUser({ email: testEmail, password: testPassword, email_confirm: true })
+      if (createErr) {
+        console.warn('Could not create auth user for integration test, falling back to null user_id', createErr)
+        userId = null
+      } else {
+        userId = createdUser && createdUser.id ? createdUser.id : null
+      }
+    } else {
+      console.warn('supabase.auth.admin.createUser not available; integration test will use null user_id')
+      userId = null
+    }
+  } catch (e) {
+    console.warn('Error creating test auth user, continuing with null user_id', e)
+    userId = null
+  }
   const filename = `integration-sample-${Date.now()}.txt`
   const content = `Jane Developer\nEmail: jane@example.com\nSkills: JavaScript, Node.js\nExperience:\n - Software Engineer at Acme (2019-2022)`
   const buffer = Buffer.from(content, 'utf8')

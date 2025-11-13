@@ -20,7 +20,7 @@ export default function LoginPage() {
     setError(null)
 
     try {
-      const { error: authError } = await supabaseClient.auth.signInWithPassword({
+      const { data, error: authError } = await supabaseClient.auth.signInWithPassword({
         email,
         password,
       })
@@ -28,6 +28,37 @@ export default function LoginPage() {
       if (authError) {
         setError(authError.message)
         return
+      }
+
+      // If a session was returned, persist it to a cookie so server-rendered
+      // pages can read the access_token. Supabase client persists to localStorage
+      // by default; we mirror the session into a cookie here for server-side use.
+      try {
+        const session = (data as any)?.session
+        if (session && session.access_token) {
+          // Mirror session server-side into an HttpOnly cookie for server-rendered pages.
+          try {
+            await fetch('/api/auth/mirror', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ session }),
+              credentials: 'same-origin',
+            })
+          } catch (e) {
+            // fallback to client-side cookie if server mirror fails
+            const cookieVal = encodeURIComponent(JSON.stringify(session))
+            const secure = typeof window !== 'undefined' && window.location.protocol === 'https:' ? 'Secure;SameSite=Strict;' : 'SameSite=Lax;'
+            let expires = ''
+            if (session.expires_at) {
+              const dt = new Date(session.expires_at * 1000)
+              expires = `; Expires=${dt.toUTCString()}`
+            }
+            document.cookie = `supabase-auth-token=${cookieVal}; Path=/; ${secure}${expires}`
+          }
+        }
+      } catch (e) {
+        // non-fatal
+        console.warn('Failed to set session cookie', e)
       }
 
       // Redirect to dashboard on success

@@ -283,32 +283,61 @@ async function runJob(job) {
 
     // Try to create or link a profile for this user and insert normalized rows (experiences, education, skills)
     try {
+      console.log('profile linking block start for doc', doc.id, 'user_id', doc.user_id, 'existing profile_id', doc.profile_id)
       let profileId = doc.profile_id
       // if there's no profile_id, try to find one by user_id
       if (!profileId && doc.user_id) {
         const { data: profiles, error: pErr } = await supabase.from('profiles').select('*').eq('user_id', doc.user_id).limit(1)
+        console.log('profiles.select result for user_id', doc.user_id, { profiles, pErr })
         if (!pErr && profiles && profiles.length) {
           profileId = profiles[0].id
+          // link parsed_document to existing profile
+          try {
+            const { data: updData, error: updErr } = await supabase.from('parsed_documents').update({ profile_id: profileId }).eq('id', doc.id)
+            if (updErr) console.warn('Failed updating parsed_documents.profile_id for existing profile', updErr)
+            else console.log('Linked parsed_document to existing profile', profileId)
+          } catch (uErr) {
+            console.warn('Error updating parsed_documents with existing profile_id', uErr)
+          }
         }
       }
 
       // create a lightweight profile if none exists (server-only)
       if (!profileId && doc.user_id) {
+        console.log('No profileId found; attempting to create profile for user', doc.user_id)
         const createProfilePayload = { user_id: doc.user_id }
         if (finalParsedJson && finalParsedJson.extracted && finalParsedJson.extracted.name) createProfilePayload.full_name = finalParsedJson.extracted.name
         const { data: created, error: cErr } = await supabase.from('profiles').insert([createProfilePayload]).select().limit(1)
+        // debug logging: capture full response so we can diagnose why profiles aren't appearing
+        console.log('createProfile result:', { created, cErr })
         if (!cErr && created && created.length) {
           profileId = created[0].id
-          // update parsed_document.profile_id
-          await supabase.from('parsed_documents').update({ profile_id: profileId }).eq('id', doc.id)
         } else if (cErr) {
           console.warn('Could not create profile for parsed document', cErr)
+        } else {
+          console.warn('Profile creation returned no data and no error; unexpected response', { created })
         }
       }
 
-      // Insert experiences if present
-      const experiences = (finalParsedJson && finalParsedJson.llm && Array.isArray(finalParsedJson.llm.experiences)) ? finalParsedJson.llm.experiences : null
-      if (profileId && experiences && experiences.length) {
+      // If we resolved a profileId (either found or created), ensure parsed_documents.profile_id is set
+      if (profileId) {
+        try {
+          if (doc.profile_id !== profileId) {
+            const { data: updData, error: updErr } = await supabase.from('parsed_documents').update({ profile_id: profileId }).eq('id', doc.id)
+            if (updErr) console.warn('Failed updating parsed_documents.profile_id', updErr)
+            else console.log('Updated parsed_documents with profile_id', profileId)
+          } else {
+            console.log('parsed_documents.profile_id already set to', profileId)
+          }
+        } catch (uErr) {
+          console.warn('Exception updating parsed_documents.profile_id', uErr)
+        }
+      }
+
+  // Insert experiences if present (LLM output expected)
+  const experiences = (finalParsedJson && finalParsedJson.llm && Array.isArray(finalParsedJson.llm.experiences)) ? finalParsedJson.llm.experiences : null
+  if (!finalParsedJson.llm) console.log('No LLM structured output present; skipping normalized inserts unless LLM is enabled')
+  if (profileId && experiences && experiences.length) {
         try {
           const rows = experiences.map((exp, idx) => ({
             profile_id: profileId,
@@ -322,8 +351,9 @@ async function runJob(job) {
             raw_json: exp,
             order_index: idx
           }))
-          const { error: eErr } = await supabase.from('experiences').insert(rows)
+          const { data: expData, error: eErr } = await supabase.from('experiences').insert(rows)
           if (eErr) console.warn('Failed inserting experiences', eErr)
+          else console.log('Inserted experiences rows count', Array.isArray(expData) ? expData.length : 0)
         } catch (inErr) {
           console.warn('Error inserting experiences', inErr)
         }
@@ -331,7 +361,7 @@ async function runJob(job) {
 
       // Insert education if present
       const education = (finalParsedJson && finalParsedJson.llm && Array.isArray(finalParsedJson.llm.education)) ? finalParsedJson.llm.education : null
-      if (profileId && education && education.length) {
+  if (profileId && education && education.length) {
         try {
           const edRows = education.map((ed) => ({
             profile_id: profileId,
@@ -343,8 +373,9 @@ async function runJob(job) {
             description: ed.description || null,
             raw_json: ed
           }))
-          const { error: edErr } = await supabase.from('education').insert(edRows)
+          const { data: edData, error: edErr } = await supabase.from('education').insert(edRows)
           if (edErr) console.warn('Failed inserting education rows', edErr)
+          else console.log('Inserted education rows count', Array.isArray(edData) ? edData.length : 0)
         } catch (edInErr) {
           console.warn('Error inserting education rows', edInErr)
         }
@@ -352,11 +383,12 @@ async function runJob(job) {
 
       // Insert skills if present
       const skills = (finalParsedJson && finalParsedJson.llm && Array.isArray(finalParsedJson.llm.skills)) ? finalParsedJson.llm.skills : null
-      if (profileId && skills && skills.length) {
+  if (profileId && skills && skills.length) {
         try {
           const skillRows = skills.map((s) => ({ profile_id: profileId, skill: s, confidence: null, raw_json: s }))
-          const { error: skErr } = await supabase.from('skills').insert(skillRows)
+          const { data: skData, error: skErr } = await supabase.from('skills').insert(skillRows)
           if (skErr) console.warn('Failed inserting skills', skErr)
+          else console.log('Inserted skills rows count', Array.isArray(skData) ? skData.length : 0)
         } catch (skInErr) {
           console.warn('Error inserting skills', skInErr)
         }

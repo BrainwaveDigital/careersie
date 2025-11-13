@@ -1,13 +1,39 @@
 import { NextResponse } from 'next/server'
 import { getSupabaseServer } from '@/lib/supabase'
+import { error } from 'ajv/dist/vocabularies/applicator/dependencies'
+
+// cSpell:ignore apikey
 
 export async function GET(req: Request, { params }: { params: { id: string } }) {
   try {
+    // Try Authorization header first, then fall back to cookies (for browser sessions)
+    let token: string | null = null
     const auth = req.headers.get('authorization')
-    if (!auth || !auth.startsWith('Bearer ')) {
-      return new NextResponse(JSON.stringify({ error: 'Missing Authorization header' }), { status: 401 })
+    if (auth && auth.startsWith('Bearer ')) {
+      token = auth.split(' ')[1] ?? null
+    } else {
+      const cookieHeader = req.headers.get('cookie') || ''
+      const cookieNames = ['sb:token', 'sb-access-token', 'sb-session', 'supabase-auth-token', 'sb:session', 'access_token']
+      const cookies = cookieHeader.split(';').map(c => c.trim())
+      for (const name of cookieNames) {
+        const match = cookies.find(c => c.startsWith(name + '='))
+        if (!match) continue
+        const raw = match.split('=')[1] ?? ''
+        try {
+          const parsed = JSON.parse(decodeURIComponent(raw))
+          if (parsed && parsed.access_token) {
+            token = parsed.access_token
+            break
+          }
+        } catch (e) {
+          token = decodeURIComponent(raw)
+          break
+        }
+      }
     }
-    const token = auth.split(' ')[1]
+    if (!token) {
+      return new NextResponse(JSON.stringify({ error: 'Missing Authorization or session cookie' }), { status: 401 })
+    }
 
     const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
     if (!supabaseUrl) return new NextResponse(JSON.stringify({ error: 'SUPABASE URL not configured' }), { status: 500 })
@@ -24,6 +50,7 @@ export async function GET(req: Request, { params }: { params: { id: string } }) 
     const id = params.id
     const sb = getSupabaseServer()
     const { data: docs, error: dErr } = await sb.from('parsed_documents').select('id, storage_path').eq('id', id).limit(1)
+
     if (dErr) return new NextResponse(JSON.stringify({ error: 'Failed to fetch parsed document', details: dErr }), { status: 500 })
     if (!docs || docs.length === 0) return new NextResponse(JSON.stringify({ error: 'Parsed document not found' }), { status: 404 })
   const doc = docs && docs.length ? docs[0] : null
