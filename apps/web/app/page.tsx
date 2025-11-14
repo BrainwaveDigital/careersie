@@ -1,26 +1,5 @@
-import { Button } from "@/components/ui/button";
+import { redirect } from 'next/navigation';
 
 export default function Home() {
-  return (
-    <main className="flex min-h-screen flex-col items-center justify-center bg-background text-foreground p-8">
-      <h1 className="text-4xl font-bold mb-8">Welcome to Careersie Platform</h1>
-
-      <div className="space-x-4">
-        <Button asChild>
-          <a href="/profile/choose" className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">
-            Profile
-          </a>
-        </Button>
-        <Button asChild>
-          <a href="/dashboard" className="bg-gray-200 hover:bg-gray-300 text-gray-800 px-4 py-2 rounded">
-            Dashboard
-          </a>
-        </Button>
-      </div>
-
-      <p className="mt-8 text-lg text-muted-foreground">
-        Tailwind + Shadcn UI are now working!
-      </p>
-    </main>
-  );
+  redirect('/login');
 }

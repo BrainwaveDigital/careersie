@@ -108,7 +108,68 @@ export async function POST(req: Request) {
 
     // Optional synchronous parse stub for local testing
     if (process.env.PARSE_SYNC === '1') {
-      const stubJson = { parsed: true, extracted_text: 'stubbed parse - run parser worker for real parsing' }
+      const stubJson = { 
+        parsed: true, 
+        extracted_text: 'Stubbed parse - run parser worker for real parsing',
+        extracted: {
+          name: 'Sample User',
+          email: 'sample@example.com',
+          phone: '+1 (555) 123-4567'
+        },
+        llm: {
+          name: 'Sample User',
+          email: 'sample@example.com',
+          phone: '+1 (555) 123-4567',
+          summary: 'This is a test CV parsed with stub data. Upload a real CV to see actual parsing results.',
+          skills: ['JavaScript', 'React', 'Node.js', 'TypeScript', 'Python'],
+          experiences: [
+            {
+              title: 'Software Engineer',
+              company: 'Tech Company',
+              start_date: '2020-01',
+              end_date: null,
+              is_current: true,
+              description: 'Working on web applications'
+            }
+          ],
+          education: [
+            {
+              school: 'University',
+              degree: 'Bachelor of Science',
+              field_of_study: 'Computer Science',
+              start_year: 2016,
+              end_year: 2020
+            }
+          ]
+        },
+        // Add root-level properties that match the schema for ProcessParsedClient
+        profile: {
+          full_name: 'Sample User',
+          email: 'sample@example.com',
+          phone: '+1 (555) 123-4567',
+          summary: 'This is a test CV parsed with stub data. Upload a real CV to see actual parsing results.'
+        },
+        experiences: [
+          {
+            title: 'Software Engineer',
+            company: 'Tech Company',
+            start_date: '2020-01-01',
+            end_date: null,
+            is_current: true,
+            description: 'Working on web applications'
+          }
+        ],
+        education: [
+          {
+            school: 'University',
+            degree: 'Bachelor of Science',
+            field_of_study: 'Computer Science',
+            start_year: 2016,
+            end_year: 2020
+          }
+        ],
+        skills: ['JavaScript', 'React', 'Node.js', 'TypeScript', 'Python']
+      }
       await sb
         .from('parsed_documents')
         .update({ parsed_json: stubJson, status: 'parsed', parsed_at: new Date().toISOString() })

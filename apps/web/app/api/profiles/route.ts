@@ -4,6 +4,8 @@ export async function POST(request: Request) {
   try {
     const { userId, name, email } = await request.json()
 
+    console.log('[API /profiles POST] Request received:', { userId, name, email })
+
     // Validate input
     if (!userId || !name) {
       return Response.json(
@@ -14,20 +16,78 @@ export async function POST(request: Request) {
 
     // This runs on the server with service role key → safe to bypass RLS
     const supabaseServer = getSupabaseServer()
+    
+    // Split name into first and last
+    const nameParts = name.trim().split(' ')
+    const firstName = nameParts[0] || ''
+    const lastName = nameParts.slice(1).join(' ') || ''
+    
+    console.log('[API /profiles POST] Attempting to create/update user in public.users...')
+    
+    // 1. Create/update user in public.users table (only basic columns for now)
+    const { data: userData, error: userError } = await supabaseServer
+      .from('users')
+      .upsert({ 
+        id: userId,
+        email: email,
+        updated_at: new Date().toISOString()
+      }, {
+        onConflict: 'id'
+      })
+      .select()
+
+    if (userError) {
+      console.error('[API /profiles POST] User table error:', {
+        message: userError.message,
+        details: userError.details,
+        hint: userError.hint,
+        code: userError.code
+      })
+      return Response.json({ 
+        error: `User table error: ${userError.message}`,
+        details: userError.details,
+        hint: userError.hint,
+        code: userError.code
+      }, { status: 500 })
+    }
+
+    console.log('[API /profiles POST] User created/updated successfully:', userData)
+    console.log('[API /profiles POST] Attempting to create profile...')
+
+    // 2. Create profile in profiles table
     const { data, error } = await supabaseServer
       .from('profiles')
-      .insert({ user_id: userId, name, email })
+      .insert({ 
+        user_id: userId, 
+        full_name: name, 
+        email: email 
+      })
       .select()
 
     if (error) {
-      console.error('Supabase error:', error)
-      return Response.json({ error: error.message }, { status: 500 })
+      console.error('[API /profiles POST] Profile table error:', {
+        message: error.message,
+        details: error.details,
+        hint: error.hint,
+        code: error.code
+      })
+      return Response.json({ 
+        error: `Profile error: ${error.message}`,
+        details: error.details,
+        hint: error.hint,
+        code: error.code
+      }, { status: 500 })
     }
 
+    console.log('[API /profiles POST] Profile created successfully:', data)
     return Response.json({ data }, { status: 201 })
   } catch (err) {
     const message = err instanceof Error ? err.message : 'Unknown error'
-    return Response.json({ error: message }, { status: 500 })
+    console.error('[API /profiles POST] Unexpected error:', err)
+    return Response.json({ 
+      error: message,
+      stack: err instanceof Error ? err.stack : undefined
+    }, { status: 500 })
   }
 }
 

@@ -224,6 +224,16 @@ export default function LoginPage() {
           >
             Sign in anonymously
           </button>
+
+          {/* Sign Up Link */}
+          <div className="mt-6 text-center">
+            <p className="text-sm text-slate-600">
+              Don't have an account?{' '}
+              <Link href="/signup" className="text-blue-600 font-semibold hover:text-blue-700 transition">
+                Sign up for free
+              </Link>
+            </p>
+          </div>
         </div>
 
         {/* Footer */}

@@ -193,8 +193,8 @@ async function runJob(job) {
     if (USE_LLM && llmClient) {
       try {
         // Check per-profile opt-in flag (use_gpt5) before calling the LLM.
-        // Default to skipping the LLM if we cannot determine the flag.
-        let profileAllowsLLM = false
+        // Default to USE_LLM global setting if column doesn't exist.
+        let profileAllowsLLM = true // Default to true when USE_LLM is set globally
         try {
           if (doc.user_id) {
             const { data: profileData, error: profileErr } = await supabase
@@ -204,28 +204,70 @@ async function runJob(job) {
               .limit(1)
               .single()
             if (profileErr) {
-              console.warn('Could not read profile.use_gpt5 flag, defaulting to false', profileErr)
-              profileAllowsLLM = false
+              // Column doesn't exist or query failed - use global USE_LLM setting
+              console.log('Could not read profile.use_gpt5 flag, using global USE_LLM setting')
+              profileAllowsLLM = true
             } else {
               profileAllowsLLM = Boolean(profileData?.use_gpt5)
             }
-          } else {
-            profileAllowsLLM = false
           }
         } catch (chkErr) {
-          console.warn('Error checking profile.use_gpt5, skipping LLM call', chkErr)
-          profileAllowsLLM = false
+          console.log('Error checking profile.use_gpt5, using global USE_LLM setting')
+          profileAllowsLLM = true
         }
 
         if (!profileAllowsLLM) {
           console.log('Profile not opted-in for LLM; skipping LLM call for doc', doc.id)
           finalParsedJson.llm_skipped = true
         } else {
-          const model = process.env.LLM_MODEL || 'gpt-5'
+          const model = process.env.LLM_MODEL || 'gpt-4o-mini'
           console.log('Calling LLM model', model, 'for structured extraction')
-          const prompt = `Extract the following JSON from the resume text. Fields: name, email, phone, summary, skills (array of strings), experiences (array of {title, company, start_date, end_date, description}), education (array of {school, degree, start_year, end_year}). Provide valid JSON only. Resume text:\n\n${rawText.slice(0, 150000)}`
-          const resp = await llmClient.responses.create({ model, input: prompt, max_output_tokens: 1500 })
-          const text = (resp.output && resp.output[0] && resp.output[0].content && resp.output[0].content[0] && resp.output[0].content[0].text) || JSON.stringify(resp)
+          const prompt = `Extract the following information from this resume and return ONLY valid JSON with no additional text or markdown formatting.
+
+Required JSON structure:
+{
+  "name": "full name",
+  "email": "email address",
+  "phone": "phone number",
+  "summary": "brief professional summary",
+  "skills": ["skill1", "skill2", "skill3"],
+  "experiences": [
+    {
+      "title": "job title",
+      "company": "company name",
+      "start_date": "YYYY-MM-DD or YYYY-MM or YYYY",
+      "end_date": "YYYY-MM-DD or YYYY-MM or YYYY or null if current",
+      "is_current": true/false,
+      "description": "job description"
+    }
+  ],
+  "education": [
+    {
+      "school": "institution name",
+      "degree": "degree type",
+      "field_of_study": "major/field",
+      "start_year": 2020,
+      "end_year": 2024
+    }
+  ]
+}
+
+Resume text:
+${rawText.slice(0, 50000)}`
+
+          const resp = await llmClient.chat.completions.create({
+            model,
+            messages: [
+              { role: 'system', content: 'You are a helpful assistant that extracts structured data from resumes. Always respond with valid JSON only, no markdown formatting or additional text.' },
+              { role: 'user', content: prompt }
+            ],
+            temperature: 0.1,
+            max_tokens: 2000
+          })
+          
+          const text = resp.choices[0]?.message?.content || ''
+          console.log('LLM response received, length:', text.length)
+          console.log('LLM response preview:', text.substring(0, 500))
           // try parse JSON out of the response
           let parsedFromLLM = null
           try {
@@ -236,6 +278,10 @@ async function runJob(job) {
             console.error('Failed parsing LLM JSON output', jErr)
           }
           if (parsedFromLLM) {
+            console.log('Parsed LLM JSON successfully. Keys:', Object.keys(parsedFromLLM))
+            console.log('Experiences count:', Array.isArray(parsedFromLLM.experiences) ? parsedFromLLM.experiences.length : 0)
+            console.log('Education count:', Array.isArray(parsedFromLLM.education) ? parsedFromLLM.education.length : 0)
+            console.log('Skills count:', Array.isArray(parsedFromLLM.skills) ? parsedFromLLM.skills.length : 0)
             // validate parsedFromLLM against schema using ajv
             try {
               const schemaPath = path.join(__dirname, 'llm-schema.json')
@@ -279,7 +325,24 @@ async function runJob(job) {
     }
 
     // update parsed_documents
-    await supabase.from('parsed_documents').update({ parsed_json: finalParsedJson, status: 'parsed', parsed_at: new Date().toISOString(), text_extracted: rawText.slice(0, 1000000) }).eq('id', doc.id)
+    console.log('Updating parsed_documents with finalParsedJson. Has llm key?', 'llm' in finalParsedJson)
+    console.log('finalParsedJson keys:', Object.keys(finalParsedJson))
+    const { data: updatedDoc, error: updateErr } = await supabase
+      .from('parsed_documents')
+      .update({ 
+        parsed_json: finalParsedJson, 
+        status: 'parsed', 
+        parsed_at: new Date().toISOString(), 
+        text_extracted: rawText.slice(0, 1000000) 
+      })
+      .eq('id', doc.id)
+      .select()
+    
+    if (updateErr) {
+      console.error('ERROR updating parsed_documents:', updateErr)
+      throw updateErr
+    }
+    console.log('Successfully updated parsed_documents. Updated doc:', updatedDoc)
 
     // Try to create or link a profile for this user and insert normalized rows (experiences, education, skills)
     try {
@@ -337,6 +400,18 @@ async function runJob(job) {
   // Insert experiences if present (LLM output expected)
   const experiences = (finalParsedJson && finalParsedJson.llm && Array.isArray(finalParsedJson.llm.experiences)) ? finalParsedJson.llm.experiences : null
   if (!finalParsedJson.llm) console.log('No LLM structured output present; skipping normalized inserts unless LLM is enabled')
+  
+  // Helper function to normalize date formats
+  const normalizeDate = (dateStr) => {
+    if (!dateStr || dateStr === 'null' || dateStr === 'current') return null
+    // If it's YYYY-MM format, add -01 to make it YYYY-MM-DD
+    if (/^\d{4}-\d{2}$/.test(dateStr)) return `${dateStr}-01`
+    // If it's just YYYY, add -01-01
+    if (/^\d{4}$/.test(dateStr)) return `${dateStr}-01-01`
+    // Otherwise return as-is (already YYYY-MM-DD or invalid)
+    return dateStr
+  }
+  
   if (profileId && experiences && experiences.length) {
         try {
           const rows = experiences.map((exp, idx) => ({
@@ -344,14 +419,15 @@ async function runJob(job) {
             title: exp.title || null,
             company: exp.company || null,
             location: exp.location || null,
-            start_date: exp.start_date ? exp.start_date : null,
-            end_date: exp.end_date ? exp.end_date : null,
+            start_date: normalizeDate(exp.start_date),
+            end_date: exp.is_current ? null : normalizeDate(exp.end_date),
             is_current: exp.is_current || false,
             description: exp.description || null,
             raw_json: exp,
             order_index: idx
           }))
-          const { data: expData, error: eErr } = await supabase.from('experiences').insert(rows)
+          console.log('Attempting to insert', rows.length, 'experience rows')
+          const { data: expData, error: eErr } = await supabase.from('experiences').insert(rows).select()
           if (eErr) console.warn('Failed inserting experiences', eErr)
           else console.log('Inserted experiences rows count', Array.isArray(expData) ? expData.length : 0)
         } catch (inErr) {
@@ -373,7 +449,8 @@ async function runJob(job) {
             description: ed.description || null,
             raw_json: ed
           }))
-          const { data: edData, error: edErr } = await supabase.from('education').insert(edRows)
+          console.log('Attempting to insert', edRows.length, 'education rows')
+          const { data: edData, error: edErr } = await supabase.from('education').insert(edRows).select()
           if (edErr) console.warn('Failed inserting education rows', edErr)
           else console.log('Inserted education rows count', Array.isArray(edData) ? edData.length : 0)
         } catch (edInErr) {
@@ -383,15 +460,20 @@ async function runJob(job) {
 
       // Insert skills if present
       const skills = (finalParsedJson && finalParsedJson.llm && Array.isArray(finalParsedJson.llm.skills)) ? finalParsedJson.llm.skills : null
-  if (profileId && skills && skills.length) {
+      console.log('Skills from LLM:', skills ? `${skills.length} skills` : 'null')
+      if (profileId && skills && skills.length) {
         try {
+          console.log('Attempting to insert', skills.length, 'skill rows')
           const skillRows = skills.map((s) => ({ profile_id: profileId, skill: s, confidence: null, raw_json: s }))
-          const { data: skData, error: skErr } = await supabase.from('skills').insert(skillRows)
+          console.log('First 3 skill rows:', skillRows.slice(0, 3))
+          const { data: skData, error: skErr } = await supabase.from('skills').insert(skillRows).select()
           if (skErr) console.warn('Failed inserting skills', skErr)
           else console.log('Inserted skills rows count', Array.isArray(skData) ? skData.length : 0)
         } catch (skInErr) {
           console.warn('Error inserting skills', skInErr)
         }
+      } else {
+        console.log('Skipping skills insert - profileId:', profileId, 'skills length:', skills ? skills.length : 'null')
       }
     } catch (linkErr) {
       console.warn('Error linking parsed data to profile or inserting normalized rows', linkErr)

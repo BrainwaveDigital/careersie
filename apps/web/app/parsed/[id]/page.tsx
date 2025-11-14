@@ -5,14 +5,17 @@
 "use client"
 
 import React, { useEffect, useState } from 'react'
-import { useParams } from 'next/navigation'
+import { useParams, useRouter } from 'next/navigation'
+import Link from 'next/link'
 import { supabaseClient } from '@/lib/supabase'
 import { Card, CardHeader, CardTitle, CardContent, CardDescription } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
+import { ArrowLeft, Upload, Home } from 'lucide-react'
 import ProcessParsedClient from './ProcessParsedClient'
 
 export default function ParsedPage() {
   const params = useParams()
+  const router = useRouter()
   const id = params?.id as string | undefined
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -126,6 +129,15 @@ export default function ParsedPage() {
   const llm = parsed.llm || null
   const extracted = parsed.extracted || null
 
+  // Debug logging
+  console.log('Parsed document data:', {
+    hasLlm: !!llm,
+    llmKeys: llm ? Object.keys(llm) : [],
+    experiencesCount: llm?.experiences?.length || 0,
+    educationCount: llm?.education?.length || 0,
+    skillsCount: llm?.skills?.length || 0
+  })
+
   const skillList = (llm && Array.isArray(llm.skills)) ? llm.skills : (Array.isArray(skills) ? skills : [])
   const experiencesList = (llm && Array.isArray(llm.experiences)) ? llm.experiences : (Array.isArray(experiences) ? experiences : [])
   const educationList = (llm && Array.isArray(llm.education)) ? llm.education : (Array.isArray(education) ? education : [])
@@ -152,6 +164,28 @@ export default function ParsedPage() {
 
   return (
     <div className="p-6 max-w-4xl mx-auto space-y-6">
+      {/* Navigation Bar */}
+      <div className="flex gap-2 items-center mb-4">
+        <Button variant="outline" size="sm" asChild>
+          <Link href="/dashboard" className="flex items-center gap-2">
+            <ArrowLeft className="w-4 h-4" />
+            Back to Dashboard
+          </Link>
+        </Button>
+        <Button variant="outline" size="sm" asChild>
+          <Link href="/profile/upload" className="flex items-center gap-2">
+            <Upload className="w-4 h-4" />
+            Upload Another CV
+          </Link>
+        </Button>
+        <Button variant="ghost" size="sm" asChild>
+          <Link href="/" className="flex items-center gap-2">
+            <Home className="w-4 h-4" />
+            Home
+          </Link>
+        </Button>
+      </div>
+
       <Card>
         <CardHeader>
           <CardTitle>{name}</CardTitle>

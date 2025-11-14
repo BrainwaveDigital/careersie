@@ -3,10 +3,10 @@ import { getSupabaseServer } from '@/lib/supabase'
 import { Card, CardHeader, CardTitle, CardContent, CardDescription } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 
-type Props = { params: { id: string } }
+type Props = { params: Promise<{ id: string }> }
 
 export default async function ProfileCvPage({ params }: Props) {
-  const profileId = params.id
+  const { id: profileId } = await params
 
   try {
     const supabase = getSupabaseServer()
