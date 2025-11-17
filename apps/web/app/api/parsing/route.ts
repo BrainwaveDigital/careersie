@@ -54,7 +54,9 @@ export async function POST(req: Request) {
     if (uploadError) {
       console.error('Initial storage upload error:', uploadError)
       // If bucket is missing or not found, try to create it (server-only action)
-      const shouldTryCreate = String(uploadError.message || '').toLowerCase().includes('not found') || uploadError?.status === 404
+      const errorMessage = (uploadError as any)?.message || ''
+      const errorStatus = (uploadError as any)?.status
+      const shouldTryCreate = String(errorMessage).toLowerCase().includes('not found') || errorStatus === 404
       if (shouldTryCreate) {
         try {
           console.log('Attempting to create missing storage bucket: resumes')

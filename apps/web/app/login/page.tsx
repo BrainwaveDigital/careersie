@@ -95,34 +95,34 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 flex items-center justify-center px-4 py-12">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex items-center justify-center px-4 py-12">
       <div className="w-full max-w-md">
         {/* Header */}
         <div className="text-center mb-10">
-          <h1 className="text-4xl font-bold text-slate-900 mb-3 tracking-tight">
+          <h1 className="text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-pink-400 to-purple-400 mb-3 tracking-tight">
             Careersie
           </h1>
-          <h2 className="text-2xl font-semibold text-slate-800 mb-3">
+          <h2 className="text-2xl font-semibold text-white mb-3">
             Find Your Dream Job
           </h2>
-          <p className="text-slate-600 text-base leading-relaxed">
+          <p className="text-purple-200 text-base leading-relaxed">
             Join thousands of professionals finding their next opportunity
           </p>
         </div>
 
         {/* Login Card */}
-        <div className="bg-white rounded-2xl shadow-xl p-8 border border-slate-100">
+        <div className="bg-white/10 backdrop-blur-xl rounded-3xl shadow-2xl p-8 border border-white/20">
           {/* Error Message */}
           {error && (
-            <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg animate-shake">
-              <p className="text-sm text-red-700 font-medium">{error}</p>
+            <div className="mb-6 p-4 bg-red-500/20 border border-red-400/30 rounded-xl animate-shake backdrop-blur-sm">
+              <p className="text-sm text-red-200 font-medium">{error}</p>
             </div>
           )}
 
           {/* Email/Password Form */}
           <form onSubmit={handleEmailLogin} className="space-y-5 mb-6">
             <div>
-              <label htmlFor="email" className="block text-sm font-semibold text-slate-900 mb-2">
+              <label htmlFor="email" className="block text-sm font-semibold text-white mb-2">
                 Email Address
               </label>
               <input
@@ -132,12 +132,12 @@ export default function LoginPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition bg-slate-50 text-slate-900 placeholder-slate-500"
+                className="w-full px-4 py-3 bg-white/5 border-2 border-white/20 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-400 focus:border-pink-400 transition text-white placeholder-purple-300"
               />
             </div>
 
             <div>
-              <label htmlFor="password" className="block text-sm font-semibold text-slate-900 mb-2">
+              <label htmlFor="password" className="block text-sm font-semibold text-white mb-2">
                 Password
               </label>
               <div className="relative">
@@ -148,12 +148,12 @@ export default function LoginPage() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
-                  className="w-full px-4 py-3 pr-10 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition bg-slate-50 text-slate-900 placeholder-slate-500"
+                  className="w-full px-4 py-3 pr-10 bg-white/5 border-2 border-white/20 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-400 focus:border-pink-400 transition text-white placeholder-purple-300"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-slate-500 hover:text-slate-700"
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-purple-300 hover:text-white"
                 >
                   {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                 </button>
@@ -163,7 +163,7 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 disabled:from-blue-400 disabled:to-blue-400 text-white font-bold py-3 rounded-lg transition duration-200 flex items-center justify-center gap-2 shadow-md hover:shadow-lg disabled:shadow-none"
+              className="w-full bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600 disabled:from-pink-400/50 disabled:to-purple-400/50 text-white font-bold py-3 rounded-full transition duration-200 flex items-center justify-center gap-2 shadow-lg shadow-purple-500/50 hover:scale-105 disabled:scale-100"
             >
               {loading ? (
                 <>
@@ -178,9 +178,9 @@ export default function LoginPage() {
 
           {/* Signup Link */}
           <div className="text-center mb-6">
-            <p className="text-slate-600 text-sm">
+            <p className="text-purple-200 text-sm">
               Don't have an account?{' '}
-              <Link href="/signup" className="text-blue-600 hover:text-blue-700 font-semibold transition">
+              <Link href="/signup" className="text-pink-400 hover:text-pink-300 font-semibold transition">
                 Sign up instead
               </Link>
             </p>
@@ -189,10 +189,10 @@ export default function LoginPage() {
           {/* Divider */}
           <div className="relative mb-6">
             <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-slate-300"></div>
+              <div className="w-full border-t border-white/20"></div>
             </div>
             <div className="relative flex justify-center text-sm">
-              <span className="px-3 bg-white text-slate-500 font-medium">or</span>
+              <span className="px-3 bg-white/10 backdrop-blur-sm text-purple-200 font-medium rounded-full">or</span>
             </div>
           </div>
 
@@ -201,7 +201,7 @@ export default function LoginPage() {
             <button
               onClick={() => handleSocialLogin('google')}
               disabled={loading}
-              className="w-full border-2 border-slate-300 hover:border-blue-400 hover:bg-blue-50 disabled:opacity-50 disabled:cursor-not-allowed text-slate-700 hover:text-slate-900 font-bold py-3 rounded-lg transition duration-200 flex items-center justify-center gap-3 bg-white"
+              className="w-full border-2 border-white/20 hover:border-pink-400/50 hover:bg-white/10 disabled:opacity-50 disabled:cursor-not-allowed text-white font-bold py-3 rounded-full transition duration-200 flex items-center justify-center gap-3 backdrop-blur-sm"
             >
               <Mail className="w-5 h-5" />
               Sign in with Google
@@ -210,26 +210,18 @@ export default function LoginPage() {
             <button
               onClick={() => handleSocialLogin('github')}
               disabled={loading}
-              className="w-full border-2 border-slate-300 hover:border-blue-400 hover:bg-blue-50 disabled:opacity-50 disabled:cursor-not-allowed text-slate-700 hover:text-slate-900 font-bold py-3 rounded-lg transition duration-200 flex items-center justify-center gap-3 bg-white"
+              className="w-full border-2 border-white/20 hover:border-pink-400/50 hover:bg-white/10 disabled:opacity-50 disabled:cursor-not-allowed text-white font-bold py-3 rounded-full transition duration-200 flex items-center justify-center gap-3 backdrop-blur-sm"
             >
               <Github className="w-5 h-5" />
               Sign in with GitHub
             </button>
           </div>
 
-          {/* Anonymous Login */}
-          <button
-            onClick={() => router.push('/dashboard')}
-            className="w-full bg-slate-100 hover:bg-slate-200 text-slate-700 hover:text-slate-900 font-bold py-3 rounded-lg transition duration-200"
-          >
-            Sign in anonymously
-          </button>
-
           {/* Sign Up Link */}
           <div className="mt-6 text-center">
-            <p className="text-sm text-slate-600">
+            <p className="text-sm text-purple-200">
               Don't have an account?{' '}
-              <Link href="/signup" className="text-blue-600 font-semibold hover:text-blue-700 transition">
+              <Link href="/signup" className="text-pink-400 font-semibold hover:text-pink-300 transition">
                 Sign up for free
               </Link>
             </p>
@@ -237,14 +229,14 @@ export default function LoginPage() {
         </div>
 
         {/* Footer */}
-        <div className="text-center mt-8 text-xs text-slate-600">
+        <div className="text-center mt-8 text-xs text-purple-300">
           <p>
             By signing in, you agree to our{' '}
-            <Link href="/terms" className="text-blue-600 hover:text-blue-700 font-semibold">
+            <Link href="/terms" className="text-pink-400 hover:text-pink-300 font-semibold">
               Terms of Service
             </Link>{' '}
             and{' '}
-            <Link href="/privacy" className="text-blue-600 hover:text-blue-700 font-semibold">
+            <Link href="/privacy" className="text-pink-400 hover:text-pink-300 font-semibold">
               Privacy Policy
             </Link>
           </p>

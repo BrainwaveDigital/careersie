@@ -8,9 +8,6 @@ importers:
 
   .:
     dependencies:
-      '@supabase/supabase-js':
-        specifier: ^2.43.0
-        version: 2.81.0
       mammoth:
         specifier: ^1.4.20
         version: 1.11.0
@@ -21,6 +18,9 @@ importers:
         specifier: ^1.1.1
         version: 1.1.4
     devDependencies:
+      '@supabase/supabase-js':
+        specifier: ^2.81.0
+        version: 2.81.0
       ajv:
         specifier: ^8.12.0
         version: 8.17.1
@@ -28,7 +28,7 @@ importers:
         specifier: ^2.1.1
         version: 2.1.1(ajv@8.17.1)
       dotenv:
-        specifier: ^16.0.0
+        specifier: ^16.0.3
         version: 16.0.3
       pg:
         specifier: ^8.16.3
