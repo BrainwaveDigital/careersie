@@ -35,3 +35,14 @@
 body {
   @apply bg-background text-foreground;
 }
+
+/* Glass Morphism Card Styles */
+@layer components {
+  .glass-card {
+    @apply bg-black/20 backdrop-blur-lg border border-pink-500/20 rounded-lg shadow-xl;
+  }
+  
+  .glass-card:hover {
+    @apply border-pink-500/30;
+  }
+}

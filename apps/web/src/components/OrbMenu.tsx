@@ -77,6 +77,15 @@ const OrbMenu = () => {
       gradient: 'from-yellow-400 via-amber-500 to-orange-500',
       glowColor: 'rgba(250, 204, 21, 0.4)',
       href: '/reflection'
+    },
+    {
+      id: 'talent-story',
+      icon: FileText,
+      title: 'TalentStory',
+      description: 'Generate your career narrative',
+      gradient: 'from-pink-500 via-purple-500 to-blue-500',
+      glowColor: 'rgba(236, 72, 153, 0.5)',
+      href: '/talent-story/builder'
     }
   ];
 
