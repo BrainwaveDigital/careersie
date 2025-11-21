@@ -4,11 +4,17 @@
   "remoteCache": {
     "enabled": false
   },
+  "globalEnv": [
+    "TURBO_REMOTE_CACHE_ENABLED"
+  ],
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
       "inputs": ["$TURBO_DEFAULT$", ".env*"],
-      "outputs": [".next/**", "!.next/cache/**"]
+      "outputs": [".next/**", "!.next/cache/**"],
+      "env": [
+        "TURBO_REMOTE_CACHE_ENABLED"
+      ]
     },
     "lint": {
       "dependsOn": ["^lint"]
