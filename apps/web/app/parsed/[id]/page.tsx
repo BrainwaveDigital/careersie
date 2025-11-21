@@ -8,8 +8,6 @@ import React, { useEffect, useState } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { supabaseClient } from '@/lib/supabase'
-import { Card, CardHeader, CardTitle, CardContent, CardDescription } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
 import { ArrowLeft, Upload, Home } from 'lucide-react'
 import ProcessParsedClient from './ProcessParsedClient'
 
@@ -121,9 +119,30 @@ export default function ParsedPage() {
     return () => { mounted = false }
   }, [id])
 
-  if (loading) return <div className="p-6">Loading...</div>
-  if (error) return <div className="p-6">{error}</div>
-  if (!doc) return <div className="p-6">Parsed document not found.</div>
+  if (loading) return (
+    <div
+      className="min-h-screen flex items-center justify-center"
+      style={{ background: 'linear-gradient(135deg, #0D1117 0%, #0A0F14 100%)' }}
+    >
+      <div className="text-xl" style={{ color: '#FFFFFF' }}>Loading...</div>
+    </div>
+  )
+  if (error) return (
+    <div
+      className="min-h-screen flex items-center justify-center"
+      style={{ background: 'linear-gradient(135deg, #0D1117 0%, #0A0F14 100%)' }}
+    >
+      <div className="text-xl" style={{ color: '#ff6b6b' }}>{error}</div>
+    </div>
+  )
+  if (!doc) return (
+    <div
+      className="min-h-screen flex items-center justify-center"
+      style={{ background: 'linear-gradient(135deg, #0D1117 0%, #0A0F14 100%)' }}
+    >
+      <div className="text-xl" style={{ color: '#9AA4B2' }}>Parsed document not found.</div>
+    </div>
+  )
 
   const parsed = doc.parsed_json || {}
   const llm = parsed.llm || null
@@ -163,93 +182,196 @@ export default function ParsedPage() {
   const resumeHref = `/api/admin/download-parsed/${doc.id}`
 
   return (
-    <div className="p-6 max-w-4xl mx-auto space-y-6">
-      {/* Navigation Bar */}
-      <div className="flex gap-2 items-center mb-4">
-        <Button variant="outline" size="sm" asChild>
-          <Link href="/dashboard" className="flex items-center gap-2">
+    <div
+      className="min-h-screen p-6"
+      style={{ background: 'linear-gradient(135deg, #0D1117 0%, #0A0F14 100%)' }}
+    >
+      <div className="max-w-4xl mx-auto space-y-6">
+        {/* Navigation Bar */}
+        <div className="flex gap-3 items-center mb-6">
+          <Link
+            href="/dashboard"
+            className="flex items-center gap-2 px-4 py-2 rounded-lg transition-all duration-200"
+            style={{
+              background: 'rgba(255, 255, 255, 0.06)',
+              border: '1px solid rgba(255, 255, 255, 0.1)',
+              color: '#FFFFFF'
+            }}
+          >
             <ArrowLeft className="w-4 h-4" />
             Back to Dashboard
           </Link>
-        </Button>
-        <Button variant="outline" size="sm" asChild>
-          <Link href="/profile/upload" className="flex items-center gap-2">
+          <Link
+            href="/profile/upload"
+            className="flex items-center gap-2 px-4 py-2 rounded-lg transition-all duration-200"
+            style={{
+              background: 'rgba(255, 255, 255, 0.06)',
+              border: '1px solid rgba(255, 255, 255, 0.1)',
+              color: '#FFFFFF'
+            }}
+          >
             <Upload className="w-4 h-4" />
             Upload Another CV
           </Link>
-        </Button>
-        <Button variant="ghost" size="sm" asChild>
-          <Link href="/" className="flex items-center gap-2">
+          <Link
+            href="/"
+            className="flex items-center gap-2 px-4 py-2 rounded-lg transition-all duration-200"
+            style={{
+              background: 'rgba(255, 255, 255, 0.06)',
+              border: '1px solid rgba(255, 255, 255, 0.1)',
+              color: '#9AA4B2'
+            }}
+          >
             <Home className="w-4 h-4" />
             Home
           </Link>
-        </Button>
-      </div>
+        </div>
 
-      <Card>
-        <CardHeader>
-          <CardTitle>{name}</CardTitle>
-          <CardDescription>{doc.file_name || doc.storage_path}</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="flex gap-4 items-center mb-4">
-            <div className="text-sm text-muted-foreground">Email: <span className="font-medium">{email}</span></div>
-            <div className="text-sm text-muted-foreground">Phone: <span className="font-medium">{phone}</span></div>
+        <div
+          className="p-8"
+          style={{
+            background: 'rgba(255, 255, 255, 0.04)',
+            border: '1px solid rgba(255, 255, 255, 0.06)',
+            backdropFilter: 'blur(25px)',
+            boxShadow: '0 0 30px rgba(0, 0, 0, 0.4)',
+            borderRadius: '24px'
+          }}
+        >
+          <div className="mb-6">
+            <h1 className="text-3xl font-bold mb-2" style={{ color: '#FFFFFF' }}>{name}</h1>
+            <p className="text-sm" style={{ color: '#9AA4B2' }}>{doc.file_name || doc.storage_path}</p>
           </div>
 
-          <h3 className="text-lg font-semibold">Summary</h3>
-          <p className="mb-4 text-sm text-muted-foreground">{llm && llm.summary ? llm.summary : parsed.raw_text_excerpt ? parsed.raw_text_excerpt.slice(0, 1000) : 'No summary available.'}</p>
+          <div className="flex gap-6 items-center mb-6 pb-6" style={{ borderBottom: '1px solid rgba(255, 255, 255, 0.06)' }}>
+            <div className="text-sm">
+              <span style={{ color: '#9AA4B2' }}>Email: </span>
+              <span className="font-medium" style={{ color: '#FFFFFF' }}>{email}</span>
+            </div>
+            <div className="text-sm">
+              <span style={{ color: '#9AA4B2' }}>Phone: </span>
+              <span className="font-medium" style={{ color: '#FFFFFF' }}>{phone}</span>
+            </div>
+          </div>
 
-          <h3 className="text-lg font-semibold">Skills</h3>
-          <div className="mb-4 flex flex-wrap gap-2">
+          <h3 className="text-lg font-semibold mb-2" style={{ color: '#4ff1e3' }}>Summary</h3>
+          <p className="mb-6 text-sm" style={{ color: '#E5E7EB' }}>
+            {llm && llm.summary ? llm.summary : parsed.raw_text_excerpt ? parsed.raw_text_excerpt.slice(0, 1000) : 'No summary available.'}
+          </p>
+
+          <h3 className="text-lg font-semibold mb-3" style={{ color: '#4ff1e3' }}>Skills</h3>
+          <div className="mb-6 flex flex-wrap gap-2">
             {skillList.length ? skillList.map((s: any, i: number) => (
-              <span key={i} className="px-2 py-1 rounded bg-slate-100 text-sm text-slate-800">{typeof s === 'string' ? s : s.skill || JSON.stringify(s)}</span>
-            )) : <div className="text-sm text-muted-foreground">No skills parsed.</div>}
+              <span
+                key={i}
+                className="px-3 py-1 rounded-lg text-sm"
+                style={{
+                  background: 'rgba(79, 241, 227, 0.15)',
+                  border: '1px solid rgba(79, 241, 227, 0.3)',
+                  color: '#4ff1e3'
+                }}
+              >
+                {typeof s === 'string' ? s : s.skill || JSON.stringify(s)}
+              </span>
+            )) : <div className="text-sm" style={{ color: '#9AA4B2' }}>No skills parsed.</div>}
           </div>
 
-          <h3 className="text-lg font-semibold">Experience</h3>
-          <div className="space-y-4 mb-4">
+          <h3 className="text-lg font-semibold mb-3" style={{ color: '#4ff1e3' }}>Experience</h3>
+          <div className="space-y-3 mb-6">
             {experiencesList.length ? experiencesList.map((e: any, idx: number) => (
-              <div key={idx} className="p-3 border rounded">
-                <div className="font-semibold">{e.title || e.job_title || '—'} — <span className="font-medium">{e.company || e.employer || '—'}</span></div>
-                <div className="text-sm text-muted-foreground">{fmtDate(e.start_date || e.start_year)} — {e.is_current ? 'Present' : fmtDate(e.end_date || e.end_year)}</div>
-                {e.description && <p className="mt-2 text-sm">{e.description}</p>}
+              <div
+                key={idx}
+                className="p-4 rounded-xl"
+                style={{
+                  background: 'rgba(255, 255, 255, 0.05)',
+                  border: '1px solid rgba(255, 255, 255, 0.1)'
+                }}
+              >
+                <div className="font-semibold mb-1" style={{ color: '#FFFFFF' }}>
+                  {e.title || e.job_title || '—'} — <span className="font-medium">{e.company || e.employer || '—'}</span>
+                </div>
+                <div className="text-sm mb-2" style={{ color: '#9AA4B2' }}>
+                  {fmtDate(e.start_date || e.start_year)} — {e.is_current ? 'Present' : fmtDate(e.end_date || e.end_year)}
+                </div>
+                {e.description && <p className="text-sm" style={{ color: '#E5E7EB' }}>{e.description}</p>}
               </div>
-            )) : <div className="text-sm text-muted-foreground">No experiences parsed.</div>}
+            )) : <div className="text-sm" style={{ color: '#9AA4B2' }}>No experiences parsed.</div>}
           </div>
 
-          <h3 className="text-lg font-semibold">Education</h3>
-          <div className="space-y-3 mb-4">
+          <h3 className="text-lg font-semibold mb-3" style={{ color: '#4ff1e3' }}>Education</h3>
+          <div className="space-y-3 mb-6">
             {educationList.length ? educationList.map((ed: any, i: number) => (
-              <div key={i} className="p-3 border rounded">
-                <div className="font-semibold">{ed.school || ed.institution || '—'}</div>
-                <div className="text-sm text-muted-foreground">{ed.degree || ed.qualification || ''} • {ed.start_year || ''} - {ed.end_year || ''}</div>
-                {ed.description && <p className="mt-2 text-sm">{ed.description}</p>}
+              <div
+                key={i}
+                className="p-4 rounded-xl"
+                style={{
+                  background: 'rgba(255, 255, 255, 0.05)',
+                  border: '1px solid rgba(255, 255, 255, 0.1)'
+                }}
+              >
+                <div className="font-semibold mb-1" style={{ color: '#FFFFFF' }}>{ed.school || ed.institution || '—'}</div>
+                <div className="text-sm" style={{ color: '#9AA4B2' }}>
+                  {ed.degree || ed.qualification || ''} • {ed.start_year || ''} - {ed.end_year || ''}
+                </div>
+                {ed.description && <p className="mt-2 text-sm" style={{ color: '#E5E7EB' }}>{ed.description}</p>}
               </div>
-            )) : <div className="text-sm text-muted-foreground">No education parsed.</div>}
+            )) : <div className="text-sm" style={{ color: '#9AA4B2' }}>No education parsed.</div>}
           </div>
 
-          <h3 className="text-lg font-semibold">Raw / Metadata</h3>
-          <div className="text-sm text-muted-foreground mb-2">Parsed at: {doc.parsed_at || parsed.parsed_at || '—'}</div>
-          <div className="mb-4">
+          <h3 className="text-lg font-semibold mb-3" style={{ color: '#4ff1e3' }}>Raw / Metadata</h3>
+          <div className="text-sm mb-3" style={{ color: '#9AA4B2' }}>
+            Parsed at: {doc.parsed_at || parsed.parsed_at || '—'}
+          </div>
+          <div className="mb-6">
             <details>
-              <summary className="cursor-pointer">LLM validation & parsed JSON</summary>
-              <pre className="mt-2 max-h-96 overflow-auto text-xs bg-surface p-3 rounded">{JSON.stringify(parsed, null, 2)}</pre>
+              <summary className="cursor-pointer text-sm font-medium" style={{ color: '#FFFFFF' }}>
+                LLM validation & parsed JSON
+              </summary>
+              <pre
+                className="mt-3 max-h-96 overflow-auto text-xs p-4 rounded-xl"
+                style={{
+                  background: 'rgba(0, 0, 0, 0.3)',
+                  border: '1px solid rgba(255, 255, 255, 0.1)',
+                  color: '#E5E7EB'
+                }}
+              >
+                {JSON.stringify(parsed, null, 2)}
+              </pre>
             </details>
           </div>
 
-          <div className="flex gap-2">
-            <Button variant="outline" asChild>
-              <a href={resumeHref} target="_blank" rel="noopener noreferrer">Download Resume</a>
-            </Button>
-            <Button variant="ghost" asChild>
-              <a href={jsonDataHref} download={`parsed-${doc.id}.json`}>Download JSON</a>
-            </Button>
+          <div className="flex gap-3">
+            <a
+              href={resumeHref}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-6 py-3 rounded-lg font-semibold transition-all duration-200"
+              style={{
+                background: 'linear-gradient(135deg, #4ff1e3, #536dfe)',
+                color: '#FFFFFF',
+                boxShadow: '0 4px 15px rgba(79, 241, 227, 0.3)',
+                textDecoration: 'none'
+              }}
+            >
+              Download Resume
+            </a>
+            <a
+              href={jsonDataHref}
+              download={`parsed-${doc.id}.json`}
+              className="px-6 py-3 rounded-lg font-semibold transition-all duration-200"
+              style={{
+                background: 'rgba(255, 255, 255, 0.06)',
+                border: '1px solid rgba(255, 255, 255, 0.1)',
+                color: '#FFFFFF',
+                textDecoration: 'none'
+              }}
+            >
+              Download JSON
+            </a>
           </div>
-        </CardContent>
-      </Card>
-      {/* Client-side control to save parsed data into normalized rows */}
-      <ProcessParsedClient parsed={parsed} docId={doc.id} />
+        </div>
+        {/* Client-side control to save parsed data into normalized rows */}
+        <ProcessParsedClient parsed={parsed} docId={doc.id} />
+      </div>
     </div>
   )
 }

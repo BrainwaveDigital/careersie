@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Search, FileText, Star, User, Image, Brain, Lightbulb, LogOut } from 'lucide-react';
+import { Search, FileText, Star, User, Image, Brain, Lightbulb, LogOut, Target, Boxes, BookOpen } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { supabaseClient } from '@/lib/supabase';
 
@@ -52,6 +52,15 @@ const OrbMenu = () => {
       href: '/profile'
     },
     {
+      id: 'stories',
+      icon: BookOpen,
+      title: 'STAR Stories',
+      description: 'Craft achievement narratives',
+      gradient: 'from-indigo-500 via-blue-500 to-cyan-500',
+      glowColor: 'rgba(99, 102, 241, 0.4)',
+      href: '/story-test'
+    },
+    {
       id: 'media',
       icon: Image,
       title: 'Media Library',
@@ -86,6 +95,24 @@ const OrbMenu = () => {
       gradient: 'from-pink-500 via-purple-500 to-blue-500',
       glowColor: 'rgba(236, 72, 153, 0.5)',
       href: '/talent-story/builder'
+    },
+    {
+      id: 'job-customizer',
+      icon: Target,
+      title: 'Job Customizer',
+      description: 'Tailor your story to each job',
+      gradient: 'from-emerald-400 via-teal-500 to-cyan-500',
+      glowColor: 'rgba(52, 211, 153, 0.5)',
+      href: '/jobs/customize'
+    },
+    {
+      id: 'skills-3d',
+      icon: Boxes,
+      title: '3D Skills',
+      description: 'Visualize your skills in 3D',
+      gradient: 'from-blue-400 via-indigo-500 to-purple-600',
+      glowColor: 'rgba(99, 102, 241, 0.5)',
+      href: '/skills-3d-enhanced'
     }
   ];
 
@@ -94,19 +121,30 @@ const OrbMenu = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 p-8">
+    <div style={{ background: 'linear-gradient(135deg, #0D1117 0%, #0A0F14 100%)' }} className="min-h-screen p-8">
       {/* Header */}
       <div className="max-w-7xl mx-auto mb-12">
         <div className="flex justify-between items-center">
           <div>
-            <h1 className="text-5xl font-bold text-white mb-2 bg-clip-text text-transparent bg-gradient-to-r from-pink-400 to-purple-400">
+            <h1 style={{ color: '#FFFFFF' }} className="text-5xl font-bold mb-2">
               Careersie
             </h1>
-            <p className="text-purple-300 text-lg">Welcome back! 👋</p>
+            <p style={{ color: '#9AA4B2' }} className="text-lg">Welcome back! 👋</p>
           </div>
           <button 
             onClick={handleLogout}
-            className="flex items-center gap-2 px-6 py-3 bg-white/10 backdrop-blur-lg rounded-full text-white hover:bg-white/20 transition-all border border-white/20"
+            style={{
+              background: 'rgba(255, 255, 255, 0.06)',
+              border: '1px solid rgba(255, 255, 255, 0.1)',
+              borderRadius: '14px',
+              padding: '12px 24px',
+              color: '#FFFFFF',
+              transition: 'all 0.2s ease',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px'
+            }}
+            className="hover:bg-white/10 hover:-translate-y-0.5"
           >
             <LogOut size={20} />
             Logout
@@ -142,7 +180,16 @@ const OrbMenu = () => {
               />
               
               {/* Glass Card */}
-              <div className="relative bg-white/10 backdrop-blur-xl rounded-3xl p-8 border border-white/20 overflow-hidden h-full">
+              <div style={{
+                background: 'rgba(255, 255, 255, 0.04)',
+                border: '1px solid rgba(255, 255, 255, 0.06)',
+                backdropFilter: 'blur(25px)',
+                borderRadius: '24px',
+                padding: '32px',
+                height: '100%',
+                overflow: 'hidden',
+                position: 'relative'
+              }}>
                 {/* Animated Gradient Background */}
                 <div
                   className={`absolute inset-0 bg-gradient-to-br ${item.gradient} opacity-0 group-hover:opacity-20 transition-opacity duration-500`}
@@ -181,18 +228,28 @@ const OrbMenu = () => {
                   </div>
                   
                   {/* Text Content */}
-                  <h3 className="text-2xl font-bold text-white mb-2">
+                  <h3 style={{ color: '#FFFFFF' }} className="text-2xl font-bold mb-2">
                     {item.title}
                   </h3>
-                  <p className="text-purple-200 text-sm opacity-80">
+                  <p style={{ color: '#9AA4B2' }} className="text-sm">
                     {item.description}
                   </p>
                   
                   {/* Action Button */}
                   <button
-                    className="mt-6 px-6 py-2 bg-white/20 backdrop-blur-sm rounded-full text-white text-sm font-medium
-                             opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0
-                             transition-all duration-300 hover:bg-white/30 border border-white/30"
+                    style={{
+                      marginTop: '24px',
+                      padding: '8px 24px',
+                      background: 'rgba(255, 255, 255, 0.06)',
+                      border: '1px solid rgba(255, 255, 255, 0.1)',
+                      backdropFilter: 'blur(10px)',
+                      borderRadius: '14px',
+                      color: '#FFFFFF',
+                      fontSize: '14px',
+                      fontWeight: '500',
+                      transition: 'all 0.3s ease'
+                    }}
+                    className="opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0 hover:bg-white/10"
                   >
                     Open
                   </button>
@@ -208,16 +265,34 @@ const OrbMenu = () => {
 
       {/* Bottom CTA */}
       <div className="max-w-7xl mx-auto mt-16 text-center">
-        <div className="bg-gradient-to-r from-pink-500/20 via-purple-500/20 to-indigo-500/20 backdrop-blur-xl rounded-3xl p-8 border border-white/20">
-          <h2 className="text-3xl font-bold text-white mb-4">
+        <div style={{
+          background: 'rgba(255, 255, 255, 0.04)',
+          border: '1px solid rgba(255, 255, 255, 0.06)',
+          backdropFilter: 'blur(25px)',
+          borderRadius: '24px',
+          padding: '32px'
+        }}>
+          <h2 style={{ color: '#FFFFFF' }} className="text-3xl font-bold mb-4">
             Ready to level up your career? 🚀
           </h2>
-          <p className="text-purple-200 mb-6">
+          <p style={{ color: '#9AA4B2' }} className="mb-6">
             Complete your profile and start applying to your dream jobs today
           </p>
           <button 
             onClick={() => router.push('/profile')}
-            className="px-8 py-4 bg-gradient-to-r from-pink-500 to-purple-500 rounded-full text-white font-bold text-lg hover:scale-105 transition-transform shadow-lg shadow-purple-500/50"
+            style={{
+              padding: '16px 32px',
+              background: 'linear-gradient(135deg, #4ff1e3, #536dfe)',
+              borderRadius: '14px',
+              color: '#FFFFFF',
+              fontWeight: 'bold',
+              fontSize: '18px',
+              border: 'none',
+              boxShadow: '0 4px 15px rgba(79, 241, 227, 0.3)',
+              cursor: 'pointer',
+              transition: 'all 0.2s ease'
+            }}
+            className="hover:shadow-[0_6px_20px_rgba(79,241,227,0.4)] hover:-translate-y-0.5"
           >
             Get Started
           </button>

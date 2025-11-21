@@ -14,38 +14,59 @@ export const metadata = {
 
 export default function ProfileChoosePage() {
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 py-12 bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
-      <div className="w-full max-w-5xl">
-        <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-white">How would you like to create your profile?</h1>
-          <p className="text-purple-200 mt-2">Choose the method that works best for you</p>
+    <div style={{
+      minHeight: '100vh',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      padding: '48px 16px',
+      background: 'linear-gradient(135deg, #0D1117 0%, #0A0F14 100%)'
+    }}>
+      <div style={{ width: '100%', maxWidth: '1280px' }}>
+        <div style={{ textAlign: 'center', marginBottom: '32px' }}>
+          <h1 style={{ fontSize: '30px', fontWeight: 'bold', color: '#FFFFFF' }}>How would you like to create your profile?</h1>
+          <p style={{ color: '#9AA4B2', marginTop: '8px' }}>Choose the method that works best for you</p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <Card className="p-6 bg-white/10 backdrop-blur-xl border-white/20">
+          <Card style={{
+            padding: '24px',
+            background: 'rgba(255, 255, 255, 0.04)',
+            backdropFilter: 'blur(25px)',
+            border: '1px solid rgba(255, 255, 255, 0.06)',
+            boxShadow: '0 0 30px rgba(0, 0, 0, 0.4)',
+            borderRadius: '20px'
+          }}>
             <CardHeader>
-              <CardTitle className="text-white">View Profile</CardTitle>
-              <CardDescription className="mt-2 text-purple-200">
+              <CardTitle style={{ color: '#FFFFFF' }}>View Profile</CardTitle>
+              <CardDescription style={{ marginTop: '8px', color: '#9AA4B2' }}>
                 See your existing profile and edit it.
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <p className="text-sm text-purple-300">Open your saved profile page to view or update details.</p>
+              <p style={{ fontSize: '14px', color: '#9AA4B2' }}>Open your saved profile page to view or update details.</p>
             </CardContent>
             <CardFooter className="justify-start">
               {/* ProfileLinkClient will link to the latest parsed CV if available (client-side) */}
               <ProfileLinkClient />
             </CardFooter>
           </Card>
-          <Card className="p-6 bg-white/10 backdrop-blur-xl border-white/20">
+          <Card style={{
+            padding: '24px',
+            background: 'rgba(255, 255, 255, 0.04)',
+            backdropFilter: 'blur(25px)',
+            border: '1px solid rgba(255, 255, 255, 0.06)',
+            boxShadow: '0 0 30px rgba(0, 0, 0, 0.4)',
+            borderRadius: '20px'
+          }}>
             <CardHeader>
-              <CardTitle className="text-white">Upload Your CV</CardTitle>
-              <CardDescription className="mt-2 text-purple-200">
+              <CardTitle style={{ color: '#FFFFFF' }}>Upload Your CV</CardTitle>
+              <CardDescription style={{ marginTop: '8px', color: '#9AA4B2' }}>
                 Quick and easy! Upload your existing CV and we'll extract the key information using AI.
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <ul className="list-disc ml-5 text-sm text-purple-300 space-y-1">
+              <ul className="list-disc ml-5 text-sm space-y-1" style={{ color: '#9AA4B2' }}>
                 <li>Supports PDF, DOC, DOCX</li>
                 <li>AI-powered information extraction</li>
                 <li>Review and edit before saving</li>
@@ -53,20 +74,31 @@ export default function ProfileChoosePage() {
             </CardContent>
             <CardFooter className="justify-start">
               <Link href="/profile/upload">
-                <Button variant="default" className="bg-gradient-to-r from-pink-500 to-purple-500 text-white rounded-full hover:scale-105 transition-transform">Upload CV</Button>
+                <Button variant="default" style={{
+                  background: 'linear-gradient(135deg, #4ff1e3, #536dfe)',
+                  borderRadius: '14px',
+                  boxShadow: '0 4px 15px rgba(79, 241, 227, 0.3)'
+                }}>Upload CV</Button>
               </Link>
             </CardFooter>
           </Card>
 
-          <Card className="p-6 bg-white/10 backdrop-blur-xl border-white/20">
+          <Card style={{
+            padding: '24px',
+            background: 'rgba(255, 255, 255, 0.04)',
+            backdropFilter: 'blur(25px)',
+            border: '1px solid rgba(255, 255, 255, 0.06)',
+            boxShadow: '0 0 30px rgba(0, 0, 0, 0.4)',
+            borderRadius: '20px'
+          }}>
             <CardHeader>
-              <CardTitle className="text-white">Build Profile Manually</CardTitle>
-              <CardDescription className="mt-2 text-purple-200">
+              <CardTitle style={{ color: '#FFFFFF' }}>Build Profile Manually</CardTitle>
+              <CardDescription style={{ marginTop: '8px', color: '#9AA4B2' }}>
                 Create your profile from scratch with our guided form.
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <ul className="list-disc ml-5 text-sm text-purple-300 space-y-1">
+              <ul className="list-disc ml-5 text-sm space-y-1" style={{ color: '#9AA4B2' }}>
                 <li>Step-by-step guidance</li>
                 <li>Complete control over content</li>
                 <li>Takes about 5-10 minutes</li>
@@ -74,25 +106,42 @@ export default function ProfileChoosePage() {
             </CardContent>
             <CardFooter className="justify-start">
               <Link href="/profile/manual">
-                <Button variant="secondary" className="bg-white/20 backdrop-blur-sm border-white/30 text-white hover:bg-white/30 rounded-full">Build Manually</Button>
+                <Button variant="secondary" style={{
+                  background: 'rgba(255, 255, 255, 0.06)',
+                  backdropFilter: 'blur(10px)',
+                  border: '1px solid rgba(255, 255, 255, 0.1)',
+                  color: '#9AA4B2',
+                  borderRadius: '14px'
+                }}>Build Manually</Button>
               </Link>
             </CardFooter>
           </Card>
         </div>
 
-        <div className="mt-8 bg-purple-500/20 border-2 border-purple-400/30 rounded-xl p-6 backdrop-blur-sm">
+        <div style={{
+          marginTop: '32px',
+          background: 'rgba(79, 241, 227, 0.1)',
+          border: '2px solid rgba(79, 241, 227, 0.3)',
+          borderRadius: '20px',
+          padding: '24px',
+          backdropFilter: 'blur(10px)'
+        }}>
           <div className="flex items-start gap-4">
-            <div className="text-4xl">💡</div>
+            <div style={{ fontSize: '36px' }}>💡</div>
             <div className="flex-1">
-              <h3 className="text-lg font-semibold text-white mb-2">
+              <h3 style={{ fontSize: '18px', fontWeight: '600', color: '#FFFFFF', marginBottom: '8px' }}>
                 Complete Your Self-Reflection Insights
               </h3>
-              <p className="text-purple-200 text-sm mb-4">
+              <p style={{ color: '#9AA4B2', fontSize: '14px', marginBottom: '16px' }}>
                 Take 10 minutes to reflect on your career journey, goals, and what matters most to you professionally. 
                 Your insights will help us match you with opportunities that align with your values and aspirations.
               </p>
               <Link href="/reflection">
-                <Button className="bg-gradient-to-r from-pink-500 to-purple-500 text-white rounded-full hover:scale-105 transition-transform">
+                <Button style={{
+                  background: 'linear-gradient(135deg, #4ff1e3, #536dfe)',
+                  borderRadius: '14px',
+                  boxShadow: '0 4px 15px rgba(79, 241, 227, 0.3)'
+                }}>
                   Start Reflection Questionnaire
                 </Button>
               </Link>
@@ -100,8 +149,8 @@ export default function ProfileChoosePage() {
           </div>
         </div>
 
-        <div className="mt-6 text-center text-sm">
-          <Link href="/dashboard" className="text-purple-200 hover:text-white transition-colors">← Back</Link>
+        <div style={{ marginTop: '24px', textAlign: 'center', fontSize: '14px' }}>
+          <Link href="/dashboard" style={{ color: '#4ff1e3', transition: 'opacity 0.2s' }} className="hover:opacity-80">← Back</Link>
         </div>
       </div>
     </div>

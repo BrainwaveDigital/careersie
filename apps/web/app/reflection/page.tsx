@@ -358,10 +358,13 @@ export default function SelfReflectionInsights() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 p-6 flex items-center justify-center">
+      <div
+        className="min-h-screen p-6 flex items-center justify-center"
+        style={{ background: 'linear-gradient(135deg, #0D1117 0%, #0A0F14 100%)' }}
+      >
         <div className="text-center">
-          <Loader2 className="w-12 h-12 text-pink-400 mx-auto mb-4 animate-spin" />
-          <h2 className="text-xl font-semibold text-white">Loading your reflection...</h2>
+          <Loader2 className="w-12 h-12 mx-auto mb-4 animate-spin" style={{ color: '#4ff1e3' }} />
+          <h2 className="text-xl font-semibold" style={{ color: '#FFFFFF' }}>Loading your reflection...</h2>
         </div>
       </div>
     );
@@ -369,46 +372,75 @@ export default function SelfReflectionInsights() {
 
   if (isComplete) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 p-6 flex items-center justify-center">
-        <div className="bg-white/10 backdrop-blur-xl rounded-3xl shadow-2xl p-8 max-w-2xl w-full border border-white/20">
+      <div
+        className="min-h-screen p-6 flex items-center justify-center"
+        style={{ background: 'linear-gradient(135deg, #0D1117 0%, #0A0F14 100%)' }}
+      >
+        <div
+          className="p-8 max-w-2xl w-full"
+          style={{
+            background: 'rgba(255, 255, 255, 0.04)',
+            border: '1px solid rgba(255, 255, 255, 0.06)',
+            backdropFilter: 'blur(25px)',
+            boxShadow: '0 0 30px rgba(0, 0, 0, 0.4)',
+            borderRadius: '24px'
+          }}
+        >
           <div className="text-center mb-8">
-            <CheckCircle className="w-16 h-16 text-green-400 mx-auto mb-4" />
-            <h2 className="text-3xl font-bold text-white mb-2">Insights Captured!</h2>
-            <p className="text-purple-200">Thank you for sharing your professional reflections.</p>
+            <CheckCircle className="w-16 h-16 mx-auto mb-4" style={{ color: '#4ade80' }} />
+            <h2 className="text-3xl font-bold mb-2" style={{ color: '#FFFFFF' }}>Insights Captured!</h2>
+            <p style={{ color: '#9AA4B2' }}>Thank you for sharing your professional reflections.</p>
           </div>
           
-          <div className="bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-xl p-6 mb-6 border border-purple-400/30">
-            <h3 className="text-xl font-semibold text-white mb-3">What's Next?</h3>
-            <ul className="space-y-2 text-purple-100">
+          <div
+            className="rounded-xl p-6 mb-6"
+            style={{
+              background: 'rgba(79, 241, 227, 0.1)',
+              border: '1px solid rgba(79, 241, 227, 0.3)'
+            }}
+          >
+            <h3 className="text-xl font-semibold mb-3" style={{ color: '#FFFFFF' }}>What's Next?</h3>
+            <ul className="space-y-2" style={{ color: '#E5E7EB' }}>
               <li className="flex items-start">
-                <Target className="w-5 h-5 text-pink-400 mr-2 mt-1 flex-shrink-0" />
+                <Target className="w-5 h-5 mr-2 mt-1 flex-shrink-0" style={{ color: '#4ff1e3' }} />
                 <span>Your insights will help us match you with roles that align with your career goals and values</span>
               </li>
               <li className="flex items-start">
-                <Target className="w-5 h-5 text-pink-400 mr-2 mt-1 flex-shrink-0" />
+                <Target className="w-5 h-5 mr-2 mt-1 flex-shrink-0" style={{ color: '#4ff1e3' }} />
                 <span>Employers can better understand your motivations and work style preferences</span>
               </li>
               <li className="flex items-start">
-                <Target className="w-5 h-5 text-pink-400 mr-2 mt-1 flex-shrink-0" />
+                <Target className="w-5 h-5 mr-2 mt-1 flex-shrink-0" style={{ color: '#4ff1e3' }} />
                 <span>You'll receive more personalized career development recommendations</span>
               </li>
             </ul>
           </div>
           
-          <p className="text-sm text-purple-300 text-center mb-6">
+          <p className="text-sm text-center mb-6" style={{ color: '#9AA4B2' }}>
             These reflections will remain confidential and help us support your career journey.
           </p>
 
           <div className="flex justify-center gap-4">
             <button
               onClick={() => window.location.href = '/reflection/view'}
-              className="px-8 py-3 bg-gradient-to-r from-pink-500 to-purple-500 text-white rounded-full hover:scale-105 shadow-lg font-semibold transition-transform"
+              className="px-8 py-3 rounded-full font-semibold transition-all hover:scale-105"
+              style={{
+                background: 'linear-gradient(135deg, #4ff1e3, #536dfe)',
+                color: '#FFFFFF',
+                boxShadow: '0 4px 15px rgba(79, 241, 227, 0.3)',
+                border: 'none'
+              }}
             >
               View My Insights
             </button>
             <button
               onClick={() => window.location.href = '/dashboard'}
-              className="px-8 py-3 bg-white/20 backdrop-blur-sm text-white border border-white/30 rounded-full hover:bg-white/30 shadow-lg font-semibold transition-all"
+              className="px-8 py-3 rounded-full font-semibold transition-all hover:scale-105"
+              style={{
+                background: 'rgba(255, 255, 255, 0.06)',
+                border: '1px solid rgba(255, 255, 255, 0.1)',
+                color: '#FFFFFF'
+              }}
             >
               Back to Dashboard
             </button>
@@ -419,70 +451,94 @@ export default function SelfReflectionInsights() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 p-6">
+    <div
+      className="min-h-screen p-6"
+      style={{ background: 'linear-gradient(135deg, #0D1117 0%, #0A0F14 100%)' }}
+    >
       <div className="max-w-4xl mx-auto">
         {/* Header */}
-        <div className="bg-white/10 backdrop-blur-xl rounded-3xl shadow-2xl p-8 mb-6 border border-white/20">
+        <div
+          className="p-8 mb-6"
+          style={{
+            background: 'rgba(255, 255, 255, 0.04)',
+            border: '1px solid rgba(255, 255, 255, 0.06)',
+            backdropFilter: 'blur(25px)',
+            boxShadow: '0 0 30px rgba(0, 0, 0, 0.4)',
+            borderRadius: '24px'
+          }}
+        >
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center">
-              <Lightbulb className="w-8 h-8 text-pink-400 mr-3" />
-              <h1 className="text-3xl font-bold text-white">Self-Reflection Insights</h1>
+              <Lightbulb className="w-8 h-8 mr-3" style={{ color: '#4ff1e3' }} />
+              <h1 className="text-3xl font-bold" style={{ color: '#FFFFFF' }}>Self-Reflection Insights</h1>
             </div>
             {saveStatus && (
               <div className="flex items-center gap-2 text-sm">
                 {saveStatus === 'saving' && (
                   <>
-                    <Loader2 className="w-4 h-4 animate-spin text-pink-400" />
-                    <span className="text-purple-200">Saving...</span>
+                    <Loader2 className="w-4 h-4 animate-spin" style={{ color: '#4ff1e3' }} />
+                    <span style={{ color: '#9AA4B2' }}>Saving...</span>
                   </>
                 )}
                 {saveStatus === 'saved' && (
                   <>
-                    <CheckCircle className="w-4 h-4 text-green-400" />
-                    <span className="text-green-400">Saved</span>
+                    <CheckCircle className="w-4 h-4" style={{ color: '#4ade80' }} />
+                    <span style={{ color: '#4ade80' }}>Saved</span>
                   </>
                 )}
                 {saveStatus === 'error' && (
-                  <span className="text-red-400">Save failed</span>
+                  <span style={{ color: '#ff6b6b' }}>Save failed</span>
                 )}
               </div>
             )}
           </div>
-          <p className="text-gray-600 mb-6">
+          <p className="mb-6" style={{ color: '#9AA4B2' }}>
             Take a moment to reflect on your career journey, goals, and what matters most to you professionally. 
             Your thoughtful responses help us understand you better and find the right opportunities.
-            <span className="text-purple-600 font-medium ml-2">✨ Auto-saves every 30 seconds</span>
+            <span className="font-medium ml-2" style={{ color: '#4ff1e3' }}>✨ Auto-saves every 30 seconds</span>
           </p>
           
           {/* Progress Bar */}
           <div className="mb-4">
-            <div className="flex justify-between text-sm text-gray-600 mb-2">
+            <div className="flex justify-between text-sm mb-2" style={{ color: '#9AA4B2' }}>
               <span>Progress: {Object.keys(responses).length} of {questions.length} questions</span>
               <span>{Math.round(progressPercentage)}%</span>
             </div>
-            <div className="w-full bg-gray-200 rounded-full h-3">
+            <div className="w-full rounded-full h-3" style={{ background: 'rgba(79, 241, 227, 0.2)' }}>
               <div 
-                className="bg-purple-600 h-3 rounded-full transition-all duration-300"
-                style={{ width: `${progressPercentage}%` } as React.CSSProperties}
+                className="h-3 rounded-full transition-all duration-300"
+                style={{
+                  width: `${progressPercentage}%`,
+                  background: 'linear-gradient(135deg, #4ff1e3, #536dfe)'
+                }}
               />
             </div>
           </div>
           
-          <p className="text-sm text-purple-300">
+          <p className="text-sm" style={{ color: '#9AA4B2' }}>
             Page {currentPage + 1} of {totalPages}
           </p>
         </div>
 
         {/* Questions */}
-        <div className="bg-white/10 backdrop-blur-xl rounded-3xl shadow-2xl p-8 mb-6 border border-white/20">
+        <div
+          className="p-8 mb-6"
+          style={{
+            background: 'rgba(255, 255, 255, 0.04)',
+            border: '1px solid rgba(255, 255, 255, 0.06)',
+            backdropFilter: 'blur(25px)',
+            boxShadow: '0 0 30px rgba(0, 0, 0, 0.4)',
+            borderRadius: '24px'
+          }}
+        >
           <div className="space-y-8">
             {getCurrentPageQuestions().map((question) => (
-              <div key={question.id} className="border-b border-white/10 pb-6 last:border-b-0">
+              <div key={question.id} className="pb-6 last:border-b-0" style={{ borderBottom: '1px solid rgba(255, 255, 255, 0.06)' }}>
                 <div className="mb-4">
-                  <span className="text-sm font-medium text-pink-400 uppercase tracking-wide">
+                  <span className="text-sm font-medium uppercase tracking-wide" style={{ color: '#4ff1e3' }}>
                     {question.section}
                   </span>
-                  <p className="text-lg text-white mt-2 font-medium">
+                  <p className="text-lg mt-2 font-medium" style={{ color: '#FFFFFF' }}>
                     {question.text}
                   </p>
                 </div>
@@ -494,7 +550,15 @@ export default function SelfReflectionInsights() {
                     onChange={(e) => handleResponseChange(question.id, e.target.value)}
                     placeholder={question.placeholder}
                     rows={4}
-                    className="w-full px-4 py-3 bg-white/5 border-2 border-white/20 rounded-lg text-white placeholder-purple-300 focus:border-pink-400 focus:ring-2 focus:ring-pink-400/20 transition-all"
+                    className="w-full px-4 py-3 rounded-lg transition-all"
+                    style={{
+                      background: 'rgba(255, 255, 255, 0.05)',
+                      border: '2px solid rgba(255, 255, 255, 0.1)',
+                      color: '#FFFFFF',
+                      resize: 'vertical'
+                    }}
+                    onFocus={(e) => e.currentTarget.style.borderColor = '#4ff1e3'}
+                    onBlur={(e) => e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.1)'}
                     aria-label={question.text}
                   />
                 )}
@@ -506,13 +570,20 @@ export default function SelfReflectionInsights() {
                       <button
                         key={option.value}
                         onClick={() => handleResponseChange(question.id, option.value)}
-                        className={`
-                          px-4 py-3 rounded-lg border-2 transition-all duration-200
-                          ${responses[question.id] === option.value
-                            ? 'border-purple-600 bg-purple-50 text-purple-700 font-semibold'
-                            : 'border-gray-200 bg-white text-gray-700 hover:border-purple-300 hover:bg-purple-50'
-                          }
-                        `}
+                        className="px-4 py-3 rounded-lg border-2 transition-all duration-200"
+                        style={{
+                          background: responses[question.id] === option.value
+                            ? 'linear-gradient(135deg, #4ff1e3, #536dfe)'
+                            : 'rgba(255, 255, 255, 0.05)',
+                          border: responses[question.id] === option.value
+                            ? '2px solid #4ff1e3'
+                            : '2px solid rgba(255, 255, 255, 0.1)',
+                          color: responses[question.id] === option.value ? '#FFFFFF' : '#9AA4B2',
+                          fontWeight: responses[question.id] === option.value ? '600' : '400',
+                          boxShadow: responses[question.id] === option.value
+                            ? '0 4px 15px rgba(79, 241, 227, 0.3)'
+                            : 'none'
+                        }}
                       >
                         <div className="text-center">
                           <div className="text-2xl font-bold mb-1">{option.value}</div>
@@ -530,13 +601,17 @@ export default function SelfReflectionInsights() {
                       <button
                         key={option}
                         onClick={() => handleResponseChange(question.id, option)}
-                        className={`
-                          w-full px-4 py-3 rounded-lg border-2 text-left transition-all duration-200
-                          ${responses[question.id] === option
-                            ? 'border-purple-600 bg-purple-50 text-purple-700 font-semibold'
-                            : 'border-gray-200 bg-white text-gray-700 hover:border-purple-300 hover:bg-purple-50'
-                          }
-                        `}
+                        className="w-full px-4 py-3 rounded-lg border-2 text-left transition-all duration-200"
+                        style={{
+                          background: responses[question.id] === option
+                            ? 'rgba(79, 241, 227, 0.15)'
+                            : 'rgba(255, 255, 255, 0.05)',
+                          border: responses[question.id] === option
+                            ? '2px solid #4ff1e3'
+                            : '2px solid rgba(255, 255, 255, 0.1)',
+                          color: responses[question.id] === option ? '#FFFFFF' : '#9AA4B2',
+                          fontWeight: responses[question.id] === option ? '600' : '400'
+                        }}
                       >
                         {option}
                       </button>
@@ -552,19 +627,24 @@ export default function SelfReflectionInsights() {
                       return (
                         <label
                           key={option}
-                          className={`
-                            flex items-center px-4 py-3 rounded-lg border-2 cursor-pointer transition-all duration-200
-                            ${isSelected
-                              ? 'border-purple-600 bg-purple-50 text-purple-700 font-semibold'
-                              : 'border-gray-200 bg-white text-gray-700 hover:border-purple-300 hover:bg-purple-50'
-                            }
-                          `}
+                          className="flex items-center px-4 py-3 rounded-lg border-2 cursor-pointer transition-all duration-200"
+                          style={{
+                            background: isSelected
+                              ? 'rgba(79, 241, 227, 0.15)'
+                              : 'rgba(255, 255, 255, 0.05)',
+                            border: isSelected
+                              ? '2px solid #4ff1e3'
+                              : '2px solid rgba(255, 255, 255, 0.1)',
+                            color: isSelected ? '#FFFFFF' : '#9AA4B2',
+                            fontWeight: isSelected ? '600' : '400'
+                          }}
                         >
                           <input
                             type="checkbox"
                             checked={isSelected}
                             onChange={() => handleCheckboxChange(question.id, option)}
-                            className="mr-3 h-5 w-5 text-purple-600 rounded focus:ring-purple-500"
+                            className="mr-3 h-5 w-5 rounded"
+                            style={{ accentColor: '#4ff1e3' }}
                           />
                           {option}
                         </label>
@@ -582,13 +662,13 @@ export default function SelfReflectionInsights() {
           <button
             onClick={() => setCurrentPage(prev => prev - 1)}
             disabled={currentPage === 0}
-            className={`
-              flex items-center px-6 py-3 rounded-lg font-semibold transition-all
-              ${currentPage === 0
-                ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
-                : 'bg-white text-purple-600 hover:bg-purple-50 shadow-md'
-              }
-            `}
+            className="flex items-center px-6 py-3 rounded-lg font-semibold transition-all hover:scale-105 disabled:opacity-50 disabled:hover:scale-100"
+            style={{
+              background: currentPage === 0 ? 'rgba(255, 255, 255, 0.05)' : 'rgba(255, 255, 255, 0.06)',
+              border: '1px solid rgba(255, 255, 255, 0.1)',
+              color: currentPage === 0 ? '#6B7280' : '#FFFFFF',
+              cursor: currentPage === 0 ? 'not-allowed' : 'pointer'
+            }}
           >
             <ChevronLeft className="w-5 h-5 mr-2" />
             Previous
@@ -598,13 +678,16 @@ export default function SelfReflectionInsights() {
             <button
               onClick={handleSubmit}
               disabled={!isPageComplete() || saving}
-              className={`
-                flex items-center px-8 py-3 rounded-lg font-semibold transition-all
-                ${!isPageComplete() || saving
-                  ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
-                  : 'bg-purple-600 text-white hover:bg-purple-700 shadow-lg'
-                }
-              `}
+              className="flex items-center px-8 py-3 rounded-lg font-semibold transition-all hover:scale-105 disabled:opacity-50 disabled:hover:scale-100"
+              style={{
+                background: isPageComplete() && !saving
+                  ? 'linear-gradient(135deg, #4ff1e3, #536dfe)'
+                  : 'rgba(255, 255, 255, 0.05)',
+                border: isPageComplete() && !saving ? 'none' : '1px solid rgba(255, 255, 255, 0.1)',
+                color: isPageComplete() && !saving ? '#FFFFFF' : '#6B7280',
+                boxShadow: isPageComplete() && !saving ? '0 4px 15px rgba(79, 241, 227, 0.3)' : 'none',
+                cursor: isPageComplete() && !saving ? 'pointer' : 'not-allowed'
+              }}
             >
               {saving ? (
                 <>
@@ -622,13 +705,16 @@ export default function SelfReflectionInsights() {
             <button
               onClick={() => setCurrentPage(prev => prev + 1)}
               disabled={!isPageComplete()}
-              className={`
-                flex items-center px-6 py-3 rounded-lg font-semibold transition-all
-                ${!isPageComplete()
-                  ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
-                  : 'bg-purple-600 text-white hover:bg-purple-700 shadow-lg'
-                }
-              `}
+              className="flex items-center px-6 py-3 rounded-lg font-semibold transition-all hover:scale-105 disabled:opacity-50 disabled:hover:scale-100"
+              style={{
+                background: isPageComplete()
+                  ? 'linear-gradient(135deg, #4ff1e3, #536dfe)'
+                  : 'rgba(255, 255, 255, 0.05)',
+                border: isPageComplete() ? 'none' : '1px solid rgba(255, 255, 255, 0.1)',
+                color: isPageComplete() ? '#FFFFFF' : '#6B7280',
+                boxShadow: isPageComplete() ? '0 4px 15px rgba(79, 241, 227, 0.3)' : 'none',
+                cursor: isPageComplete() ? 'pointer' : 'not-allowed'
+              }}
             >
               Next
               <ChevronRight className="w-5 h-5 ml-2" />

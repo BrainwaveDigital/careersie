@@ -58,17 +58,42 @@ export default async function ProfileCvPage({ params }: Props) {
     }
 
     return (
-      <div className="min-h-screen bg-gray-50 py-8 px-4">
+      <div
+        className="min-h-screen py-8 px-4"
+        style={{ background: 'linear-gradient(135deg, #0D1117 0%, #0A0F14 100%)' }}
+      >
         <div className="max-w-4xl mx-auto">
           {/* Navigation Bar */}
           <div className="mb-6 flex gap-2 items-center">
-            <Button variant="outline" size="sm" asChild>
+            <Button
+              variant="outline"
+              size="sm"
+              asChild
+              className="transition-all duration-200"
+              style={{
+                background: 'rgba(255, 255, 255, 0.06)',
+                border: '1px solid rgba(255, 255, 255, 0.1)',
+                color: '#9AA4B2'
+              }}
+            >
               <Link href="/dashboard" className="flex items-center gap-2">
                 <ArrowLeft className="w-4 h-4" />
                 Back to Dashboard
               </Link>
             </Button>
-            <Button variant="default" size="sm" asChild>
+            <Button
+              variant="default"
+              size="sm"
+              asChild
+              className="transition-all duration-200"
+              style={{
+                background: 'linear-gradient(135deg, #4ff1e3, #536dfe)',
+                borderRadius: '12px',
+                color: '#FFFFFF',
+                boxShadow: '0 4px 15px rgba(79, 241, 227, 0.3)',
+                border: 'none'
+              }}
+            >
               <Link href="/profile/manual" className="flex items-center gap-2">
                 <Edit className="w-4 h-4" />
                 Edit Profile
@@ -77,125 +102,196 @@ export default async function ProfileCvPage({ params }: Props) {
           </div>
 
           {/* Personal Details */}
-          <Card className="mb-6">
+          <Card
+            className="mb-6"
+            style={{
+              background: 'rgba(255, 255, 255, 0.04)',
+              border: '1px solid rgba(255, 255, 255, 0.06)',
+              backdropFilter: 'blur(25px)',
+              boxShadow: '0 0 30px rgba(0, 0, 0, 0.4)',
+              borderRadius: '20px'
+            }}
+          >
             <CardHeader>
-              <CardTitle>{profile.full_name || profile.display_name || '—'}</CardTitle>
-              <CardDescription>{profile.headline || 'No headline'}</CardDescription>
+              <CardTitle style={{ color: '#FFFFFF' }}>{profile.full_name || profile.display_name || '—'}</CardTitle>
+              <CardDescription style={{ color: '#9AA4B2' }}>{profile.headline || 'No headline'}</CardDescription>
             </CardHeader>
             <CardContent className="space-y-3">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <div className="text-sm font-medium text-muted-foreground">Email</div>
-                  <div className="text-sm">{profile.email || '—'}</div>
+                  <div className="text-sm font-medium" style={{ color: '#9AA4B2' }}>Email</div>
+                  <div className="text-sm" style={{ color: '#E5E7EB' }}>{profile.email || '—'}</div>
                 </div>
                 <div>
-                  <div className="text-sm font-medium text-muted-foreground">Phone</div>
-                  <div className="text-sm">{profile.phone || '—'}</div>
+                  <div className="text-sm font-medium" style={{ color: '#9AA4B2' }}>Phone</div>
+                  <div className="text-sm" style={{ color: '#E5E7EB' }}>{profile.phone || '—'}</div>
                 </div>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <div className="text-sm font-medium text-muted-foreground">Location</div>
-                  <div className="text-sm">{profile.location || '—'}</div>
+                  <div className="text-sm font-medium" style={{ color: '#9AA4B2' }}>Location</div>
+                  <div className="text-sm" style={{ color: '#E5E7EB' }}>{profile.location || '—'}</div>
                 </div>
                 <div>
-                  <div className="text-sm font-medium text-muted-foreground">Website</div>
-                  <div className="text-sm">{profile.website || '—'}</div>
+                  <div className="text-sm font-medium" style={{ color: '#9AA4B2' }}>Website</div>
+                  <div className="text-sm" style={{ color: '#E5E7EB' }}>{profile.website || '—'}</div>
                 </div>
               </div>
               {profile.summary && (
                 <div>
-                  <div className="text-sm font-medium text-muted-foreground mb-1">Summary</div>
-                  <p className="text-sm">{profile.summary}</p>
+                  <div className="text-sm font-medium mb-1" style={{ color: '#9AA4B2' }}>Summary</div>
+                  <p className="text-sm" style={{ color: '#E5E7EB' }}>{profile.summary}</p>
                 </div>
               )}
             </CardContent>
           </Card>
 
           {/* Experience */}
-          <Card className="mb-6">
+          <Card
+            className="mb-6"
+            style={{
+              background: 'rgba(255, 255, 255, 0.04)',
+              border: '1px solid rgba(255, 255, 255, 0.06)',
+              backdropFilter: 'blur(25px)',
+              boxShadow: '0 0 30px rgba(0, 0, 0, 0.4)',
+              borderRadius: '20px'
+            }}
+          >
             <CardHeader>
-              <CardTitle>Experience</CardTitle>
-              <CardDescription>Work history</CardDescription>
+              <CardTitle style={{ color: '#FFFFFF' }}>Experience</CardTitle>
+              <CardDescription style={{ color: '#9AA4B2' }}>Work history</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               {Array.isArray(experiences) && experiences.length ? (
                 experiences.map((e: any) => (
-                  <div key={e.id} className="p-4 border rounded-md space-y-2">
-                    <div className="font-semibold">{e.title || '—'}</div>
-                    <div className="font-medium text-sm">{e.company || '—'}</div>
-                    {e.location && <div className="text-sm text-muted-foreground">{e.location}</div>}
-                    <div className="text-sm text-muted-foreground">
+                  <div
+                    key={e.id}
+                    className="p-4 rounded-md space-y-2"
+                    style={{
+                      background: 'rgba(255, 255, 255, 0.04)',
+                      border: '1px solid rgba(255, 255, 255, 0.06)'
+                    }}
+                  >
+                    <div className="font-semibold" style={{ color: '#FFFFFF' }}>{e.title || '—'}</div>
+                    <div className="font-medium text-sm" style={{ color: '#E5E7EB' }}>{e.company || '—'}</div>
+                    {e.location && <div className="text-sm" style={{ color: '#9AA4B2' }}>{e.location}</div>}
+                    <div className="text-sm" style={{ color: '#9AA4B2' }}>
                       {fmtDate(e.start_date)} — {e.is_current ? 'Present' : fmtDate(e.end_date)}
                     </div>
-                    {e.description && <p className="mt-2 text-sm whitespace-pre-wrap">{e.description}</p>}
+                    {e.description && <p className="mt-2 text-sm whitespace-pre-wrap" style={{ color: '#E5E7EB' }}>{e.description}</p>}
                   </div>
                 ))
               ) : (
-                <p className="text-sm text-muted-foreground">No experience added yet.</p>
+                <p className="text-sm" style={{ color: '#9AA4B2' }}>No experience added yet.</p>
               )}
             </CardContent>
           </Card>
 
           {/* Education */}
-          <Card className="mb-6">
+          <Card
+            className="mb-6"
+            style={{
+              background: 'rgba(255, 255, 255, 0.04)',
+              border: '1px solid rgba(255, 255, 255, 0.06)',
+              backdropFilter: 'blur(25px)',
+              boxShadow: '0 0 30px rgba(0, 0, 0, 0.4)',
+              borderRadius: '20px'
+            }}
+          >
             <CardHeader>
-              <CardTitle>Education</CardTitle>
-              <CardDescription>Educational background</CardDescription>
+              <CardTitle style={{ color: '#FFFFFF' }}>Education</CardTitle>
+              <CardDescription style={{ color: '#9AA4B2' }}>Educational background</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               {Array.isArray(education) && education.length ? (
                 education.map((ed: any) => (
-                  <div key={ed.id} className="p-4 border rounded-md space-y-2">
-                    <div className="font-semibold">{ed.school || '—'}</div>
-                    <div className="text-sm">{ed.degree || ''}{ed.field_of_study ? ` in ${ed.field_of_study}` : ''}</div>
-                    <div className="text-sm text-muted-foreground">
+                  <div
+                    key={ed.id}
+                    className="p-4 rounded-md space-y-2"
+                    style={{
+                      background: 'rgba(255, 255, 255, 0.04)',
+                      border: '1px solid rgba(255, 255, 255, 0.06)'
+                    }}
+                  >
+                    <div className="font-semibold" style={{ color: '#FFFFFF' }}>{ed.school || '—'}</div>
+                    <div className="text-sm" style={{ color: '#E5E7EB' }}>{ed.degree || ''}{ed.field_of_study ? ` in ${ed.field_of_study}` : ''}</div>
+                    <div className="text-sm" style={{ color: '#9AA4B2' }}>
                       {ed.start_year || ''} - {ed.end_year || ''}
                     </div>
-                    {ed.description && <p className="mt-2 text-sm">{ed.description}</p>}
+                    {ed.description && <p className="mt-2 text-sm" style={{ color: '#E5E7EB' }}>{ed.description}</p>}
                   </div>
                 ))
               ) : (
-                <p className="text-sm text-muted-foreground">No education added yet.</p>
+                <p className="text-sm" style={{ color: '#9AA4B2' }}>No education added yet.</p>
               )}
             </CardContent>
           </Card>
 
           {/* Skills */}
-          <Card className="mb-6">
+          <Card
+            className="mb-6"
+            style={{
+              background: 'rgba(255, 255, 255, 0.04)',
+              border: '1px solid rgba(255, 255, 255, 0.06)',
+              backdropFilter: 'blur(25px)',
+              boxShadow: '0 0 30px rgba(0, 0, 0, 0.4)',
+              borderRadius: '20px'
+            }}
+          >
             <CardHeader>
-              <CardTitle>Skills</CardTitle>
-              <CardDescription>Technical and professional skills</CardDescription>
+              <CardTitle style={{ color: '#FFFFFF' }}>Skills</CardTitle>
+              <CardDescription style={{ color: '#9AA4B2' }}>Technical and professional skills</CardDescription>
             </CardHeader>
             <CardContent>
               {Array.isArray(skills) && skills.length ? (
                 <div className="flex flex-wrap gap-2">
                   {skills.map((s: any) => (
-                    <span key={s.id || s.skill} className="px-3 py-1 rounded-md bg-slate-100 text-sm text-slate-800">
+                    <span
+                      key={s.id || s.skill}
+                      className="px-3 py-1 rounded-md text-sm"
+                      style={{
+                        background: 'rgba(79, 241, 227, 0.15)',
+                        border: '1px solid rgba(79, 241, 227, 0.3)',
+                        color: '#4ff1e3'
+                      }}
+                    >
                       {s.skill}
                     </span>
                   ))}
                 </div>
               ) : (
-                <p className="text-sm text-muted-foreground">No skills added yet.</p>
+                <p className="text-sm" style={{ color: '#9AA4B2' }}>No skills added yet.</p>
               )}
             </CardContent>
           </Card>
 
           {/* Certifications & Qualifications */}
-          <Card className="mb-6">
+          <Card
+            className="mb-6"
+            style={{
+              background: 'rgba(255, 255, 255, 0.04)',
+              border: '1px solid rgba(255, 255, 255, 0.06)',
+              backdropFilter: 'blur(25px)',
+              boxShadow: '0 0 30px rgba(0, 0, 0, 0.4)',
+              borderRadius: '20px'
+            }}
+          >
             <CardHeader>
-              <CardTitle>Certifications & Qualifications</CardTitle>
-              <CardDescription>Professional certifications and licenses</CardDescription>
+              <CardTitle style={{ color: '#FFFFFF' }}>Certifications & Qualifications</CardTitle>
+              <CardDescription style={{ color: '#9AA4B2' }}>Professional certifications and licenses</CardDescription>
             </CardHeader>
             <CardContent>
               {Array.isArray(certifications) && certifications.length ? (
                 <div className="space-y-4">
                   {certifications.map((cert: any, idx: number) => (
-                    <div key={cert.id || idx} className="border-b pb-3 last:border-0">
-                      <div className="font-semibold">{cert.name || '—'}</div>
-                      {cert.authority && <div className="text-sm text-muted-foreground">{cert.authority}</div>}
-                      <div className="text-sm text-muted-foreground mt-1">
+                    <div
+                      key={cert.id || idx}
+                      className="pb-3 last:border-0"
+                      style={{ borderBottom: '1px solid rgba(255, 255, 255, 0.1)' }}
+                    >
+                      <div className="font-semibold" style={{ color: '#FFFFFF' }}>{cert.name || '—'}</div>
+                      {cert.authority && <div className="text-sm" style={{ color: '#9AA4B2' }}>{cert.authority}</div>}
+                      <div className="text-sm mt-1" style={{ color: '#9AA4B2' }}>
                         {cert.issued_date && `Issued: ${new Date(cert.issued_date).toLocaleDateString()}`}
                         {cert.expiry_date && ` • Expires: ${new Date(cert.expiry_date).toLocaleDateString()}`}
                       </div>
@@ -203,25 +299,38 @@ export default async function ProfileCvPage({ params }: Props) {
                   ))}
                 </div>
               ) : (
-                <p className="text-sm text-muted-foreground">No certifications added yet.</p>
+                <p className="text-sm" style={{ color: '#9AA4B2' }}>No certifications added yet.</p>
               )}
             </CardContent>
           </Card>
 
           {/* Professional Memberships */}
-          <Card className="mb-6">
+          <Card
+            className="mb-6"
+            style={{
+              background: 'rgba(255, 255, 255, 0.04)',
+              border: '1px solid rgba(255, 255, 255, 0.06)',
+              backdropFilter: 'blur(25px)',
+              boxShadow: '0 0 30px rgba(0, 0, 0, 0.4)',
+              borderRadius: '20px'
+            }}
+          >
             <CardHeader>
-              <CardTitle>Professional Memberships</CardTitle>
-              <CardDescription>Professional organizations and memberships</CardDescription>
+              <CardTitle style={{ color: '#FFFFFF' }}>Professional Memberships</CardTitle>
+              <CardDescription style={{ color: '#9AA4B2' }}>Professional organizations and memberships</CardDescription>
             </CardHeader>
             <CardContent>
               {Array.isArray(memberships) && memberships.length ? (
                 <div className="space-y-4">
                   {memberships.map((mem: any, idx: number) => (
-                    <div key={mem.id || idx} className="border-b pb-3 last:border-0">
-                      <div className="font-semibold">{mem.name || '—'}</div>
-                      {mem.raw_json?.role && <div className="text-sm">{mem.raw_json.role}</div>}
-                      <div className="text-sm text-muted-foreground mt-1">
+                    <div
+                      key={mem.id || idx}
+                      className="pb-3 last:border-0"
+                      style={{ borderBottom: '1px solid rgba(255, 255, 255, 0.1)' }}
+                    >
+                      <div className="font-semibold" style={{ color: '#FFFFFF' }}>{mem.name || '—'}</div>
+                      {mem.raw_json?.role && <div className="text-sm" style={{ color: '#E5E7EB' }}>{mem.raw_json.role}</div>}
+                      <div className="text-sm mt-1" style={{ color: '#9AA4B2' }}>
                         {mem.issued_date && new Date(mem.issued_date).toLocaleDateString()}
                         {' - '}
                         {mem.raw_json?.is_current ? 'Present' : (mem.expiry_date ? new Date(mem.expiry_date).toLocaleDateString() : '')}
@@ -230,48 +339,79 @@ export default async function ProfileCvPage({ params }: Props) {
                   ))}
                 </div>
               ) : (
-                <p className="text-sm text-muted-foreground">No memberships added yet.</p>
+                <p className="text-sm" style={{ color: '#9AA4B2' }}>No memberships added yet.</p>
               )}
             </CardContent>
           </Card>
 
           {/* Voluntary & Governance Roles */}
-          <Card className="mb-6">
+          <Card
+            className="mb-6"
+            style={{
+              background: 'rgba(255, 255, 255, 0.04)',
+              border: '1px solid rgba(255, 255, 255, 0.06)',
+              backdropFilter: 'blur(25px)',
+              boxShadow: '0 0 30px rgba(0, 0, 0, 0.4)',
+              borderRadius: '20px'
+            }}
+          >
             <CardHeader>
-              <CardTitle>Voluntary & Governance Roles</CardTitle>
-              <CardDescription>Board positions, volunteer work, and community involvement</CardDescription>
+              <CardTitle style={{ color: '#FFFFFF' }}>Voluntary & Governance Roles</CardTitle>
+              <CardDescription style={{ color: '#9AA4B2' }}>Board positions, volunteer work, and community involvement</CardDescription>
             </CardHeader>
             <CardContent>
               {Array.isArray(voluntary) && voluntary.length ? (
                 <div className="space-y-4">
                   {voluntary.map((vol: any, idx: number) => (
-                    <div key={vol.id || idx} className="border-b pb-3 last:border-0">
-                      <div className="font-semibold">{vol.name || '—'}</div>
-                      {vol.raw_json?.role && <div className="text-sm">{vol.raw_json.role}</div>}
-                      <div className="text-sm text-muted-foreground mt-1">
+                    <div
+                      key={vol.id || idx}
+                      className="pb-3 last:border-0"
+                      style={{ borderBottom: '1px solid rgba(255, 255, 255, 0.1)' }}
+                    >
+                      <div className="font-semibold" style={{ color: '#FFFFFF' }}>{vol.name || '—'}</div>
+                      {vol.raw_json?.role && <div className="text-sm" style={{ color: '#E5E7EB' }}>{vol.raw_json.role}</div>}
+                      <div className="text-sm mt-1" style={{ color: '#9AA4B2' }}>
                         {vol.issued_date && new Date(vol.issued_date).toLocaleDateString()}
                         {' - '}
                         {vol.raw_json?.is_current ? 'Present' : (vol.expiry_date ? new Date(vol.expiry_date).toLocaleDateString() : '')}
                       </div>
-                      {vol.raw_json?.description && <p className="mt-2 text-sm">{vol.raw_json.description}</p>}
+                      {vol.raw_json?.description && <p className="mt-2 text-sm" style={{ color: '#E5E7EB' }}>{vol.raw_json.description}</p>}
                     </div>
                   ))}
                 </div>
               ) : (
-                <p className="text-sm text-muted-foreground">No voluntary roles added yet.</p>
+                <p className="text-sm" style={{ color: '#9AA4B2' }}>No voluntary roles added yet.</p>
               )}
             </CardContent>
           </Card>
 
           {/* Actions */}
-          <Card>
+          <Card
+            style={{
+              background: 'rgba(255, 255, 255, 0.04)',
+              border: '1px solid rgba(255, 255, 255, 0.06)',
+              backdropFilter: 'blur(25px)',
+              boxShadow: '0 0 30px rgba(0, 0, 0, 0.4)',
+              borderRadius: '20px'
+            }}
+          >
             <CardHeader>
-              <CardTitle>Actions</CardTitle>
-              <CardDescription>Manage your profile and generate CV</CardDescription>
+              <CardTitle style={{ color: '#FFFFFF' }}>Actions</CardTitle>
+              <CardDescription style={{ color: '#9AA4B2' }}>Manage your profile and generate CV</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="flex gap-3">
-                <Button variant="default" asChild>
+                <Button
+                  variant="default"
+                  asChild
+                  style={{
+                    background: 'linear-gradient(135deg, #4ff1e3, #536dfe)',
+                    borderRadius: '12px',
+                    color: '#FFFFFF',
+                    boxShadow: '0 4px 15px rgba(79, 241, 227, 0.3)',
+                    border: 'none'
+                  }}
+                >
                   <Link href="/profile/manual">
                     <Edit className="w-4 h-4 mr-2" />
                     Edit Profile

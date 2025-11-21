@@ -92,24 +92,55 @@ export default function SignupPage() {
 
   if (success) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 flex items-center justify-center px-4 py-12">
+      <div style={{ background: 'linear-gradient(135deg, #0D1117 0%, #0A0F14 100%)' }} className="min-h-screen flex items-center justify-center px-4 py-12">
         <div className="w-full max-w-md">
-          <div className="bg-white rounded-2xl shadow-xl p-8 border border-slate-100">
+          <div style={{
+            background: 'rgba(255, 255, 255, 0.04)',
+            border: '1px solid rgba(255, 255, 255, 0.06)',
+            backdropFilter: 'blur(25px)',
+            boxShadow: '0 0 30px rgba(0, 0, 0, 0.4)',
+            borderRadius: '24px',
+            padding: '32px'
+          }}>
             <div className="text-center mb-6">
-              <div className="mx-auto w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-4">
-                <Mail className="w-8 h-8 text-green-600" />
+              <div style={{
+                width: '64px',
+                height: '64px',
+                background: 'rgba(79, 241, 227, 0.15)',
+                borderRadius: '50%',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                margin: '0 auto 16px'
+              }}>
+                <Mail style={{ width: '32px', height: '32px', color: '#4ff1e3' }} />
               </div>
-              <h2 className="text-2xl font-bold text-slate-900 mb-2">Check Your Email</h2>
-              <p className="text-slate-600">
-                We've sent a confirmation link to <strong>{email}</strong>
+              <h2 style={{ fontSize: '24px', fontWeight: 'bold', color: '#FFFFFF', marginBottom: '8px' }}>Check Your Email</h2>
+              <p style={{ color: '#9AA4B2' }}>
+                We've sent a confirmation link to <strong style={{ color: '#FFFFFF' }}>{email}</strong>
               </p>
-              <p className="text-slate-600 mt-4 text-sm">
+              <p style={{ color: '#9AA4B2', marginTop: '16px', fontSize: '14px' }}>
                 Click the link in the email to activate your account.
               </p>
             </div>
             <Link
               href="/login"
-              className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-slate-100 text-slate-700 rounded-lg hover:bg-slate-200 transition font-medium"
+              style={{
+                width: '100%',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '8px',
+                padding: '12px 16px',
+                background: 'rgba(255, 255, 255, 0.06)',
+                color: '#FFFFFF',
+                borderRadius: '14px',
+                border: '1px solid rgba(255, 255, 255, 0.1)',
+                fontWeight: '500',
+                transition: 'all 0.2s ease',
+                textDecoration: 'none'
+              }}
+              className="hover:bg-white/10 hover:-translate-y-0.5"
             >
               <ArrowLeft className="w-4 h-4" />
               Back to Login
@@ -121,34 +152,47 @@ export default function SignupPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 flex items-center justify-center px-4 py-12">
+    <div style={{ background: 'linear-gradient(135deg, #0D1117 0%, #0A0F14 100%)' }} className="min-h-screen flex items-center justify-center px-4 py-12">
       <div className="w-full max-w-md">
         {/* Header */}
         <div className="text-center mb-10">
-          <h1 className="text-4xl font-bold text-slate-900 mb-3 tracking-tight">
+          <h1 style={{ color: '#FFFFFF' }} className="text-4xl font-bold mb-3 tracking-tight">
             Careersie
           </h1>
-          <h2 className="text-2xl font-semibold text-slate-800 mb-3">
+          <h2 style={{ color: '#FFFFFF' }} className="text-2xl font-semibold mb-3">
             Create Your Account
           </h2>
-          <p className="text-slate-600 text-base leading-relaxed">
+          <p style={{ color: '#9AA4B2' }} className="text-base leading-relaxed">
             Join thousands of professionals finding their next opportunity
           </p>
         </div>
 
         {/* Signup Card */}
-        <div className="bg-white rounded-2xl shadow-xl p-8 border border-slate-100">
+        <div style={{
+          background: 'rgba(255, 255, 255, 0.04)',
+          border: '1px solid rgba(255, 255, 255, 0.06)',
+          backdropFilter: 'blur(25px)',
+          boxShadow: '0 0 30px rgba(0, 0, 0, 0.4)',
+          borderRadius: '24px',
+          padding: '32px'
+        }}>
           {/* Error Message */}
           {error && (
-            <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
-              <p className="text-sm text-red-700 font-medium">{error}</p>
+            <div style={{
+              marginBottom: '24px',
+              padding: '16px',
+              background: 'rgba(255, 60, 60, 0.15)',
+              border: '1px solid rgba(255, 60, 60, 0.4)',
+              borderRadius: '12px'
+            }}>
+              <p style={{ fontSize: '14px', color: '#ff6b6b', fontWeight: '500' }}>{error}</p>
             </div>
           )}
 
           {/* Signup Form */}
           <form onSubmit={handleSignup} className="space-y-5">
             <div>
-              <label htmlFor="fullName" className="block text-sm font-semibold text-slate-900 mb-2">
+              <label htmlFor="fullName" style={{ color: '#9AA4B2' }} className="block text-sm font-semibold mb-2">
                 Full Name
               </label>
               <input
@@ -158,12 +202,21 @@ export default function SignupPage() {
                 value={fullName}
                 onChange={(e) => setFullName(e.target.value)}
                 required
-                className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition bg-slate-50 text-slate-900 placeholder-slate-500"
+                style={{
+                  background: 'rgba(255, 255, 255, 0.06)',
+                  border: '1px solid rgba(255, 255, 255, 0.1)',
+                  borderRadius: '12px',
+                  color: '#FFFFFF',
+                  padding: '12px 16px',
+                  width: '100%',
+                  transition: 'all 0.2s ease'
+                }}
+                className="placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:border-cyan-400"
               />
             </div>
 
             <div>
-              <label htmlFor="email" className="block text-sm font-semibold text-slate-900 mb-2">
+              <label htmlFor="email" style={{ color: '#9AA4B2' }} className="block text-sm font-semibold mb-2">
                 Email Address
               </label>
               <input
@@ -173,12 +226,21 @@ export default function SignupPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition bg-slate-50 text-slate-900 placeholder-slate-500"
+                style={{
+                  background: 'rgba(255, 255, 255, 0.06)',
+                  border: '1px solid rgba(255, 255, 255, 0.1)',
+                  borderRadius: '12px',
+                  color: '#FFFFFF',
+                  padding: '12px 16px',
+                  width: '100%',
+                  transition: 'all 0.2s ease'
+                }}
+                className="placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:border-cyan-400"
               />
             </div>
 
             <div>
-              <label htmlFor="password" className="block text-sm font-semibold text-slate-900 mb-2">
+              <label htmlFor="password" style={{ color: '#9AA4B2' }} className="block text-sm font-semibold mb-2">
                 Password
               </label>
               <div className="relative">
@@ -189,21 +251,32 @@ export default function SignupPage() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
-                  className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition bg-slate-50 text-slate-900 placeholder-slate-500"
+                  style={{
+                    background: 'rgba(255, 255, 255, 0.06)',
+                    border: '1px solid rgba(255, 255, 255, 0.1)',
+                    borderRadius: '12px',
+                    color: '#FFFFFF',
+                    padding: '12px 16px',
+                    paddingRight: '40px',
+                    width: '100%',
+                    transition: 'all 0.2s ease'
+                  }}
+                  className="placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:border-cyan-400"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+                  style={{ color: '#9AA4B2' }}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 hover:text-white transition"
                 >
                   {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                 </button>
               </div>
-              <p className="text-xs text-slate-500 mt-1">At least 6 characters</p>
+              <p style={{ fontSize: '12px', color: '#9AA4B2', marginTop: '4px' }}>At least 6 characters</p>
             </div>
 
             <div>
-              <label htmlFor="confirmPassword" className="block text-sm font-semibold text-slate-900 mb-2">
+              <label htmlFor="confirmPassword" style={{ color: '#9AA4B2' }} className="block text-sm font-semibold mb-2">
                 Confirm Password
               </label>
               <input
@@ -213,14 +286,39 @@ export default function SignupPage() {
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 required
-                className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition bg-slate-50 text-slate-900 placeholder-slate-500"
+                style={{
+                  background: 'rgba(255, 255, 255, 0.06)',
+                  border: '1px solid rgba(255, 255, 255, 0.1)',
+                  borderRadius: '12px',
+                  color: '#FFFFFF',
+                  padding: '12px 16px',
+                  width: '100%',
+                  transition: 'all 0.2s ease'
+                }}
+                className="placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:border-cyan-400"
               />
             </div>
 
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-3 rounded-lg font-semibold hover:from-blue-700 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+              style={{
+                background: loading ? 'rgba(79, 241, 227, 0.4)' : 'linear-gradient(135deg, #4ff1e3, #536dfe)',
+                borderRadius: '14px',
+                padding: '12px',
+                width: '100%',
+                color: '#FFFFFF',
+                fontWeight: 'bold',
+                transition: 'all 0.2s ease',
+                boxShadow: loading ? 'none' : '0 4px 15px rgba(79, 241, 227, 0.3)',
+                cursor: loading ? 'not-allowed' : 'pointer',
+                border: 'none',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '8px'
+              }}
+              className={!loading ? 'hover:shadow-[0_6px_20px_rgba(79,241,227,0.4)] hover:-translate-y-0.5' : ''}
             >
               {loading ? (
                 <>
@@ -235,9 +333,9 @@ export default function SignupPage() {
 
           {/* Login Link */}
           <div className="mt-6 text-center">
-            <p className="text-sm text-slate-600">
+            <p style={{ fontSize: '14px', color: '#9AA4B2' }}>
               Already have an account?{' '}
-              <Link href="/login" className="text-blue-600 font-semibold hover:text-blue-700 transition">
+              <Link href="/login" style={{ color: '#4ff1e3', fontWeight: '600' }} className="hover:opacity-80 transition">
                 Sign in
               </Link>
             </p>
@@ -246,8 +344,15 @@ export default function SignupPage() {
 
         {/* Quick Test Account Hint (Dev Only) */}
         {process.env.NODE_ENV === 'development' && (
-          <div className="mt-6 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
-            <p className="text-xs text-yellow-800">
+          <div style={{
+            marginTop: '24px',
+            padding: '16px',
+            background: 'rgba(255, 193, 7, 0.1)',
+            border: '1px solid rgba(255, 193, 7, 0.3)',
+            borderRadius: '12px',
+            backdropFilter: 'blur(10px)'
+          }}>
+            <p style={{ fontSize: '12px', color: '#ffc107' }}>
               <strong>Dev Mode:</strong> Use any email format like test{Math.floor(Math.random() * 100)}@example.com for quick testing
             </p>
           </div>

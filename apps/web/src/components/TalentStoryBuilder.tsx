@@ -147,86 +147,153 @@ export default function TalentStoryBuilder() {
   const shareUrl = `${typeof window !== 'undefined' ? window.location.origin : ''}/talent-story/view/${selectedProfileId}`;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-950/40 via-purple-900/20 to-black p-6">
+    <div
+      className="min-h-screen p-6"
+      style={{
+        background: 'linear-gradient(135deg, #0D1117 0%, #0A0F14 100%)'
+      }}
+    >
       <div className="max-w-5xl mx-auto">
         {/* Header with History Link */}
         <div className="flex justify-between items-center mb-6">
           <div className="flex items-center gap-4">
             <button
               onClick={handleBackToMenu}
-              className="px-4 py-2 rounded-lg bg-gray-500/20 border border-gray-500/30 text-gray-300 hover:bg-gray-500/30 transition-colors text-sm"
+              className="px-4 py-2 rounded-lg text-sm transition-all hover:transform hover:scale-105"
+              style={{
+                background: 'rgba(255, 255, 255, 0.06)',
+                border: '1px solid rgba(255, 255, 255, 0.1)',
+                color: '#9AA4B2'
+              }}
             >
               ← Main Menu
             </button>
-            <h1 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-pink-400 to-purple-400">
+            <h1 className="text-3xl font-bold" style={{ color: '#FFFFFF' }}>
               ✨ TalentStory Builder
             </h1>
           </div>
           <button
             onClick={() => router.push('/talent-story/history')}
-            className="px-4 py-2 rounded-lg bg-pink-500/20 border border-pink-500/30 text-pink-400 hover:bg-pink-500/30 transition-colors text-sm"
+            className="px-4 py-2 rounded-lg text-sm transition-all hover:transform hover:scale-105"
+            style={{
+              background: 'linear-gradient(135deg, #4ff1e3, #536dfe)',
+              color: '#FFFFFF',
+              boxShadow: '0 4px 15px rgba(79, 241, 227, 0.3)',
+              border: 'none'
+            }}
           >
             📚 View History
           </button>
         </div>
 
         {/* Progress Indicator */}
-        <div className="glass-card p-4 mb-6">
+        <div
+          className="p-4 mb-6"
+          style={{
+            background: 'rgba(255, 255, 255, 0.04)',
+            border: '1px solid rgba(255, 255, 255, 0.06)',
+            backdropFilter: 'blur(25px)',
+            boxShadow: '0 0 30px rgba(0, 0, 0, 0.4)',
+            borderRadius: '20px'
+          }}
+        >
           <div className="flex items-center justify-between">
             {/* Step 1a: Profile */}
             <div className={`flex items-center ${currentStep === 'select-profile' ? 'opacity-100' : 'opacity-50'}`}>
-              <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold ${
-                selectedProfileId ? 'bg-gradient-to-r from-green-500 to-emerald-600 text-white' :
-                currentStep === 'select-profile' ? 'bg-gradient-to-r from-pink-500 to-purple-600 text-white' :
-                'bg-pink-500/20 text-pink-400'
-              }`}>
+              <div
+                className="w-8 h-8 rounded-full flex items-center justify-center font-bold"
+                style={{
+                  background: selectedProfileId
+                    ? 'rgba(74, 222, 128, 0.2)'
+                    : currentStep === 'select-profile'
+                    ? 'linear-gradient(135deg, #4ff1e3, #536dfe)'
+                    : 'rgba(79, 241, 227, 0.15)',
+                  color: selectedProfileId || currentStep === 'select-profile' ? '#FFFFFF' : '#4ff1e3',
+                  border: selectedProfileId
+                    ? '1px solid rgba(74, 222, 128, 0.3)'
+                    : '1px solid rgba(79, 241, 227, 0.3)'
+                }}
+              >
                 {selectedProfileId ? '✓' : '1'}
               </div>
-              <span className="ml-2 text-sm font-medium text-white hidden md:inline">Profile</span>
+              <span className="ml-2 text-sm font-medium hidden md:inline" style={{ color: '#FFFFFF' }}>Profile</span>
             </div>
 
             {/* Connector */}
-            <div className="flex-1 h-0.5 mx-2 bg-gradient-to-r from-pink-500/30 to-purple-600/30"></div>
+            <div
+              className="flex-1 h-0.5 mx-2"
+              style={{ background: 'rgba(79, 241, 227, 0.2)' }}
+            ></div>
 
             {/* Step 1b: Categories */}
             <div className={`flex items-center ${currentStep === 'select-categories' ? 'opacity-100' : 'opacity-50'}`}>
-              <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold ${
-                selectedCategories.length > 0 ? 'bg-gradient-to-r from-green-500 to-emerald-600 text-white' :
-                currentStep === 'select-categories' ? 'bg-gradient-to-r from-pink-500 to-purple-600 text-white' :
-                'bg-pink-500/20 text-pink-400'
-              }`}>
+              <div
+                className="w-8 h-8 rounded-full flex items-center justify-center font-bold"
+                style={{
+                  background: selectedCategories.length > 0
+                    ? 'rgba(74, 222, 128, 0.2)'
+                    : currentStep === 'select-categories'
+                    ? 'linear-gradient(135deg, #4ff1e3, #536dfe)'
+                    : 'rgba(79, 241, 227, 0.15)',
+                  color: selectedCategories.length > 0 || currentStep === 'select-categories' ? '#FFFFFF' : '#4ff1e3',
+                  border: selectedCategories.length > 0
+                    ? '1px solid rgba(74, 222, 128, 0.3)'
+                    : '1px solid rgba(79, 241, 227, 0.3)'
+                }}
+              >
                 {selectedCategories.length > 0 ? '✓' : '2'}
               </div>
-              <span className="ml-2 text-sm font-medium text-white hidden md:inline">Categories</span>
+              <span className="ml-2 text-sm font-medium hidden md:inline" style={{ color: '#FFFFFF' }}>Categories</span>
             </div>
 
             {/* Connector */}
-            <div className="flex-1 h-0.5 mx-2 bg-gradient-to-r from-pink-500/30 to-purple-600/30"></div>
+            <div
+              className="flex-1 h-0.5 mx-2"
+              style={{ background: 'rgba(79, 241, 227, 0.2)' }}
+            ></div>
 
             {/* Step 2: Customize */}
             <div className={`flex items-center ${currentStep === 'customize' ? 'opacity-100' : 'opacity-50'}`}>
-              <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold ${
-                generatedStory ? 'bg-gradient-to-r from-green-500 to-emerald-600 text-white' :
-                currentStep === 'customize' ? 'bg-gradient-to-r from-pink-500 to-purple-600 text-white' :
-                'bg-pink-500/20 text-pink-400'
-              }`}>
+              <div
+                className="w-8 h-8 rounded-full flex items-center justify-center font-bold"
+                style={{
+                  background: generatedStory
+                    ? 'rgba(74, 222, 128, 0.2)'
+                    : currentStep === 'customize'
+                    ? 'linear-gradient(135deg, #4ff1e3, #536dfe)'
+                    : 'rgba(79, 241, 227, 0.15)',
+                  color: generatedStory || currentStep === 'customize' ? '#FFFFFF' : '#4ff1e3',
+                  border: generatedStory
+                    ? '1px solid rgba(74, 222, 128, 0.3)'
+                    : '1px solid rgba(79, 241, 227, 0.3)'
+                }}
+              >
                 {generatedStory ? '✓' : '3'}
               </div>
-              <span className="ml-2 text-sm font-medium text-white hidden md:inline">Customize</span>
+              <span className="ml-2 text-sm font-medium hidden md:inline" style={{ color: '#FFFFFF' }}>Customize</span>
             </div>
 
             {/* Connector */}
-            <div className="flex-1 h-0.5 mx-2 bg-gradient-to-r from-pink-500/30 to-purple-600/30"></div>
+            <div
+              className="flex-1 h-0.5 mx-2"
+              style={{ background: 'rgba(79, 241, 227, 0.2)' }}
+            ></div>
 
             {/* Step 3: Preview */}
             <div className={`flex items-center ${currentStep === 'preview' ? 'opacity-100' : 'opacity-50'}`}>
-              <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold ${
-                currentStep === 'preview' ? 'bg-gradient-to-r from-pink-500 to-purple-600 text-white' :
-                'bg-pink-500/20 text-pink-400'
-              }`}>
+              <div
+                className="w-8 h-8 rounded-full flex items-center justify-center font-bold"
+                style={{
+                  background: currentStep === 'preview'
+                    ? 'linear-gradient(135deg, #4ff1e3, #536dfe)'
+                    : 'rgba(79, 241, 227, 0.15)',
+                  color: currentStep === 'preview' ? '#FFFFFF' : '#4ff1e3',
+                  border: '1px solid rgba(79, 241, 227, 0.3)'
+                }}
+              >
                 4
               </div>
-              <span className="ml-2 text-sm font-medium text-white hidden md:inline">Preview</span>
+              <span className="ml-2 text-sm font-medium hidden md:inline" style={{ color: '#FFFFFF' }}>Preview</span>
             </div>
           </div>
         </div>
@@ -249,7 +316,10 @@ export default function TalentStoryBuilder() {
             {/* Back Button */}
             <button
               onClick={handleBack}
-              className="text-pink-400 hover:text-pink-300 flex items-center text-sm"
+              className="flex items-center text-sm transition-colors"
+              style={{ color: '#4ff1e3' }}
+              onMouseEnter={(e) => e.currentTarget.style.color = '#3dd6c9'}
+              onMouseLeave={(e) => e.currentTarget.style.color = '#4ff1e3'}
             >
               <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -271,7 +341,10 @@ export default function TalentStoryBuilder() {
             {/* Back Button */}
             <button
               onClick={handleBack}
-              className="text-pink-400 hover:text-pink-300 flex items-center text-sm"
+              className="flex items-center text-sm transition-colors"
+              style={{ color: '#4ff1e3' }}
+              onMouseEnter={(e) => e.currentTarget.style.color = '#3dd6c9'}
+              onMouseLeave={(e) => e.currentTarget.style.color = '#4ff1e3'}
             >
               <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -280,19 +353,38 @@ export default function TalentStoryBuilder() {
             </button>
 
             {/* Story Preview */}
-            <div className="glass-card p-8">
+            <div
+              className="p-8"
+              style={{
+                background: 'rgba(255, 255, 255, 0.04)',
+                border: '1px solid rgba(255, 255, 255, 0.06)',
+                backdropFilter: 'blur(25px)',
+                boxShadow: '0 0 30px rgba(0, 0, 0, 0.4)',
+                borderRadius: '20px'
+              }}
+            >
               <div className="flex items-center justify-between mb-6">
-                <h2 className="text-2xl font-bold text-white">Your TalentStory</h2>
+                <h2 className="text-2xl font-bold" style={{ color: '#FFFFFF' }}>Your TalentStory</h2>
                 <div className="flex gap-2">
                   <button
                     onClick={handleRegenerate}
-                    className="px-4 py-2 rounded-lg bg-purple-500/20 border border-purple-500/30 text-purple-400 hover:bg-purple-500/30 transition-colors text-sm"
+                    className="px-4 py-2 rounded-lg text-sm transition-all hover:transform hover:scale-105"
+                    style={{
+                      background: 'rgba(255, 255, 255, 0.06)',
+                      border: '1px solid rgba(255, 255, 255, 0.1)',
+                      color: '#9AA4B2'
+                    }}
                   >
                     🔄 Regenerate
                   </button>
                   <button
                     onClick={() => navigator.clipboard.writeText(generatedStory)}
-                    className="px-4 py-2 rounded-lg bg-pink-500/20 border border-pink-500/30 text-pink-400 hover:bg-pink-500/30 transition-colors text-sm"
+                    className="px-4 py-2 rounded-lg text-sm transition-all hover:transform hover:scale-105"
+                    style={{
+                      background: 'rgba(79, 241, 227, 0.15)',
+                      border: '1px solid rgba(79, 241, 227, 0.3)',
+                      color: '#4ff1e3'
+                    }}
                   >
                     📋 Copy
                   </button>
@@ -305,7 +397,12 @@ export default function TalentStoryBuilder() {
                       a.download = 'talent-story.md';
                       a.click();
                     }}
-                    className="px-4 py-2 rounded-lg bg-pink-500/20 border border-pink-500/30 text-pink-400 hover:bg-pink-500/30 transition-colors text-sm"
+                    className="px-4 py-2 rounded-lg text-sm transition-all hover:transform hover:scale-105"
+                    style={{
+                      background: 'rgba(79, 241, 227, 0.15)',
+                      border: '1px solid rgba(79, 241, 227, 0.3)',
+                      color: '#4ff1e3'
+                    }}
                   >
                     ⬇️ Download
                   </button>
@@ -322,13 +419,24 @@ export default function TalentStoryBuilder() {
             <div className="flex gap-4">
               <button
                 onClick={() => setShowSaveModal(true)}
-                className="flex-1 py-4 rounded-lg bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white font-semibold"
+                className="flex-1 py-4 rounded-lg font-semibold transition-all hover:transform hover:scale-105"
+                style={{
+                  background: 'linear-gradient(135deg, #4ff1e3, #536dfe)',
+                  color: '#FFFFFF',
+                  boxShadow: '0 4px 15px rgba(79, 241, 227, 0.3)',
+                  border: 'none'
+                }}
               >
                 💾 Save to Profile
               </button>
               <button
                 onClick={() => setShowShareModal(true)}
-                className="flex-1 py-4 rounded-lg bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700 text-white font-semibold"
+                className="flex-1 py-4 rounded-lg font-semibold transition-all hover:transform hover:scale-105"
+                style={{
+                  background: 'rgba(255, 255, 255, 0.06)',
+                  border: '1px solid rgba(255, 255, 255, 0.1)',
+                  color: '#FFFFFF'
+                }}
               >
                 🔗 Share TalentStory
               </button>
@@ -339,13 +447,22 @@ export default function TalentStoryBuilder() {
 
       {/* Save to Profile Modal */}
       {showSaveModal && (
-        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className="glass-card max-w-lg w-full p-6 space-y-4">
-            <h3 className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-pink-400 to-purple-400">
+        <div className="fixed inset-0 flex items-center justify-center z-50 p-4" style={{ background: 'rgba(0, 0, 0, 0.6)', backdropFilter: 'blur(8px)' }}>
+          <div
+            className="max-w-lg w-full p-6 space-y-4"
+            style={{
+              background: 'rgba(255, 255, 255, 0.04)',
+              border: '1px solid rgba(255, 255, 255, 0.06)',
+              backdropFilter: 'blur(25px)',
+              boxShadow: '0 0 30px rgba(0, 0, 0, 0.4)',
+              borderRadius: '20px'
+            }}
+          >
+            <h3 className="text-2xl font-bold" style={{ color: '#FFFFFF' }}>
               💾 Save to Profile
             </h3>
             
-            <p className="text-gray-300 text-sm">
+            <p className="text-sm" style={{ color: '#9AA4B2' }}>
               This will save your TalentStory to your profile summary page. Add an optional note for context.
             </p>
 
@@ -353,21 +470,40 @@ export default function TalentStoryBuilder() {
               value={saveNote}
               onChange={(e) => setSaveNote(e.target.value)}
               placeholder="Add a note (optional)..."
-              className="w-full px-4 py-3 rounded-lg bg-black/40 border border-pink-500/30 text-white placeholder-gray-500 focus:outline-none focus:border-pink-500/60 resize-none"
+              className="w-full px-4 py-3 rounded-lg resize-none"
+              style={{
+                background: 'rgba(255, 255, 255, 0.06)',
+                border: '1px solid rgba(255, 255, 255, 0.1)',
+                color: '#FFFFFF',
+                outline: 'none'
+              }}
               rows={3}
+              onFocus={(e) => e.target.style.border = '1px solid rgba(79, 241, 227, 0.5)'}
+              onBlur={(e) => e.target.style.border = '1px solid rgba(255, 255, 255, 0.1)'}
             />
 
             <div className="flex gap-3">
               <button
                 onClick={handleSaveToProfile}
                 disabled={isSaving}
-                className="flex-1 py-3 rounded-lg bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white font-semibold disabled:opacity-50"
+                className="flex-1 py-3 rounded-lg font-semibold transition-all hover:transform hover:scale-105 disabled:opacity-50"
+                style={{
+                  background: 'linear-gradient(135deg, #4ff1e3, #536dfe)',
+                  color: '#FFFFFF',
+                  boxShadow: '0 4px 15px rgba(79, 241, 227, 0.3)',
+                  border: 'none'
+                }}
               >
                 {isSaving ? '⏳ Saving...' : '✅ Save'}
               </button>
               <button
                 onClick={handleDownloadPDF}
-                className="flex-1 py-3 rounded-lg bg-pink-500/20 border border-pink-500/30 text-pink-400 hover:bg-pink-500/30 font-semibold"
+                className="flex-1 py-3 rounded-lg font-semibold transition-all hover:transform hover:scale-105"
+                style={{
+                  background: 'rgba(79, 241, 227, 0.15)',
+                  border: '1px solid rgba(79, 241, 227, 0.3)',
+                  color: '#4ff1e3'
+                }}
               >
                 📄 Download PDF
               </button>
@@ -376,7 +512,12 @@ export default function TalentStoryBuilder() {
                   setShowSaveModal(false);
                   setSaveNote('');
                 }}
-                className="px-6 py-3 rounded-lg bg-gray-500/20 border border-gray-500/30 text-gray-400 hover:bg-gray-500/30"
+                className="px-6 py-3 rounded-lg transition-all hover:transform hover:scale-105"
+                style={{
+                  background: 'rgba(255, 255, 255, 0.06)',
+                  border: '1px solid rgba(255, 255, 255, 0.1)',
+                  color: '#9AA4B2'
+                }}
               >
                 Cancel
               </button>
@@ -387,13 +528,22 @@ export default function TalentStoryBuilder() {
 
       {/* Share Modal */}
       {showShareModal && (
-        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className="glass-card max-w-lg w-full p-6 space-y-4">
-            <h3 className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-pink-400 to-purple-400">
+        <div className="fixed inset-0 flex items-center justify-center z-50 p-4" style={{ background: 'rgba(0, 0, 0, 0.6)', backdropFilter: 'blur(8px)' }}>
+          <div
+            className="max-w-lg w-full p-6 space-y-4"
+            style={{
+              background: 'rgba(255, 255, 255, 0.04)',
+              border: '1px solid rgba(255, 255, 255, 0.06)',
+              backdropFilter: 'blur(25px)',
+              boxShadow: '0 0 30px rgba(0, 0, 0, 0.4)',
+              borderRadius: '20px'
+            }}
+          >
+            <h3 className="text-2xl font-bold" style={{ color: '#FFFFFF' }}>
               🔗 Share TalentStory
             </h3>
             
-            <p className="text-gray-300 text-sm">
+            <p className="text-sm" style={{ color: '#9AA4B2' }}>
               Share your TalentStory with others using this link:
             </p>
 
@@ -403,26 +553,42 @@ export default function TalentStoryBuilder() {
                 value={shareUrl}
                 readOnly
                 aria-label="Share URL"
-                className="flex-1 px-4 py-3 rounded-lg bg-black/40 border border-purple-500/30 text-white text-sm font-mono"
+                className="flex-1 px-4 py-3 rounded-lg text-sm font-mono"
+                style={{
+                  background: 'rgba(255, 255, 255, 0.06)',
+                  border: '1px solid rgba(255, 255, 255, 0.1)',
+                  color: '#FFFFFF'
+                }}
               />
               <button
                 onClick={() => {
                   navigator.clipboard.writeText(shareUrl);
                   alert('✅ Link copied to clipboard!');
                 }}
-                className="px-6 py-3 rounded-lg bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700 text-white font-semibold whitespace-nowrap"
+                className="px-6 py-3 rounded-lg font-semibold whitespace-nowrap transition-all hover:transform hover:scale-105"
+                style={{
+                  background: 'linear-gradient(135deg, #4ff1e3, #536dfe)',
+                  color: '#FFFFFF',
+                  boxShadow: '0 4px 15px rgba(79, 241, 227, 0.3)',
+                  border: 'none'
+                }}
               >
                 📋 Copy Link
               </button>
             </div>
 
-            <p className="text-gray-400 text-xs">
+            <p className="text-xs" style={{ color: '#9AA4B2' }}>
               Note: This link will allow anyone to view your TalentStory. Make sure you're comfortable sharing it publicly.
             </p>
 
             <button
               onClick={() => setShowShareModal(false)}
-              className="w-full py-3 rounded-lg bg-gray-500/20 border border-gray-500/30 text-gray-400 hover:bg-gray-500/30"
+              className="w-full py-3 rounded-lg transition-all hover:transform hover:scale-105"
+              style={{
+                background: 'rgba(255, 255, 255, 0.06)',
+                border: '1px solid rgba(255, 255, 255, 0.1)',
+                color: '#9AA4B2'
+              }}
             >
               Close
             </button>

@@ -95,34 +95,48 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex items-center justify-center px-4 py-12">
+    <div style={{ background: 'linear-gradient(135deg, #0D1117 0%, #0A0F14 100%)' }} className="min-h-screen flex items-center justify-center p-4">
       <div className="w-full max-w-md">
         {/* Header */}
         <div className="text-center mb-10">
-          <h1 className="text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-pink-400 to-purple-400 mb-3 tracking-tight">
+          <h1 style={{ color: '#FFFFFF' }} className="text-5xl font-bold mb-3 tracking-tight">
             Careersie
           </h1>
-          <h2 className="text-2xl font-semibold text-white mb-3">
+          <h2 style={{ color: '#FFFFFF' }} className="text-2xl font-semibold mb-3">
             Find Your Dream Job
           </h2>
-          <p className="text-purple-200 text-base leading-relaxed">
+          <p style={{ color: '#9AA4B2' }} className="text-base leading-relaxed">
             Join thousands of professionals finding their next opportunity
           </p>
         </div>
 
         {/* Login Card */}
-        <div className="bg-white/10 backdrop-blur-xl rounded-3xl shadow-2xl p-8 border border-white/20">
+        <div style={{
+          background: 'rgba(255, 255, 255, 0.04)',
+          border: '1px solid rgba(255, 255, 255, 0.06)',
+          backdropFilter: 'blur(25px)',
+          boxShadow: '0 0 30px rgba(0, 0, 0, 0.4)',
+          borderRadius: '24px',
+          padding: '32px'
+        }}>
           {/* Error Message */}
           {error && (
-            <div className="mb-6 p-4 bg-red-500/20 border border-red-400/30 rounded-xl animate-shake backdrop-blur-sm">
-              <p className="text-sm text-red-200 font-medium">{error}</p>
+            <div style={{
+              marginBottom: '24px',
+              padding: '16px',
+              background: 'rgba(255, 60, 60, 0.15)',
+              border: '1px solid rgba(255, 60, 60, 0.4)',
+              borderRadius: '12px',
+              backdropFilter: 'blur(10px)'
+            }}>
+              <p style={{ fontSize: '14px', color: '#ff6b6b', fontWeight: '500' }}>{error}</p>
             </div>
           )}
 
           {/* Email/Password Form */}
           <form onSubmit={handleEmailLogin} className="space-y-5 mb-6">
             <div>
-              <label htmlFor="email" className="block text-sm font-semibold text-white mb-2">
+              <label htmlFor="email" style={{ color: '#9AA4B2' }} className="block text-sm font-semibold mb-2">
                 Email Address
               </label>
               <input
@@ -132,12 +146,21 @@ export default function LoginPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className="w-full px-4 py-3 bg-white/5 border-2 border-white/20 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-400 focus:border-pink-400 transition text-white placeholder-purple-300"
+                style={{
+                  background: 'rgba(255, 255, 255, 0.06)',
+                  border: '1px solid rgba(255, 255, 255, 0.1)',
+                  borderRadius: '12px',
+                  color: '#FFFFFF',
+                  padding: '12px 16px',
+                  width: '100%',
+                  transition: 'all 0.2s ease'
+                }}
+                className="placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:border-cyan-400"
               />
             </div>
 
             <div>
-              <label htmlFor="password" className="block text-sm font-semibold text-white mb-2">
+              <label htmlFor="password" style={{ color: '#9AA4B2' }} className="block text-sm font-semibold mb-2">
                 Password
               </label>
               <div className="relative">
@@ -148,12 +171,23 @@ export default function LoginPage() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
-                  className="w-full px-4 py-3 pr-10 bg-white/5 border-2 border-white/20 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-400 focus:border-pink-400 transition text-white placeholder-purple-300"
+                  style={{
+                    background: 'rgba(255, 255, 255, 0.06)',
+                    border: '1px solid rgba(255, 255, 255, 0.1)',
+                    borderRadius: '12px',
+                    color: '#FFFFFF',
+                    padding: '12px 16px',
+                    paddingRight: '40px',
+                    width: '100%',
+                    transition: 'all 0.2s ease'
+                  }}
+                  className="placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:border-cyan-400"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-purple-300 hover:text-white"
+                  style={{ color: '#9AA4B2' }}
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2 hover:text-white transition"
                 >
                   {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                 </button>
@@ -163,7 +197,23 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600 disabled:from-pink-400/50 disabled:to-purple-400/50 text-white font-bold py-3 rounded-full transition duration-200 flex items-center justify-center gap-2 shadow-lg shadow-purple-500/50 hover:scale-105 disabled:scale-100"
+              style={{
+                background: loading ? 'rgba(79, 241, 227, 0.4)' : 'linear-gradient(135deg, #4ff1e3, #536dfe)',
+                borderRadius: '14px',
+                padding: '12px',
+                width: '100%',
+                color: '#FFFFFF',
+                fontWeight: 'bold',
+                transition: 'all 0.2s ease',
+                boxShadow: loading ? 'none' : '0 4px 15px rgba(79, 241, 227, 0.3)',
+                cursor: loading ? 'not-allowed' : 'pointer',
+                border: 'none',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '8px'
+              }}
+              className={!loading ? 'hover:shadow-[0_6px_20px_rgba(79,241,227,0.4)] hover:-translate-y-0.5' : ''}
             >
               {loading ? (
                 <>
@@ -178,9 +228,9 @@ export default function LoginPage() {
 
           {/* Signup Link */}
           <div className="text-center mb-6">
-            <p className="text-purple-200 text-sm">
+            <p style={{ color: '#9AA4B2', fontSize: '14px' }}>
               Don't have an account?{' '}
-              <Link href="/signup" className="text-pink-400 hover:text-pink-300 font-semibold transition">
+              <Link href="/signup" style={{ color: '#4ff1e3' }} className="hover:opacity-80 font-semibold transition">
                 Sign up instead
               </Link>
             </p>
@@ -189,10 +239,17 @@ export default function LoginPage() {
           {/* Divider */}
           <div className="relative mb-6">
             <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-white/20"></div>
+              <div style={{ borderTop: '1px solid rgba(255, 255, 255, 0.1)', width: '100%' }}></div>
             </div>
             <div className="relative flex justify-center text-sm">
-              <span className="px-3 bg-white/10 backdrop-blur-sm text-purple-200 font-medium rounded-full">or</span>
+              <span style={{
+                padding: '0 12px',
+                background: 'rgba(255, 255, 255, 0.04)',
+                color: '#9AA4B2',
+                fontWeight: '500',
+                borderRadius: '12px',
+                backdropFilter: 'blur(10px)'
+              }}>or</span>
             </div>
           </div>
 
@@ -201,7 +258,23 @@ export default function LoginPage() {
             <button
               onClick={() => handleSocialLogin('google')}
               disabled={loading}
-              className="w-full border-2 border-white/20 hover:border-pink-400/50 hover:bg-white/10 disabled:opacity-50 disabled:cursor-not-allowed text-white font-bold py-3 rounded-full transition duration-200 flex items-center justify-center gap-3 backdrop-blur-sm"
+              style={{
+                background: 'rgba(255, 255, 255, 0.06)',
+                border: '1px solid rgba(255, 255, 255, 0.1)',
+                borderRadius: '14px',
+                padding: '12px',
+                width: '100%',
+                color: '#FFFFFF',
+                fontWeight: 'bold',
+                transition: 'all 0.2s ease',
+                cursor: loading ? 'not-allowed' : 'pointer',
+                opacity: loading ? '0.5' : '1',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '12px'
+              }}
+              className={!loading ? 'hover:border-cyan-400/50 hover:bg-white/10 hover:-translate-y-0.5' : ''}
             >
               <Mail className="w-5 h-5" />
               Sign in with Google
@@ -210,7 +283,23 @@ export default function LoginPage() {
             <button
               onClick={() => handleSocialLogin('github')}
               disabled={loading}
-              className="w-full border-2 border-white/20 hover:border-pink-400/50 hover:bg-white/10 disabled:opacity-50 disabled:cursor-not-allowed text-white font-bold py-3 rounded-full transition duration-200 flex items-center justify-center gap-3 backdrop-blur-sm"
+              style={{
+                background: 'rgba(255, 255, 255, 0.06)',
+                border: '1px solid rgba(255, 255, 255, 0.1)',
+                borderRadius: '14px',
+                padding: '12px',
+                width: '100%',
+                color: '#FFFFFF',
+                fontWeight: 'bold',
+                transition: 'all 0.2s ease',
+                cursor: loading ? 'not-allowed' : 'pointer',
+                opacity: loading ? '0.5' : '1',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '12px'
+              }}
+              className={!loading ? 'hover:border-cyan-400/50 hover:bg-white/10 hover:-translate-y-0.5' : ''}
             >
               <Github className="w-5 h-5" />
               Sign in with GitHub
@@ -219,9 +308,9 @@ export default function LoginPage() {
 
           {/* Sign Up Link */}
           <div className="mt-6 text-center">
-            <p className="text-sm text-purple-200">
+            <p style={{ fontSize: '14px', color: '#9AA4B2' }}>
               Don't have an account?{' '}
-              <Link href="/signup" className="text-pink-400 font-semibold hover:text-pink-300 transition">
+              <Link href="/signup" style={{ color: '#4ff1e3', fontWeight: '600' }} className="hover:opacity-80 transition">
                 Sign up for free
               </Link>
             </p>
@@ -229,14 +318,14 @@ export default function LoginPage() {
         </div>
 
         {/* Footer */}
-        <div className="text-center mt-8 text-xs text-purple-300">
+        <div className="text-center mt-8" style={{ fontSize: '12px', color: '#9AA4B2' }}>
           <p>
             By signing in, you agree to our{' '}
-            <Link href="/terms" className="text-pink-400 hover:text-pink-300 font-semibold">
+            <Link href="/terms" style={{ color: '#4ff1e3', fontWeight: '600' }} className="hover:opacity-80">
               Terms of Service
             </Link>{' '}
             and{' '}
-            <Link href="/privacy" className="text-pink-400 hover:text-pink-300 font-semibold">
+            <Link href="/privacy" style={{ color: '#4ff1e3', fontWeight: '600' }} className="hover:opacity-80">
               Privacy Policy
             </Link>
           </p>

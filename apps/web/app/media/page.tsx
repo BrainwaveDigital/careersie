@@ -304,99 +304,152 @@ export default function MediaLibraryPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
-        <div className="text-pink-400 text-lg">Loading media library...</div>
+      <div
+        className="min-h-screen flex items-center justify-center"
+        style={{ background: 'linear-gradient(135deg, #0D1117 0%, #0A0F14 100%)' }}
+      >
+        <div className="text-lg" style={{ color: '#4ff1e3' }}>Loading media library...</div>
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 py-8">
+    <div
+      className="min-h-screen py-8"
+      style={{ background: 'linear-gradient(135deg, #0D1117 0%, #0A0F14 100%)' }}
+    >
       <div className="max-w-7xl mx-auto px-4">
         {/* Header */}
         <div className="mb-6">
-          <Button variant="ghost" asChild className="mb-4 bg-white/20 backdrop-blur-sm border-white/30 text-white hover:bg-white/30">
+          <Button
+            variant="ghost"
+            asChild
+            className="mb-4 transition-all hover:transform hover:scale-105"
+            style={{
+              background: 'rgba(255, 255, 255, 0.06)',
+              border: '1px solid rgba(255, 255, 255, 0.1)',
+              color: '#9AA4B2'
+            }}
+          >
             <Link href="/dashboard">
               <ArrowLeft className="w-4 h-4 mr-2" />
               Back to Dashboard
             </Link>
           </Button>
-          <h1 className="text-3xl font-bold text-white">Media Library</h1>
-          <p className="text-purple-200 mt-1">Upload and manage your images, audio, and video files</p>
+          <h1 className="text-3xl font-bold" style={{ color: '#FFFFFF' }}>Media Library</h1>
+          <p className="mt-1" style={{ color: '#9AA4B2' }}>Upload and manage your images, audio, and video files</p>
         </div>
 
         {/* Upload Section */}
-        <Card className="mb-6 bg-white/10 backdrop-blur-xl border-white/20">
+        <Card
+          className="mb-6"
+          style={{
+            background: 'rgba(255, 255, 255, 0.04)',
+            border: '1px solid rgba(255, 255, 255, 0.06)',
+            backdropFilter: 'blur(25px)',
+            boxShadow: '0 0 30px rgba(0, 0, 0, 0.4)',
+            borderRadius: '20px'
+          }}
+        >
           <CardHeader>
-            <CardTitle className="flex items-center text-white">
-              <Upload className="w-5 h-5 mr-2 text-pink-400" />
+            <CardTitle className="flex items-center" style={{ color: '#FFFFFF' }}>
+              <Upload className="w-5 h-5 mr-2" style={{ color: '#4ff1e3' }} />
               Upload New Media
             </CardTitle>
-            <CardDescription className="text-purple-200">Supported: Images (JPG, PNG, GIF), Audio (MP3, WAV), Video (MP4, MOV)</CardDescription>
+            <CardDescription style={{ color: '#9AA4B2' }}>Supported: Images (JPG, PNG, GIF), Audio (MP3, WAV), Video (MP4, MOV)</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
               <div>
-                <label htmlFor="media-file-upload" className="block text-sm font-medium mb-2 text-purple-200">Choose File</label>
+                <label htmlFor="media-file-upload" className="block text-sm font-medium mb-2" style={{ color: '#9AA4B2' }}>Choose File</label>
                 <input
                   id="media-file-upload"
                   type="file"
                   accept="image/*,audio/*,video/*"
                   onChange={(e) => setUploadFile(e.target.files?.[0] || null)}
-                  className="block w-full text-sm text-purple-200
+                  className="block w-full text-sm
                     file:mr-4 file:py-2 file:px-4
                     file:rounded-full file:border-0
                     file:text-sm file:font-semibold
-                    file:bg-gradient-to-r file:from-pink-500 file:to-purple-500 file:text-white
                     hover:file:scale-105 file:transition-transform"
+                  style={{
+                    color: '#E5E7EB'
+                  }}
                 />
                 {uploadFile && (
-                  <p className="text-sm text-purple-300 mt-2">
+                  <p className="text-sm mt-2" style={{ color: '#9AA4B2' }}>
                     Selected: {uploadFile.name} ({formatFileSize(uploadFile.size)})
                   </p>
                 )}
               </div>
 
               <div>
-                <label htmlFor="upload-title" className="block text-sm font-medium mb-2 text-purple-200">Title (optional)</label>
+                <label htmlFor="upload-title" className="block text-sm font-medium mb-2" style={{ color: '#9AA4B2' }}>Title (optional)</label>
                 <input
                   id="upload-title"
                   type="text"
                   value={uploadTitle}
                   onChange={(e) => setUploadTitle(e.target.value)}
                   placeholder="Enter a title for this media"
-                  className="w-full px-3 py-2 bg-white/5 border-2 border-white/20 rounded-xl text-white placeholder-purple-300 focus:ring-2 focus:ring-pink-400 focus:border-transparent"
+                  className="w-full px-3 py-2 rounded-xl"
+                  style={{
+                    background: 'rgba(255, 255, 255, 0.06)',
+                    border: '1px solid rgba(255, 255, 255, 0.1)',
+                    color: '#FFFFFF'
+                  }}
+                  onFocus={(e) => e.target.style.border = '1px solid rgba(79, 241, 227, 0.5)'}
+                  onBlur={(e) => e.target.style.border = '1px solid rgba(255, 255, 255, 0.1)'}
                 />
               </div>
 
               <div>
-                <label htmlFor="upload-description" className="block text-sm font-medium mb-2 text-purple-200">Description (optional)</label>
+                <label htmlFor="upload-description" className="block text-sm font-medium mb-2" style={{ color: '#9AA4B2' }}>Description (optional)</label>
                 <textarea
                   id="upload-description"
                   value={uploadDescription}
                   onChange={(e) => setUploadDescription(e.target.value)}
                   placeholder="Add a description"
                   rows={3}
-                  className="w-full px-3 py-2 bg-white/5 border-2 border-white/20 rounded-xl text-white placeholder-purple-300 focus:ring-2 focus:ring-pink-400 focus:border-transparent"
+                  className="w-full px-3 py-2 rounded-xl"
+                  style={{
+                    background: 'rgba(255, 255, 255, 0.06)',
+                    border: '1px solid rgba(255, 255, 255, 0.1)',
+                    color: '#FFFFFF'
+                  }}
+                  onFocus={(e) => e.target.style.border = '1px solid rgba(79, 241, 227, 0.5)'}
+                  onBlur={(e) => e.target.style.border = '1px solid rgba(255, 255, 255, 0.1)'}
                 />
               </div>
 
               <div>
-                <label htmlFor="upload-tags" className="block text-sm font-medium mb-2 text-purple-200">Tags (optional, comma-separated)</label>
+                <label htmlFor="upload-tags" className="block text-sm font-medium mb-2" style={{ color: '#9AA4B2' }}>Tags (optional, comma-separated)</label>
                 <input
                   id="upload-tags"
                   type="text"
                   value={uploadTags}
                   onChange={(e) => setUploadTags(e.target.value)}
                   placeholder="e.g., portfolio, presentation, demo"
-                  className="w-full px-3 py-2 bg-white/5 border-2 border-white/20 rounded-xl text-white placeholder-purple-300 focus:ring-2 focus:ring-pink-400 focus:border-transparent"
+                  className="w-full px-3 py-2 rounded-xl"
+                  style={{
+                    background: 'rgba(255, 255, 255, 0.06)',
+                    border: '1px solid rgba(255, 255, 255, 0.1)',
+                    color: '#FFFFFF'
+                  }}
+                  onFocus={(e) => e.target.style.border = '1px solid rgba(79, 241, 227, 0.5)'}
+                  onBlur={(e) => e.target.style.border = '1px solid rgba(255, 255, 255, 0.1)'}
                 />
               </div>
 
               <Button
                 onClick={handleFileUpload}
                 disabled={!uploadFile || uploading}
-                className="w-full bg-gradient-to-r from-pink-500 to-purple-500 text-white rounded-full hover:scale-105 transition-transform disabled:opacity-50 disabled:hover:scale-100"
+                className="w-full rounded-full transition-all hover:scale-105 disabled:opacity-50 disabled:hover:scale-100"
+                style={{
+                  background: 'linear-gradient(135deg, #4ff1e3, #536dfe)',
+                  color: '#FFFFFF',
+                  boxShadow: '0 4px 15px rgba(79, 241, 227, 0.3)',
+                  border: 'none'
+                }}
               >
                 {uploading ? 'Uploading...' : 'Upload File'}
               </Button>
@@ -410,7 +463,16 @@ export default function MediaLibraryPage() {
             variant={filter === 'all' ? 'default' : 'outline'}
             onClick={() => setFilter('all')}
             size="sm"
-            className={filter === 'all' ? 'bg-gradient-to-r from-pink-500 to-purple-500 text-white' : 'bg-white/20 backdrop-blur-sm border-white/30 text-white hover:bg-white/30'}
+            className="transition-all hover:scale-105"
+            style={filter === 'all' ? {
+              background: 'linear-gradient(135deg, #4ff1e3, #536dfe)',
+              color: '#FFFFFF',
+              border: 'none'
+            } : {
+              background: 'rgba(255, 255, 255, 0.06)',
+              border: '1px solid rgba(255, 255, 255, 0.1)',
+              color: '#9AA4B2'
+            }}
           >
             All ({mediaItems.length})
           </Button>
@@ -418,7 +480,16 @@ export default function MediaLibraryPage() {
             variant={filter === 'image' ? 'default' : 'outline'}
             onClick={() => setFilter('image')}
             size="sm"
-            className={filter === 'image' ? 'bg-gradient-to-r from-pink-500 to-purple-500 text-white' : 'bg-white/20 backdrop-blur-sm border-white/30 text-white hover:bg-white/30'}
+            className="transition-all hover:scale-105"
+            style={filter === 'image' ? {
+              background: 'linear-gradient(135deg, #4ff1e3, #536dfe)',
+              color: '#FFFFFF',
+              border: 'none'
+            } : {
+              background: 'rgba(255, 255, 255, 0.06)',
+              border: '1px solid rgba(255, 255, 255, 0.1)',
+              color: '#9AA4B2'
+            }}
           >
             <Image className="w-4 h-4 mr-1" />
             Images ({mediaItems.filter(i => i.file_type === 'image').length})
@@ -427,7 +498,16 @@ export default function MediaLibraryPage() {
             variant={filter === 'audio' ? 'default' : 'outline'}
             onClick={() => setFilter('audio')}
             size="sm"
-            className={filter === 'audio' ? 'bg-gradient-to-r from-pink-500 to-purple-500 text-white' : 'bg-white/20 backdrop-blur-sm border-white/30 text-white hover:bg-white/30'}
+            className="transition-all hover:scale-105"
+            style={filter === 'audio' ? {
+              background: 'linear-gradient(135deg, #4ff1e3, #536dfe)',
+              color: '#FFFFFF',
+              border: 'none'
+            } : {
+              background: 'rgba(255, 255, 255, 0.06)',
+              border: '1px solid rgba(255, 255, 255, 0.1)',
+              color: '#9AA4B2'
+            }}
           >
             <Music className="w-4 h-4 mr-1" />
             Audio ({mediaItems.filter(i => i.file_type === 'audio').length})
@@ -436,7 +516,16 @@ export default function MediaLibraryPage() {
             variant={filter === 'video' ? 'default' : 'outline'}
             onClick={() => setFilter('video')}
             size="sm"
-            className={filter === 'video' ? 'bg-gradient-to-r from-pink-500 to-purple-500 text-white' : 'bg-white/20 backdrop-blur-sm border-white/30 text-white hover:bg-white/30'}
+            className="transition-all hover:scale-105"
+            style={filter === 'video' ? {
+              background: 'linear-gradient(135deg, #4ff1e3, #536dfe)',
+              color: '#FFFFFF',
+              border: 'none'
+            } : {
+              background: 'rgba(255, 255, 255, 0.06)',
+              border: '1px solid rgba(255, 255, 255, 0.1)',
+              color: '#9AA4B2'
+            }}
           >
             <Video className="w-4 h-4 mr-1" />
             Video ({mediaItems.filter(i => i.file_type === 'video').length})
@@ -445,23 +534,42 @@ export default function MediaLibraryPage() {
 
         {/* Media Grid */}
         {filteredItems.length === 0 ? (
-          <Card className="bg-white/10 backdrop-blur-xl border-white/20">
+          <Card
+            style={{
+              background: 'rgba(255, 255, 255, 0.04)',
+              border: '1px solid rgba(255, 255, 255, 0.06)',
+              backdropFilter: 'blur(25px)',
+              boxShadow: '0 0 30px rgba(0, 0, 0, 0.4)',
+              borderRadius: '20px'
+            }}
+          >
             <CardContent className="py-12 text-center">
-              <p className="text-purple-200">No media files uploaded yet.</p>
-              <p className="text-sm text-purple-300 mt-2">Upload your first file using the form above.</p>
+              <p style={{ color: '#9AA4B2' }}>No media files uploaded yet.</p>
+              <p className="text-sm mt-2" style={{ color: '#9AA4B2' }}>Upload your first file using the form above.</p>
             </CardContent>
           </Card>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredItems.map((item) => (
-              <Card key={item.id} className="overflow-hidden bg-white/10 backdrop-blur-xl border-white/20">
+              <Card
+                key={item.id}
+                className="overflow-hidden"
+                style={{
+                  background: 'rgba(255, 255, 255, 0.04)',
+                  border: '1px solid rgba(255, 255, 255, 0.06)',
+                  backdropFilter: 'blur(25px)',
+                  boxShadow: '0 0 30px rgba(0, 0, 0, 0.4)',
+                  borderRadius: '20px'
+                }}
+              >
                 {/* Media Preview - Clickable */}
                 <div 
-                  className="aspect-video bg-white/5 relative cursor-pointer hover:opacity-90 transition-opacity"
+                  className="aspect-video relative cursor-pointer hover:opacity-90 transition-opacity"
                   onClick={() => setPreviewItem(item)}
+                  style={{ background: 'rgba(255, 255, 255, 0.02)' }}
                 >
                   {!item.publicUrl && (
-                    <div className="absolute inset-0 flex items-center justify-center text-purple-300 text-sm">
+                    <div className="absolute inset-0 flex items-center justify-center text-sm" style={{ color: '#9AA4B2' }}>
                       Failed to load preview
                     </div>
                   )}
@@ -492,8 +600,11 @@ export default function MediaLibraryPage() {
                     </video>
                   )}
                   {item.file_type === 'audio' && item.publicUrl && (
-                    <div className="flex flex-col items-center justify-center h-full p-4 bg-slate-900">
-                      <Music className="w-16 h-16 text-pink-400 mb-4" />
+                    <div
+                      className="flex flex-col items-center justify-center h-full p-4"
+                      style={{ background: 'rgba(0, 0, 0, 0.6)' }}
+                    >
+                      <Music className="w-16 h-16 mb-4" style={{ color: '#4ff1e3' }} />
                       <audio 
                         controls 
                         className="w-full"
@@ -509,7 +620,14 @@ export default function MediaLibraryPage() {
                   
                   {/* Type Badge */}
                   <div className="absolute top-2 right-2">
-                    <span className="px-2 py-1 rounded-full bg-pink-500/80 backdrop-blur-sm text-white text-xs font-medium">
+                    <span
+                      className="px-2 py-1 rounded-full text-xs font-medium"
+                      style={{
+                        background: 'rgba(79, 241, 227, 0.8)',
+                        color: '#FFFFFF',
+                        backdropFilter: 'blur(8px)'
+                      }}
+                    >
                       {item.file_type}
                     </span>
                   </div>
@@ -524,7 +642,12 @@ export default function MediaLibraryPage() {
                         value={editTitle}
                         onChange={(e) => setEditTitle(e.target.value)}
                         placeholder="Title"
-                        className="w-full px-2 py-1 bg-white/5 border-2 border-white/20 rounded-lg text-white placeholder-purple-300 text-sm"
+                        className="w-full px-2 py-1 rounded-lg text-sm"
+                        style={{
+                          background: 'rgba(255, 255, 255, 0.06)',
+                          border: '1px solid rgba(255, 255, 255, 0.1)',
+                          color: '#FFFFFF'
+                        }}
                         aria-label="Edit media title"
                       />
                       <textarea
@@ -532,7 +655,12 @@ export default function MediaLibraryPage() {
                         onChange={(e) => setEditDescription(e.target.value)}
                         placeholder="Description"
                         rows={2}
-                        className="w-full px-2 py-1 bg-white/5 border-2 border-white/20 rounded-lg text-white placeholder-purple-300 text-sm"
+                        className="w-full px-2 py-1 rounded-lg text-sm"
+                        style={{
+                          background: 'rgba(255, 255, 255, 0.06)',
+                          border: '1px solid rgba(255, 255, 255, 0.1)',
+                          color: '#FFFFFF'
+                        }}
                         aria-label="Edit media description"
                       />
                       <input
@@ -540,15 +668,39 @@ export default function MediaLibraryPage() {
                         value={editTags}
                         onChange={(e) => setEditTags(e.target.value)}
                         placeholder="Tags (comma-separated)"
-                        className="w-full px-2 py-1 bg-white/5 border-2 border-white/20 rounded-lg text-white placeholder-purple-300 text-sm"
+                        className="w-full px-2 py-1 rounded-lg text-sm"
+                        style={{
+                          background: 'rgba(255, 255, 255, 0.06)',
+                          border: '1px solid rgba(255, 255, 255, 0.1)',
+                          color: '#FFFFFF'
+                        }}
                         aria-label="Edit media tags"
                       />
                       <div className="flex gap-2">
-                        <Button size="sm" onClick={() => saveEdit(item)} className="flex-1 bg-gradient-to-r from-pink-500 to-purple-500 text-white rounded-full hover:scale-105 transition-transform">
+                        <Button
+                          size="sm"
+                          onClick={() => saveEdit(item)}
+                          className="flex-1 rounded-full transition-all hover:scale-105"
+                          style={{
+                            background: 'linear-gradient(135deg, #4ff1e3, #536dfe)',
+                            color: '#FFFFFF',
+                            border: 'none'
+                          }}
+                        >
                           <Save className="w-3 h-3 mr-1" />
                           Save
                         </Button>
-                        <Button size="sm" variant="outline" onClick={cancelEdit} className="flex-1 bg-white/20 border-white/30 text-white hover:bg-white/30 rounded-full">
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          onClick={cancelEdit}
+                          className="flex-1 rounded-full transition-all hover:scale-105"
+                          style={{
+                            background: 'rgba(255, 255, 255, 0.06)',
+                            border: '1px solid rgba(255, 255, 255, 0.1)',
+                            color: '#9AA4B2'
+                          }}
+                        >
                           <X className="w-3 h-3 mr-1" />
                           Cancel
                         </Button>
@@ -557,20 +709,28 @@ export default function MediaLibraryPage() {
                   ) : (
                     // View Mode
                     <div className="space-y-2">
-                      <h3 className="font-semibold truncate text-white">{item.title || item.file_name}</h3>
+                      <h3 className="font-semibold truncate" style={{ color: '#FFFFFF' }}>{item.title || item.file_name}</h3>
                       {item.description && (
-                        <p className="text-sm text-purple-200 line-clamp-2">{item.description}</p>
+                        <p className="text-sm line-clamp-2" style={{ color: '#9AA4B2' }}>{item.description}</p>
                       )}
                       {item.tags && item.tags.length > 0 && (
                         <div className="flex flex-wrap gap-1">
                           {item.tags.map((tag, idx) => (
-                            <span key={idx} className="px-2 py-0.5 bg-pink-500/20 text-pink-300 text-xs rounded-full border border-pink-400/30">
+                            <span
+                              key={idx}
+                              className="px-2 py-0.5 text-xs rounded-full"
+                              style={{
+                                background: 'rgba(79, 241, 227, 0.15)',
+                                border: '1px solid rgba(79, 241, 227, 0.3)',
+                                color: '#4ff1e3'
+                              }}
+                            >
                               {tag}
                             </span>
                           ))}
                         </div>
                       )}
-                      <div className="text-xs text-purple-300 pt-2 border-t border-white/10">
+                      <div className="text-xs pt-2" style={{ color: '#9AA4B2', borderTop: '1px solid rgba(255, 255, 255, 0.1)' }}>
                         <div>{formatFileSize(item.file_size)}</div>
                         <div>{new Date(item.created_at).toLocaleDateString()}</div>
                       </div>
@@ -580,7 +740,12 @@ export default function MediaLibraryPage() {
                           size="sm"
                           variant="outline"
                           onClick={() => startEdit(item)}
-                          className="flex-1 bg-white/20 border-white/30 text-white hover:bg-white/30 rounded-full"
+                          className="flex-1 rounded-full transition-all hover:scale-105"
+                          style={{
+                            background: 'rgba(255, 255, 255, 0.06)',
+                            border: '1px solid rgba(255, 255, 255, 0.1)',
+                            color: '#9AA4B2'
+                          }}
                         >
                           <Edit2 className="w-3 h-3 mr-1" />
                           Edit
@@ -589,7 +754,12 @@ export default function MediaLibraryPage() {
                           size="sm"
                           variant="destructive"
                           onClick={() => handleDelete(item)}
-                          className="flex-1 bg-red-500/80 text-white hover:bg-red-600 rounded-full"
+                          className="flex-1 rounded-full transition-all hover:scale-105"
+                          style={{
+                            background: 'rgba(255, 60, 60, 0.15)',
+                            border: '1px solid rgba(255, 60, 60, 0.4)',
+                            color: '#ff6b6b'
+                          }}
                         >
                           <Trash2 className="w-3 h-3 mr-1" />
                           Delete
@@ -606,20 +776,28 @@ export default function MediaLibraryPage() {
         {/* Preview Modal */}
         {previewItem && (
           <div 
-            className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-4"
+            className="fixed inset-0 z-50 flex items-center justify-center p-4"
+            style={{ background: 'rgba(0, 0, 0, 0.9)', backdropFilter: 'blur(8px)' }}
             onClick={() => setPreviewItem(null)}
           >
             <div 
-              className="bg-white/10 backdrop-blur-xl border-white/20 rounded-3xl max-w-5xl w-full max-h-[90vh] overflow-hidden flex flex-col"
+              className="max-w-5xl w-full max-h-[90vh] overflow-hidden flex flex-col"
+              style={{
+                background: 'rgba(255, 255, 255, 0.04)',
+                border: '1px solid rgba(255, 255, 255, 0.06)',
+                backdropFilter: 'blur(25px)',
+                boxShadow: '0 0 30px rgba(0, 0, 0, 0.4)',
+                borderRadius: '24px'
+              }}
               onClick={(e) => e.stopPropagation()}
             >
               {/* Modal Header */}
-              <div className="flex items-center justify-between p-4 border-b border-white/20">
+              <div className="flex items-center justify-between p-4" style={{ borderBottom: '1px solid rgba(255, 255, 255, 0.1)' }}>
                 <div className="flex-1 min-w-0">
-                  <h2 className="text-xl font-semibold truncate text-white">
+                  <h2 className="text-xl font-semibold truncate" style={{ color: '#FFFFFF' }}>
                     {previewItem.title || previewItem.file_name}
                   </h2>
-                  <p className="text-sm text-purple-200">
+                  <p className="text-sm" style={{ color: '#9AA4B2' }}>
                     {previewItem.mime_type} • {formatFileSize(previewItem.file_size)}
                   </p>
                 </div>
@@ -627,14 +805,19 @@ export default function MediaLibraryPage() {
                   variant="ghost"
                   size="sm"
                   onClick={() => setPreviewItem(null)}
-                  className="ml-4 bg-white/20 hover:bg-white/30 text-white"
+                  className="ml-4 transition-all hover:scale-105"
+                  style={{
+                    background: 'rgba(255, 255, 255, 0.06)',
+                    border: '1px solid rgba(255, 255, 255, 0.1)',
+                    color: '#9AA4B2'
+                  }}
                 >
                   <X className="w-5 h-5" />
                 </Button>
               </div>
 
               {/* Modal Content */}
-              <div className="flex-1 overflow-auto bg-slate-950 flex items-center justify-center p-8">
+              <div className="flex-1 overflow-auto flex items-center justify-center p-8" style={{ background: 'rgba(0, 0, 0, 0.6)' }}>
                 {previewItem.file_type === 'image' && previewItem.publicUrl && (
                   <img
                     src={previewItem.publicUrl}
@@ -661,7 +844,7 @@ export default function MediaLibraryPage() {
                 )}
                 {previewItem.file_type === 'audio' && previewItem.publicUrl && (
                   <div className="text-center w-full max-w-xl">
-                    <Music className="w-24 h-24 text-white/50 mx-auto mb-6" />
+                    <Music className="w-24 h-24 mx-auto mb-6" style={{ color: '#4ff1e3' }} />
                     <audio 
                       controls 
                       autoPlay
@@ -678,19 +861,27 @@ export default function MediaLibraryPage() {
               </div>
 
               {/* Modal Footer */}
-              <div className="p-4 border-t bg-white space-y-3">
+              <div className="p-4 space-y-3" style={{ borderTop: '1px solid rgba(255, 255, 255, 0.1)', background: 'rgba(255, 255, 255, 0.02)' }}>
                 {previewItem.description && (
                   <div>
-                    <p className="text-sm font-medium text-muted-foreground mb-1">Description</p>
-                    <p className="text-sm">{previewItem.description}</p>
+                    <p className="text-sm font-medium mb-1" style={{ color: '#9AA4B2' }}>Description</p>
+                    <p className="text-sm" style={{ color: '#E5E7EB' }}>{previewItem.description}</p>
                   </div>
                 )}
                 {previewItem.tags && previewItem.tags.length > 0 && (
                   <div>
-                    <p className="text-sm font-medium text-muted-foreground mb-2">Tags</p>
+                    <p className="text-sm font-medium mb-2" style={{ color: '#9AA4B2' }}>Tags</p>
                     <div className="flex flex-wrap gap-2">
                       {previewItem.tags.map((tag, idx) => (
-                        <span key={idx} className="px-3 py-1 bg-slate-100 text-slate-700 text-sm rounded-full">
+                        <span
+                          key={idx}
+                          className="px-3 py-1 text-sm rounded-full"
+                          style={{
+                            background: 'rgba(79, 241, 227, 0.15)',
+                            border: '1px solid rgba(79, 241, 227, 0.3)',
+                            color: '#4ff1e3'
+                          }}
+                        >
                           {tag}
                         </span>
                       ))}
@@ -698,7 +889,7 @@ export default function MediaLibraryPage() {
                   </div>
                 )}
                 <div className="flex items-center justify-between pt-2">
-                  <div className="text-xs text-muted-foreground">
+                  <div className="text-xs" style={{ color: '#9AA4B2' }}>
                     Added on {new Date(previewItem.created_at).toLocaleString()}
                   </div>
                   <div className="flex gap-2">
@@ -708,6 +899,12 @@ export default function MediaLibraryPage() {
                       onClick={() => {
                         setPreviewItem(null)
                         startEdit(previewItem)
+                      }}
+                      className="transition-all hover:scale-105"
+                      style={{
+                        background: 'rgba(255, 255, 255, 0.06)',
+                        border: '1px solid rgba(255, 255, 255, 0.1)',
+                        color: '#9AA4B2'
                       }}
                     >
                       <Edit2 className="w-4 h-4 mr-2" />
@@ -719,6 +916,12 @@ export default function MediaLibraryPage() {
                       onClick={() => {
                         setPreviewItem(null)
                         handleDelete(previewItem)
+                      }}
+                      className="transition-all hover:scale-105"
+                      style={{
+                        background: 'rgba(255, 60, 60, 0.15)',
+                        border: '1px solid rgba(255, 60, 60, 0.4)',
+                        color: '#ff6b6b'
                       }}
                     >
                       <Trash2 className="w-4 h-4 mr-2" />

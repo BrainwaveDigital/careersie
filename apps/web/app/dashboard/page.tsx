@@ -46,10 +46,10 @@ export default function DashboardPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
+      <div style={{ background: 'linear-gradient(135deg, #0D1117 0%, #0A0F14 100%)' }} className="min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-pink-400 mb-4"></div>
-          <h2 className="text-xl font-semibold text-white">Loading your dashboard...</h2>
+          <div style={{ borderColor: '#4ff1e3' }} className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 mb-4"></div>
+          <h2 style={{ color: '#FFFFFF' }} className="text-xl font-semibold">Loading your dashboard...</h2>
         </div>
       </div>
     )

@@ -415,8 +415,32 @@ export default function ProfileManualPage() {
             skill: s.skill.trim()
           }))
         if (skillData.length > 0) {
+          console.log('🔵 Inserting skills:', { 
+            count: skillData.length, 
+            profileId: currentProfileId,
+            userId: user.id,
+            sample: skillData[0]
+          })
+          
+          // Verify profile ownership before insert
+          const { data: profileCheck, error: checkError } = await supabaseClient
+            .from('profiles')
+            .select('id, user_id')
+            .eq('id', currentProfileId)
+            .single()
+          
+          console.log('🔍 Profile check:', { profileCheck, checkError })
+          
+          if (checkError || !profileCheck || profileCheck.user_id !== user.id) {
+            throw new Error(`Profile ownership verification failed. Profile user_id: ${profileCheck?.user_id}, Current user: ${user.id}`)
+          }
+          
           const { error } = await supabaseClient.from('skills').insert(skillData)
-          if (error) throw error
+          if (error) {
+            console.error('❌ Skills insert error:', error)
+            throw error
+          }
+          console.log('✅ Skills inserted successfully')
         }
       }
 
@@ -491,10 +515,19 @@ export default function ProfileManualPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8 px-4">
-      <div className="max-w-4xl mx-auto">
-        <div className="mb-6">
-          <Button variant="outline" size="sm" asChild>
+    <div style={{
+      minHeight: '100vh',
+      background: 'linear-gradient(135deg, #0D1117 0%, #0A0F14 100%)',
+      padding: '32px 16px'
+    }}>
+      <div style={{ maxWidth: '1024px', margin: '0 auto' }}>
+        <div style={{ marginBottom: '24px' }}>
+          <Button variant="outline" size="sm" asChild style={{
+            background: 'rgba(255, 255, 255, 0.06)',
+            backdropFilter: 'blur(10px)',
+            border: '1px solid rgba(255, 255, 255, 0.1)',
+            color: '#9AA4B2'
+          }}>
             <Link href="/profile/choose" className="flex items-center gap-2">
               <ArrowLeft className="w-4 h-4" />
               Back
@@ -504,92 +537,155 @@ export default function ProfileManualPage() {
 
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Personal Details */}
-          <Card>
+          <Card style={{
+            background: 'rgba(255, 255, 255, 0.04)',
+            backdropFilter: 'blur(25px)',
+            border: '1px solid rgba(255, 255, 255, 0.06)',
+            boxShadow: '0 0 30px rgba(0, 0, 0, 0.4)',
+            borderRadius: '20px'
+          }}>
             <CardHeader>
-              <CardTitle>Personal Details</CardTitle>
-              <CardDescription>Basic information about you</CardDescription>
+              <CardTitle style={{ color: '#FFFFFF' }}>Personal Details</CardTitle>
+              <CardDescription style={{ color: '#9AA4B2' }}>Basic information about you</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div>
-                <label htmlFor="full-name" className="block text-sm font-medium mb-1">Full Name *</label>
+                <label htmlFor="full-name" style={{ display: 'block', fontSize: '14px', fontWeight: '500', marginBottom: '4px', color: '#9AA4B2' }}>Full Name *</label>
                 <input
                   id="full-name"
                   type="text"
                   required
                   value={fullName}
                   onChange={(e) => setFullName(e.target.value)}
-                  className="w-full px-3 py-2 border rounded-md"
+                  style={{
+                    width: '100%',
+                    padding: '10px 12px',
+                    background: 'rgba(255, 255, 255, 0.06)',
+                    border: '1px solid rgba(255, 255, 255, 0.1)',
+                    borderRadius: '12px',
+                    color: '#FFFFFF',
+                    fontSize: '14px'
+                  }}
                   placeholder="John Doe"
                 />
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label htmlFor="email" className="block text-sm font-medium mb-1">Email *</label>
+                  <label htmlFor="email" style={{ display: 'block', fontSize: '14px', fontWeight: '500', marginBottom: '4px', color: '#9AA4B2' }}>Email *</label>
                   <input
                     id="email"
                     type="email"
                     required
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="w-full px-3 py-2 border rounded-md"
+                    style={{
+                      width: '100%',
+                      padding: '10px 12px',
+                      background: 'rgba(255, 255, 255, 0.06)',
+                      border: '1px solid rgba(255, 255, 255, 0.1)',
+                      borderRadius: '12px',
+                      color: '#FFFFFF',
+                      fontSize: '14px'
+                    }}
                     placeholder="john@example.com"
                   />
                 </div>
                 <div>
-                  <label htmlFor="phone" className="block text-sm font-medium mb-1">Phone</label>
+                  <label htmlFor="phone" style={{ display: 'block', fontSize: '14px', fontWeight: '500', marginBottom: '4px', color: '#9AA4B2' }}>Phone</label>
                   <input
                     id="phone"
                     type="tel"
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
-                    className="w-full px-3 py-2 border rounded-md"
+                    style={{
+                      width: '100%',
+                      padding: '10px 12px',
+                      background: 'rgba(255, 255, 255, 0.06)',
+                      border: '1px solid rgba(255, 255, 255, 0.1)',
+                      borderRadius: '12px',
+                      color: '#FFFFFF',
+                      fontSize: '14px'
+                    }}
                     placeholder="+353 123 456 789"
                   />
                 </div>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label htmlFor="location" className="block text-sm font-medium mb-1">Location</label>
+                  <label htmlFor="location" style={{ display: 'block', fontSize: '14px', fontWeight: '500', marginBottom: '4px', color: '#9AA4B2' }}>Location</label>
                   <input
                     id="location"
                     type="text"
                     value={location}
                     onChange={(e) => setLocation(e.target.value)}
-                    className="w-full px-3 py-2 border rounded-md"
+                    style={{
+                      width: '100%',
+                      padding: '10px 12px',
+                      background: 'rgba(255, 255, 255, 0.06)',
+                      border: '1px solid rgba(255, 255, 255, 0.1)',
+                      borderRadius: '12px',
+                      color: '#FFFFFF',
+                      fontSize: '14px'
+                    }}
                     placeholder="Dublin, Ireland"
                   />
                 </div>
                 <div>
-                  <label htmlFor="website" className="block text-sm font-medium mb-1">Website</label>
+                  <label htmlFor="website" style={{ display: 'block', fontSize: '14px', fontWeight: '500', marginBottom: '4px', color: '#9AA4B2' }}>Website</label>
                   <input
                     id="website"
                     type="url"
                     value={website}
                     onChange={(e) => setWebsite(e.target.value)}
-                    className="w-full px-3 py-2 border rounded-md"
+                    style={{
+                      width: '100%',
+                      padding: '10px 12px',
+                      background: 'rgba(255, 255, 255, 0.06)',
+                      border: '1px solid rgba(255, 255, 255, 0.1)',
+                      borderRadius: '12px',
+                      color: '#FFFFFF',
+                      fontSize: '14px'
+                    }}
                     placeholder="https://yourwebsite.com"
                   />
                 </div>
               </div>
               <div>
-                <label htmlFor="headline" className="block text-sm font-medium mb-1">Headline</label>
+                <label htmlFor="headline" style={{ display: 'block', fontSize: '14px', fontWeight: '500', marginBottom: '4px', color: '#9AA4B2' }}>Headline</label>
                 <input
                   id="headline"
                   type="text"
                   value={headline}
                   onChange={(e) => setHeadline(e.target.value)}
-                  className="w-full px-3 py-2 border rounded-md"
+                  style={{
+                    width: '100%',
+                    padding: '10px 12px',
+                    background: 'rgba(255, 255, 255, 0.06)',
+                    border: '1px solid rgba(255, 255, 255, 0.1)',
+                    borderRadius: '12px',
+                    color: '#FFFFFF',
+                    fontSize: '14px'
+                  }}
                   placeholder="Senior Software Engineer | React & Node.js Specialist"
                 />
               </div>
               <div>
-                <label htmlFor="summary" className="block text-sm font-medium mb-1">Summary</label>
+                <label htmlFor="summary" style={{ display: 'block', fontSize: '14px', fontWeight: '500', marginBottom: '4px', color: '#9AA4B2' }}>Summary</label>
                 <textarea
                   id="summary"
                   value={summary}
                   onChange={(e) => setSummary(e.target.value)}
                   rows={4}
-                  className="w-full px-3 py-2 border rounded-md"
+                  style={{
+                    width: '100%',
+                    padding: '10px 12px',
+                    background: 'rgba(255, 255, 255, 0.06)',
+                    border: '1px solid rgba(255, 255, 255, 0.1)',
+                    borderRadius: '12px',
+                    color: '#FFFFFF',
+                    fontSize: '14px',
+                    resize: 'vertical' as const
+                  }}
                   placeholder="Brief overview of your professional background and career goals..."
                 />
               </div>
@@ -597,14 +693,24 @@ export default function ProfileManualPage() {
           </Card>
 
           {/* Experience */}
-          <Card>
+          <Card style={{
+            background: 'rgba(255, 255, 255, 0.04)',
+            backdropFilter: 'blur(25px)',
+            border: '1px solid rgba(255, 255, 255, 0.06)',
+            boxShadow: '0 0 30px rgba(0, 0, 0, 0.4)',
+            borderRadius: '20px'
+          }}>
             <CardHeader>
               <div className="flex justify-between items-center">
                 <div>
-                  <CardTitle>Experience</CardTitle>
-                  <CardDescription>Your work history</CardDescription>
+                  <CardTitle style={{ color: '#FFFFFF' }}>Experience</CardTitle>
+                  <CardDescription style={{ color: '#9AA4B2' }}>Your work history</CardDescription>
                 </div>
-                <Button type="button" variant="outline" size="sm" onClick={addExperience}>
+                <Button type="button" variant="outline" size="sm" onClick={addExperience} style={{
+                  background: 'rgba(255, 255, 255, 0.06)',
+                  border: '1px solid rgba(255, 255, 255, 0.1)',
+                  color: '#9AA4B2'
+                }}>
                   <Plus className="w-4 h-4 mr-2" />
                   Add Experience
                 </Button>
@@ -716,14 +822,24 @@ export default function ProfileManualPage() {
           </Card>
 
           {/* Education */}
-          <Card>
+          <Card style={{
+            background: 'rgba(255, 255, 255, 0.04)',
+            backdropFilter: 'blur(25px)',
+            border: '1px solid rgba(255, 255, 255, 0.06)',
+            boxShadow: '0 0 30px rgba(0, 0, 0, 0.4)',
+            borderRadius: '20px'
+          }}>
             <CardHeader>
               <div className="flex justify-between items-center">
                 <div>
-                  <CardTitle>Education</CardTitle>
-                  <CardDescription>Your educational background</CardDescription>
+                  <CardTitle style={{ color: '#FFFFFF' }}>Education</CardTitle>
+                  <CardDescription style={{ color: '#9AA4B2' }}>Your educational background</CardDescription>
                 </div>
-                <Button type="button" variant="outline" size="sm" onClick={addEducation}>
+                <Button type="button" variant="outline" size="sm" onClick={addEducation} style={{
+                  background: 'rgba(255, 255, 255, 0.06)',
+                  border: '1px solid rgba(255, 255, 255, 0.1)',
+                  color: '#9AA4B2'
+                }}>
                   <Plus className="w-4 h-4 mr-2" />
                   Add Education
                 </Button>
@@ -731,7 +847,7 @@ export default function ProfileManualPage() {
             </CardHeader>
             <CardContent className="space-y-4">
               {education.length === 0 && (
-                <p className="text-sm text-muted-foreground">No education added yet. Click "Add Education" to begin.</p>
+                <p style={{ fontSize: '14px', color: '#9AA4B2' }}>No education added yet. Click "Add Education" to begin.</p>
               )}
               {education.map((edu, idx) => (
                 <div key={edu.id} className="p-4 border rounded-md space-y-3">
@@ -822,14 +938,24 @@ export default function ProfileManualPage() {
           </Card>
 
           {/* Skills */}
-          <Card>
+          <Card style={{
+            background: 'rgba(255, 255, 255, 0.04)',
+            backdropFilter: 'blur(25px)',
+            border: '1px solid rgba(255, 255, 255, 0.06)',
+            boxShadow: '0 0 30px rgba(0, 0, 0, 0.4)',
+            borderRadius: '20px'
+          }}>
             <CardHeader>
               <div className="flex justify-between items-center">
                 <div>
-                  <CardTitle>Skills</CardTitle>
-                  <CardDescription>Your technical and professional skills</CardDescription>
+                  <CardTitle style={{ color: '#FFFFFF' }}>Skills</CardTitle>
+                  <CardDescription style={{ color: '#9AA4B2' }}>Your technical and professional skills</CardDescription>
                 </div>
-                <Button type="button" variant="outline" size="sm" onClick={addSkill}>
+                <Button type="button" variant="outline" size="sm" onClick={addSkill} style={{
+                  background: 'rgba(255, 255, 255, 0.06)',
+                  border: '1px solid rgba(255, 255, 255, 0.1)',
+                  color: '#9AA4B2'
+                }}>
                   <Plus className="w-4 h-4 mr-2" />
                   Add Skill
                 </Button>
@@ -837,7 +963,7 @@ export default function ProfileManualPage() {
             </CardHeader>
             <CardContent>
               {skills.length === 0 && (
-                <p className="text-sm text-muted-foreground">No skills added yet. Click "Add Skill" to begin.</p>
+                <p style={{ fontSize: '14px', color: '#9AA4B2' }}>No skills added yet. Click "Add Skill" to begin.</p>
               )}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                 {skills.map((skill) => (
@@ -864,14 +990,24 @@ export default function ProfileManualPage() {
           </Card>
 
           {/* Certifications */}
-          <Card>
+          <Card style={{
+            background: 'rgba(255, 255, 255, 0.04)',
+            backdropFilter: 'blur(25px)',
+            border: '1px solid rgba(255, 255, 255, 0.06)',
+            boxShadow: '0 0 30px rgba(0, 0, 0, 0.4)',
+            borderRadius: '20px'
+          }}>
             <CardHeader>
               <div className="flex justify-between items-center">
                 <div>
-                  <CardTitle>Certifications & Qualifications</CardTitle>
-                  <CardDescription>Professional certifications and qualifications</CardDescription>
+                  <CardTitle style={{ color: '#FFFFFF' }}>Certifications & Qualifications</CardTitle>
+                  <CardDescription style={{ color: '#9AA4B2' }}>Professional certifications and qualifications</CardDescription>
                 </div>
-                <Button type="button" variant="outline" size="sm" onClick={addCertification}>
+                <Button type="button" variant="outline" size="sm" onClick={addCertification} style={{
+                  background: 'rgba(255, 255, 255, 0.06)',
+                  border: '1px solid rgba(255, 255, 255, 0.1)',
+                  color: '#9AA4B2'
+                }}>
                   <Plus className="w-4 h-4 mr-2" />
                   Add Certification
                 </Button>
@@ -879,7 +1015,7 @@ export default function ProfileManualPage() {
             </CardHeader>
             <CardContent className="space-y-4">
               {certifications.length === 0 && (
-                <p className="text-sm text-muted-foreground">No certifications added yet. Click "Add Certification" to begin.</p>
+                <p style={{ fontSize: '14px', color: '#9AA4B2' }}>No certifications added yet. Click "Add Certification" to begin.</p>
               )}
               {certifications.map((cert, idx) => (
                 <div key={cert.id} className="p-4 border rounded-md space-y-3">
@@ -947,14 +1083,24 @@ export default function ProfileManualPage() {
           </Card>
 
           {/* Memberships */}
-          <Card>
+          <Card style={{
+            background: 'rgba(255, 255, 255, 0.04)',
+            backdropFilter: 'blur(25px)',
+            border: '1px solid rgba(255, 255, 255, 0.06)',
+            boxShadow: '0 0 30px rgba(0, 0, 0, 0.4)',
+            borderRadius: '20px'
+          }}>
             <CardHeader>
               <div className="flex justify-between items-center">
                 <div>
-                  <CardTitle>Professional Memberships</CardTitle>
-                  <CardDescription>Professional organizations and memberships</CardDescription>
+                  <CardTitle style={{ color: '#FFFFFF' }}>Professional Memberships</CardTitle>
+                  <CardDescription style={{ color: '#9AA4B2' }}>Professional organizations and memberships</CardDescription>
                 </div>
-                <Button type="button" variant="outline" size="sm" onClick={addMembership}>
+                <Button type="button" variant="outline" size="sm" onClick={addMembership} style={{
+                  background: 'rgba(255, 255, 255, 0.06)',
+                  border: '1px solid rgba(255, 255, 255, 0.1)',
+                  color: '#9AA4B2'
+                }}>
                   <Plus className="w-4 h-4 mr-2" />
                   Add Membership
                 </Button>
@@ -962,7 +1108,7 @@ export default function ProfileManualPage() {
             </CardHeader>
             <CardContent className="space-y-4">
               {memberships.length === 0 && (
-                <p className="text-sm text-muted-foreground">No memberships added yet. Click "Add Membership" to begin.</p>
+                <p style={{ fontSize: '14px', color: '#9AA4B2' }}>No memberships added yet. Click "Add Membership" to begin.</p>
               )}
               {memberships.map((mem, idx) => (
                 <div key={mem.id} className="p-4 border rounded-md space-y-3">
@@ -1040,14 +1186,24 @@ export default function ProfileManualPage() {
           </Card>
 
           {/* Voluntary/Governance Roles */}
-          <Card>
+          <Card style={{
+            background: 'rgba(255, 255, 255, 0.04)',
+            backdropFilter: 'blur(25px)',
+            border: '1px solid rgba(255, 255, 255, 0.06)',
+            boxShadow: '0 0 30px rgba(0, 0, 0, 0.4)',
+            borderRadius: '20px'
+          }}>
             <CardHeader>
               <div className="flex justify-between items-center">
                 <div>
-                  <CardTitle>Voluntary & Governance Roles</CardTitle>
-                  <CardDescription>Voluntary work and governance positions</CardDescription>
+                  <CardTitle style={{ color: '#FFFFFF' }}>Voluntary & Governance Roles</CardTitle>
+                  <CardDescription style={{ color: '#9AA4B2' }}>Voluntary work and governance positions</CardDescription>
                 </div>
-                <Button type="button" variant="outline" size="sm" onClick={addVoluntaryRole}>
+                <Button type="button" variant="outline" size="sm" onClick={addVoluntaryRole} style={{
+                  background: 'rgba(255, 255, 255, 0.06)',
+                  border: '1px solid rgba(255, 255, 255, 0.1)',
+                  color: '#9AA4B2'
+                }}>
                   <Plus className="w-4 h-4 mr-2" />
                   Add Role
                 </Button>
@@ -1145,10 +1301,20 @@ export default function ProfileManualPage() {
 
           {/* Submit */}
           <div className="flex gap-3 justify-end">
-            <Button type="button" variant="outline" asChild>
+            <Button type="button" variant="outline" asChild style={{
+              background: 'rgba(255, 255, 255, 0.06)',
+              border: '1px solid rgba(255, 255, 255, 0.1)',
+              color: '#9AA4B2'
+            }}>
               <Link href="/profile/choose">Cancel</Link>
             </Button>
-            <Button type="submit" disabled={loading}>
+            <Button type="submit" disabled={loading} style={{
+              background: 'linear-gradient(135deg, #4ff1e3, #536dfe)',
+              borderRadius: '14px',
+              boxShadow: '0 4px 15px rgba(79, 241, 227, 0.3)',
+              color: '#FFFFFF',
+              opacity: loading ? 0.5 : 1
+            }}>
               {loading ? 'Saving...' : 'Save Profile'}
             </Button>
           </div>

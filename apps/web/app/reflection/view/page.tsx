@@ -117,10 +117,13 @@ export default function ViewReflectionPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 p-6 flex items-center justify-center">
+      <div
+        className="min-h-screen p-6 flex items-center justify-center"
+        style={{ background: 'linear-gradient(135deg, #0D1117 0%, #0A0F14 100%)' }}
+      >
         <div className="text-center">
-          <Loader2 className="w-12 h-12 text-pink-400 mx-auto mb-4 animate-spin" />
-          <h2 className="text-xl font-semibold text-white">Loading your insights...</h2>
+          <Loader2 className="w-12 h-12 mx-auto mb-4 animate-spin" style={{ color: '#4ff1e3' }} />
+          <h2 className="text-xl font-semibold" style={{ color: '#FFFFFF' }}>Loading your insights...</h2>
         </div>
       </div>
     );
@@ -128,15 +131,41 @@ export default function ViewReflectionPage() {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 p-6 flex items-center justify-center">
-        <div className="bg-white/10 backdrop-blur-xl rounded-3xl shadow-2xl p-8 max-w-2xl w-full text-center border border-white/20">
+      <div
+        className="min-h-screen p-6 flex items-center justify-center"
+        style={{ background: 'linear-gradient(135deg, #0D1117 0%, #0A0F14 100%)' }}
+      >
+        <div
+          className="p-8 max-w-2xl w-full text-center"
+          style={{
+            background: 'rgba(255, 255, 255, 0.04)',
+            border: '1px solid rgba(255, 255, 255, 0.06)',
+            backdropFilter: 'blur(25px)',
+            boxShadow: '0 0 30px rgba(0, 0, 0, 0.4)',
+            borderRadius: '20px'
+          }}
+        >
           <div className="text-5xl mb-4">⚠️</div>
-          <h2 className="text-2xl font-bold text-white mb-2">{error}</h2>
+          <h2 className="text-2xl font-bold mb-2" style={{ color: '#FFFFFF' }}>{error}</h2>
           <div className="mt-6 flex gap-4 justify-center">
-            <button className="px-6 py-3 bg-white/20 backdrop-blur-sm rounded-full text-white border border-white/30 hover:bg-white/30 transition-all">
+            <button
+              className="px-6 py-3 rounded-full transition-all duration-200"
+              style={{
+                background: 'rgba(255, 255, 255, 0.06)',
+                border: '1px solid rgba(255, 255, 255, 0.1)',
+                color: '#FFFFFF'
+              }}
+            >
               <Link href="/dashboard">Back to Dashboard</Link>
             </button>
-            <button className="px-6 py-3 bg-gradient-to-r from-pink-500 to-purple-500 rounded-full text-white hover:scale-105 transition-transform shadow-lg">
+            <button
+              className="px-6 py-3 rounded-full transition-all duration-200 shadow-lg"
+              style={{
+                background: 'linear-gradient(135deg, #4ff1e3, #536dfe)',
+                color: '#FFFFFF',
+                boxShadow: '0 4px 15px rgba(79, 241, 227, 0.3)'
+              }}
+            >
               <Link href="/reflection">Complete Reflection</Link>
             </button>
           </div>
@@ -150,19 +179,38 @@ export default function ViewReflectionPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 p-6">
+    <div
+      className="min-h-screen p-6"
+      style={{ background: 'linear-gradient(135deg, #0D1117 0%, #0A0F14 100%)' }}
+    >
       <div className="max-w-4xl mx-auto">
         {/* Header */}
-        <div className="bg-white/10 backdrop-blur-xl rounded-3xl shadow-2xl p-8 mb-6 border border-white/20">
+        <div
+          className="p-8 mb-6"
+          style={{
+            background: 'rgba(255, 255, 255, 0.04)',
+            border: '1px solid rgba(255, 255, 255, 0.06)',
+            backdropFilter: 'blur(25px)',
+            boxShadow: '0 0 30px rgba(0, 0, 0, 0.4)',
+            borderRadius: '20px'
+          }}
+        >
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center">
-              <Lightbulb className="w-8 h-8 text-pink-400 mr-3" />
+              <Lightbulb className="w-8 h-8 mr-3" style={{ color: '#4ff1e3' }} />
               <div>
-                <h1 className="text-3xl font-bold text-white">Your Self-Reflection Insights</h1>
-                <p className="text-purple-200 text-sm mt-1">Review your career journey reflections</p>
+                <h1 className="text-3xl font-bold" style={{ color: '#FFFFFF' }}>Your Self-Reflection Insights</h1>
+                <p className="text-sm mt-1" style={{ color: '#9AA4B2' }}>Review your career journey reflections</p>
               </div>
             </div>
-            <button className="px-4 py-2 bg-white/20 backdrop-blur-sm rounded-full text-white border border-white/30 hover:bg-white/30 transition-all flex items-center gap-2">
+            <button
+              className="px-4 py-2 rounded-full flex items-center gap-2 transition-all duration-200"
+              style={{
+                background: 'rgba(255, 255, 255, 0.06)',
+                border: '1px solid rgba(255, 255, 255, 0.1)',
+                color: '#FFFFFF'
+              }}
+            >
               <Link href="/dashboard" className="flex items-center gap-2">
                 <ArrowLeft className="w-4 h-4" />
                 Back
@@ -170,7 +218,13 @@ export default function ViewReflectionPage() {
             </button>
           </div>
 
-          <div className="flex gap-6 text-sm text-purple-200 pt-4 border-t border-white/20">
+          <div
+            className="flex gap-6 text-sm pt-4"
+            style={{
+              borderTop: '1px solid rgba(255, 255, 255, 0.1)',
+              color: '#9AA4B2'
+            }}
+          >
             <div className="flex items-center gap-2">
               <Calendar className="w-4 h-4" />
               <span>Completed: {formatDate(reflection.submission_date)}</span>
@@ -183,54 +237,117 @@ export default function ViewReflectionPage() {
         </div>
 
         {/* Career Goals & Aspirations */}
-        <div className="bg-white/10 backdrop-blur-xl rounded-3xl shadow-2xl p-8 mb-6 border border-white/20">
-          <h2 className="text-2xl font-bold text-white mb-6 border-b border-white/20 pb-3">
+        <div
+          className="p-8 mb-6"
+          style={{
+            background: 'rgba(255, 255, 255, 0.04)',
+            border: '1px solid rgba(255, 255, 255, 0.06)',
+            backdropFilter: 'blur(25px)',
+            boxShadow: '0 0 30px rgba(0, 0, 0, 0.4)',
+            borderRadius: '20px'
+          }}
+        >
+          <h2
+            className="text-2xl font-bold mb-6 pb-3"
+            style={{
+              color: '#FFFFFF',
+              borderBottom: '1px solid rgba(255, 255, 255, 0.1)'
+            }}
+          >
             Career Goals & Aspirations
           </h2>
           
           <div className="space-y-6">
             <div>
-              <h3 className="text-sm font-semibold text-purple-200 mb-2">Primary Career Goals (3-5 years)</h3>
-              <p className="text-white bg-white/5 rounded-lg p-4 border border-white/10">{reflection.career_goals_3_5_years}</p>
+              <h3 className="text-sm font-semibold mb-2" style={{ color: '#9AA4B2' }}>Primary Career Goals (3-5 years)</h3>
+              <p
+                className="rounded-lg p-4"
+                style={{
+                  color: '#FFFFFF',
+                  background: 'rgba(255, 255, 255, 0.06)',
+                  border: '1px solid rgba(255, 255, 255, 0.1)'
+                }}
+              >{reflection.career_goals_3_5_years}</p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <h3 className="text-sm font-semibold text-purple-200 mb-2">Career Direction Clarity</h3>
-                <div className="bg-white/5 rounded-lg p-4 border border-white/10">
+                <h3 className="text-sm font-semibold mb-2" style={{ color: '#9AA4B2' }}>Career Direction Clarity</h3>
+                <div
+                  className="rounded-lg p-4"
+                  style={{
+                    background: 'rgba(255, 255, 255, 0.06)',
+                    border: '1px solid rgba(255, 255, 255, 0.1)'
+                  }}
+                >
                   <div className="flex items-center justify-between mb-2">
-                    <span className="text-gray-800 font-medium">{getRatingLabel(reflection.has_clear_career_direction)}</span>
-                    <span className="text-purple-600 font-bold">{reflection.has_clear_career_direction}/5</span>
+                    <span className="font-medium" style={{ color: '#E5E7EB' }}>{getRatingLabel(reflection.has_clear_career_direction)}</span>
+                    <span className="font-bold" style={{ color: '#4ff1e3' }}>{reflection.has_clear_career_direction}/5</span>
                   </div>
-                  <div className="w-full bg-purple-200 rounded-full h-2">
+                  <div
+                    className="w-full rounded-full h-2"
+                    style={{ background: 'rgba(79, 241, 227, 0.2)' }}
+                  >
                     <div 
-                      className="bg-purple-600 h-2 rounded-full"
-                      style={{ width: `${(reflection.has_clear_career_direction / 5) * 100}%` } as React.CSSProperties}
+                      className="h-2 rounded-full"
+                      style={{
+                        background: 'linear-gradient(135deg, #4ff1e3, #536dfe)',
+                        width: `${(reflection.has_clear_career_direction / 5) * 100}%`
+                      }}
                     />
                   </div>
                 </div>
               </div>
 
               <div>
-                <h3 className="text-sm font-semibold text-gray-700 mb-2">Desired Role (Next Year)</h3>
-                <p className="text-gray-800 bg-purple-50 rounded-lg p-4">{reflection.role_within_next_year}</p>
+                <h3 className="text-sm font-semibold mb-2" style={{ color: '#9AA4B2' }}>Desired Role (Next Year)</h3>
+                <p
+                  className="rounded-lg p-4"
+                  style={{
+                    color: '#E5E7EB',
+                    background: 'rgba(255, 255, 255, 0.06)'
+                  }}
+                >{reflection.role_within_next_year}</p>
               </div>
             </div>
           </div>
         </div>
 
         {/* Motivations & Values */}
-        <div className="bg-white rounded-2xl shadow-xl p-8 mb-6">
-          <h2 className="text-2xl font-bold text-purple-900 mb-6 border-b border-purple-200 pb-3">
+        <div
+          className="p-8 mb-6"
+          style={{
+            background: 'rgba(255, 255, 255, 0.04)',
+            border: '1px solid rgba(255, 255, 255, 0.06)',
+            backdropFilter: 'blur(25px)',
+            boxShadow: '0 0 30px rgba(0, 0, 0, 0.4)',
+            borderRadius: '20px'
+          }}
+        >
+          <h2
+            className="text-2xl font-bold mb-6 pb-3"
+            style={{
+              color: '#FFFFFF',
+              borderBottom: '1px solid rgba(255, 255, 255, 0.1)'
+            }}
+          >
             Motivations & Values
           </h2>
           
           <div className="space-y-6">
             <div>
-              <h3 className="text-sm font-semibold text-gray-700 mb-2">Career Motivators</h3>
+              <h3 className="text-sm font-semibold mb-2" style={{ color: '#9AA4B2' }}>Career Motivators</h3>
               <div className="flex flex-wrap gap-2">
                 {reflection.career_motivations && Array.isArray(reflection.career_motivations) && reflection.career_motivations.map((motivation, index) => (
-                  <span key={index} className="bg-purple-100 text-purple-800 px-4 py-2 rounded-full text-sm font-medium">
+                  <span
+                    key={index}
+                    className="px-4 py-2 rounded-full text-sm font-medium"
+                    style={{
+                      background: 'rgba(79, 241, 227, 0.15)',
+                      border: '1px solid rgba(79, 241, 227, 0.3)',
+                      color: '#4ff1e3'
+                    }}
+                  >
                     {motivation}
                   </span>
                 ))}
@@ -238,21 +355,38 @@ export default function ViewReflectionPage() {
             </div>
 
             <div>
-              <h3 className="text-sm font-semibold text-gray-700 mb-2">Sense of Fulfillment</h3>
-              <p className="text-gray-800 bg-purple-50 rounded-lg p-4">{reflection.sense_of_fulfillment}</p>
+              <h3 className="text-sm font-semibold mb-2" style={{ color: '#9AA4B2' }}>Sense of Fulfillment</h3>
+              <p
+                className="rounded-lg p-4"
+                style={{
+                  color: '#E5E7EB',
+                  background: 'rgba(255, 255, 255, 0.06)'
+                }}
+              >{reflection.sense_of_fulfillment}</p>
             </div>
 
             <div>
-              <h3 className="text-sm font-semibold text-gray-700 mb-2">Career Path Fulfillment</h3>
-              <div className="bg-purple-50 rounded-lg p-4">
+              <h3 className="text-sm font-semibold mb-2" style={{ color: '#9AA4B2' }}>Career Path Fulfillment</h3>
+              <div
+                className="rounded-lg p-4"
+                style={{
+                  background: 'rgba(255, 255, 255, 0.06)'
+                }}
+              >
                 <div className="flex items-center justify-between mb-2">
-                  <span className="text-gray-800 font-medium">{getRatingLabel(reflection.career_fulfillment_rating)}</span>
-                  <span className="text-purple-600 font-bold">{reflection.career_fulfillment_rating}/5</span>
+                  <span className="font-medium" style={{ color: '#E5E7EB' }}>{getRatingLabel(reflection.career_fulfillment_rating)}</span>
+                  <span className="font-bold" style={{ color: '#4ff1e3' }}>{reflection.career_fulfillment_rating}/5</span>
                 </div>
-                <div className="w-full bg-purple-200 rounded-full h-2">
+                <div
+                  className="w-full rounded-full h-2"
+                  style={{ background: 'rgba(79, 241, 227, 0.2)' }}
+                >
                   <div 
-                    className="bg-purple-600 h-2 rounded-full"
-                    style={{ width: `${(reflection.career_fulfillment_rating / 5) * 100}%` } as React.CSSProperties}
+                    className="h-2 rounded-full"
+                    style={{
+                      background: 'linear-gradient(135deg, #4ff1e3, #536dfe)',
+                      width: `${(reflection.career_fulfillment_rating / 5) * 100}%`
+                    }}
                   />
                 </div>
               </div>
@@ -261,33 +395,71 @@ export default function ViewReflectionPage() {
         </div>
 
         {/* Strengths & Development */}
-        <div className="bg-white rounded-2xl shadow-xl p-8 mb-6">
-          <h2 className="text-2xl font-bold text-purple-900 mb-6 border-b border-purple-200 pb-3">
+        <div
+          className="p-8 mb-6"
+          style={{
+            background: 'rgba(255, 255, 255, 0.04)',
+            border: '1px solid rgba(255, 255, 255, 0.06)',
+            backdropFilter: 'blur(25px)',
+            boxShadow: '0 0 30px rgba(0, 0, 0, 0.4)',
+            borderRadius: '20px'
+          }}
+        >
+          <h2
+            className="text-2xl font-bold mb-6 pb-3"
+            style={{
+              color: '#FFFFFF',
+              borderBottom: '1px solid rgba(255, 255, 255, 0.1)'
+            }}
+          >
             Strengths & Development
           </h2>
           
           <div className="space-y-6">
             <div>
-              <h3 className="text-sm font-semibold text-gray-700 mb-2">Professional Strengths</h3>
-              <p className="text-gray-800 bg-purple-50 rounded-lg p-4 whitespace-pre-wrap">{reflection.professional_strengths}</p>
+              <h3 className="text-sm font-semibold mb-2" style={{ color: '#9AA4B2' }}>Professional Strengths</h3>
+              <p
+                className="rounded-lg p-4 whitespace-pre-wrap"
+                style={{
+                  color: '#E5E7EB',
+                  background: 'rgba(255, 255, 255, 0.06)'
+                }}
+              >{reflection.professional_strengths}</p>
             </div>
 
             <div>
-              <h3 className="text-sm font-semibold text-gray-700 mb-2">Skills to Develop</h3>
-              <p className="text-gray-800 bg-purple-50 rounded-lg p-4 whitespace-pre-wrap">{reflection.skills_to_develop}</p>
+              <h3 className="text-sm font-semibold mb-2" style={{ color: '#9AA4B2' }}>Skills to Develop</h3>
+              <p
+                className="rounded-lg p-4 whitespace-pre-wrap"
+                style={{
+                  color: '#E5E7EB',
+                  background: 'rgba(255, 255, 255, 0.06)'
+                }}
+              >{reflection.skills_to_develop}</p>
             </div>
 
             <div>
-              <h3 className="text-sm font-semibold text-gray-700 mb-2">Development Seeking Behavior</h3>
-              <div className="bg-purple-50 rounded-lg p-4">
+              <h3 className="text-sm font-semibold mb-2" style={{ color: '#9AA4B2' }}>Development Seeking Behavior</h3>
+              <div
+                className="rounded-lg p-4"
+                style={{
+                  background: 'rgba(255, 255, 255, 0.06)'
+                }}
+              >
                 <div className="flex items-center justify-between mb-2">
-                  <span className="text-gray-800 font-medium">{getRatingLabel(reflection.seeks_development_rating)}</span>
-                  <span className="text-purple-600 font-bold">{reflection.seeks_development_rating}/5</span>
+                  <span className="font-medium" style={{ color: '#E5E7EB' }}>{getRatingLabel(reflection.seeks_development_rating)}</span>
+                  <span className="font-bold" style={{ color: '#4ff1e3' }}>{reflection.seeks_development_rating}/5</span>
                 </div>
-                <div className="w-full bg-purple-200 rounded-full h-2">
+                <div
+                  className="w-full rounded-full h-2"
+                  style={{ background: 'rgba(79, 241, 227, 0.2)' }}
+                >
                   <div 
-                    className="bg-purple-600 h-2 rounded-full"
-                    style={{ width: `${(reflection.seeks_development_rating / 5) * 100}%` } as React.CSSProperties}
+                    className="h-2 rounded-full"
+                    style={{
+                      background: 'linear-gradient(135deg, #4ff1e3, #536dfe)',
+                      width: `${(reflection.seeks_development_rating / 5) * 100}%`
+                    }}
                   />
                 </div>
               </div>
@@ -296,35 +468,73 @@ export default function ViewReflectionPage() {
         </div>
 
         {/* Work Style Preferences */}
-        <div className="bg-white rounded-2xl shadow-xl p-8 mb-6">
-          <h2 className="text-2xl font-bold text-purple-900 mb-6 border-b border-purple-200 pb-3">
+        <div
+          className="p-8 mb-6"
+          style={{
+            background: 'rgba(255, 255, 255, 0.04)',
+            border: '1px solid rgba(255, 255, 255, 0.06)',
+            backdropFilter: 'blur(25px)',
+            boxShadow: '0 0 30px rgba(0, 0, 0, 0.4)',
+            borderRadius: '20px'
+          }}
+        >
+          <h2
+            className="text-2xl font-bold mb-6 pb-3"
+            style={{
+              color: '#FFFFFF',
+              borderBottom: '1px solid rgba(255, 255, 255, 0.1)'
+            }}
+          >
             Work Style Preferences
           </h2>
           
           <div className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <h3 className="text-sm font-semibold text-gray-700 mb-2">Preferred Work Environment</h3>
-                <p className="text-gray-800 bg-purple-50 rounded-lg p-4">{reflection.preferred_work_environment}</p>
+                <h3 className="text-sm font-semibold mb-2" style={{ color: '#9AA4B2' }}>Preferred Work Environment</h3>
+                <p
+                  className="rounded-lg p-4"
+                  style={{
+                    color: '#E5E7EB',
+                    background: 'rgba(255, 255, 255, 0.06)'
+                  }}
+                >{reflection.preferred_work_environment}</p>
               </div>
 
               <div>
-                <h3 className="text-sm font-semibold text-gray-700 mb-2">Problem-Solving Approach</h3>
-                <p className="text-gray-800 bg-purple-50 rounded-lg p-4">{reflection.problem_solving_approach}</p>
+                <h3 className="text-sm font-semibold mb-2" style={{ color: '#9AA4B2' }}>Problem-Solving Approach</h3>
+                <p
+                  className="rounded-lg p-4"
+                  style={{
+                    color: '#E5E7EB',
+                    background: 'rgba(255, 255, 255, 0.06)'
+                  }}
+                >{reflection.problem_solving_approach}</p>
               </div>
             </div>
 
             <div>
-              <h3 className="text-sm font-semibold text-gray-700 mb-2">Leadership Preference</h3>
-              <div className="bg-purple-50 rounded-lg p-4">
+              <h3 className="text-sm font-semibold mb-2" style={{ color: '#9AA4B2' }}>Leadership Preference</h3>
+              <div
+                className="rounded-lg p-4"
+                style={{
+                  background: 'rgba(255, 255, 255, 0.06)'
+                }}
+              >
                 <div className="flex items-center justify-between mb-2">
-                  <span className="text-gray-800 font-medium">{getRatingLabel(reflection.leadership_preference_rating)}</span>
-                  <span className="text-purple-600 font-bold">{reflection.leadership_preference_rating}/5</span>
+                  <span className="font-medium" style={{ color: '#E5E7EB' }}>{getRatingLabel(reflection.leadership_preference_rating)}</span>
+                  <span className="font-bold" style={{ color: '#4ff1e3' }}>{reflection.leadership_preference_rating}/5</span>
                 </div>
-                <div className="w-full bg-purple-200 rounded-full h-2">
+                <div
+                  className="w-full rounded-full h-2"
+                  style={{ background: 'rgba(79, 241, 227, 0.2)' }}
+                >
                   <div 
-                    className="bg-purple-600 h-2 rounded-full"
-                    style={{ width: `${(reflection.leadership_preference_rating / 5) * 100}%` } as React.CSSProperties}
+                    className="h-2 rounded-full"
+                    style={{
+                      background: 'linear-gradient(135deg, #4ff1e3, #536dfe)',
+                      width: `${(reflection.leadership_preference_rating / 5) * 100}%`
+                    }}
                   />
                 </div>
               </div>
@@ -333,33 +543,71 @@ export default function ViewReflectionPage() {
         </div>
 
         {/* Past Experiences & Learnings */}
-        <div className="bg-white rounded-2xl shadow-xl p-8 mb-6">
-          <h2 className="text-2xl font-bold text-purple-900 mb-6 border-b border-purple-200 pb-3">
+        <div
+          className="p-8 mb-6"
+          style={{
+            background: 'rgba(255, 255, 255, 0.04)',
+            border: '1px solid rgba(255, 255, 255, 0.06)',
+            backdropFilter: 'blur(25px)',
+            boxShadow: '0 0 30px rgba(0, 0, 0, 0.4)',
+            borderRadius: '20px'
+          }}
+        >
+          <h2
+            className="text-2xl font-bold mb-6 pb-3"
+            style={{
+              color: '#FFFFFF',
+              borderBottom: '1px solid rgba(255, 255, 255, 0.1)'
+            }}
+          >
             Past Experiences & Learnings
           </h2>
           
           <div className="space-y-6">
             <div>
-              <h3 className="text-sm font-semibold text-gray-700 mb-2">Proudest Achievement</h3>
-              <p className="text-gray-800 bg-purple-50 rounded-lg p-4 whitespace-pre-wrap">{reflection.proudest_achievement}</p>
+              <h3 className="text-sm font-semibold mb-2" style={{ color: '#9AA4B2' }}>Proudest Achievement</h3>
+              <p
+                className="rounded-lg p-4 whitespace-pre-wrap"
+                style={{
+                  color: '#E5E7EB',
+                  background: 'rgba(255, 255, 255, 0.06)'
+                }}
+              >{reflection.proudest_achievement}</p>
             </div>
 
             <div>
-              <h3 className="text-sm font-semibold text-gray-700 mb-2">Biggest Challenge & Learning</h3>
-              <p className="text-gray-800 bg-purple-50 rounded-lg p-4 whitespace-pre-wrap">{reflection.biggest_challenge_and_learning}</p>
+              <h3 className="text-sm font-semibold mb-2" style={{ color: '#9AA4B2' }}>Biggest Challenge & Learning</h3>
+              <p
+                className="rounded-lg p-4 whitespace-pre-wrap"
+                style={{
+                  color: '#E5E7EB',
+                  background: 'rgba(255, 255, 255, 0.06)'
+                }}
+              >{reflection.biggest_challenge_and_learning}</p>
             </div>
 
             <div>
-              <h3 className="text-sm font-semibold text-gray-700 mb-2">Regular Reflection Habit</h3>
-              <div className="bg-purple-50 rounded-lg p-4">
+              <h3 className="text-sm font-semibold mb-2" style={{ color: '#9AA4B2' }}>Regular Reflection Habit</h3>
+              <div
+                className="rounded-lg p-4"
+                style={{
+                  background: 'rgba(255, 255, 255, 0.06)'
+                }}
+              >
                 <div className="flex items-center justify-between mb-2">
-                  <span className="text-gray-800 font-medium">{getRatingLabel(reflection.reflects_regularly_rating)}</span>
-                  <span className="text-purple-600 font-bold">{reflection.reflects_regularly_rating}/5</span>
+                  <span className="font-medium" style={{ color: '#E5E7EB' }}>{getRatingLabel(reflection.reflects_regularly_rating)}</span>
+                  <span className="font-bold" style={{ color: '#4ff1e3' }}>{reflection.reflects_regularly_rating}/5</span>
                 </div>
-                <div className="w-full bg-purple-200 rounded-full h-2">
+                <div
+                  className="w-full rounded-full h-2"
+                  style={{ background: 'rgba(79, 241, 227, 0.2)' }}
+                >
                   <div 
-                    className="bg-purple-600 h-2 rounded-full"
-                    style={{ width: `${(reflection.reflects_regularly_rating / 5) * 100}%` } as React.CSSProperties}
+                    className="h-2 rounded-full"
+                    style={{
+                      background: 'linear-gradient(135deg, #4ff1e3, #536dfe)',
+                      width: `${(reflection.reflects_regularly_rating / 5) * 100}%`
+                    }}
                   />
                 </div>
               </div>
@@ -368,11 +616,30 @@ export default function ViewReflectionPage() {
         </div>
 
         {/* Actions */}
-        <div className="bg-white rounded-2xl shadow-xl p-6 flex justify-between items-center">
-          <p className="text-sm text-gray-600">
+        <div
+          className="p-6 flex justify-between items-center"
+          style={{
+            background: 'rgba(255, 255, 255, 0.04)',
+            border: '1px solid rgba(255, 255, 255, 0.06)',
+            backdropFilter: 'blur(25px)',
+            boxShadow: '0 0 30px rgba(0, 0, 0, 0.4)',
+            borderRadius: '20px'
+          }}
+        >
+          <p className="text-sm" style={{ color: '#9AA4B2' }}>
             Your reflections are confidential and help us support your career journey.
           </p>
-          <Button asChild className="bg-purple-600 hover:bg-purple-700">
+          <Button
+            asChild
+            className="font-semibold transition-all duration-200"
+            style={{
+              background: 'linear-gradient(135deg, #4ff1e3, #536dfe)',
+              borderRadius: '14px',
+              color: '#FFFFFF',
+              boxShadow: '0 4px 15px rgba(79, 241, 227, 0.3)',
+              border: 'none'
+            }}
+          >
             <Link href="/dashboard">Back to Dashboard</Link>
           </Button>
         </div>

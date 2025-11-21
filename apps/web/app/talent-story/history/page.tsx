@@ -98,33 +98,67 @@ export default function TalentStoryHistoryPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-pink-950/40 via-purple-900/20 to-black flex items-center justify-center">
+      <div
+        className="min-h-screen flex items-center justify-center"
+        style={{ background: 'linear-gradient(135deg, #0D1117 0%, #0A0F14 100%)' }}
+      >
         <div className="text-white text-xl">Loading your TalentStories...</div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-950/40 via-purple-900/20 to-black p-6">
+    <div
+      className="min-h-screen p-6"
+      style={{ background: 'linear-gradient(135deg, #0D1117 0%, #0A0F14 100%)' }}
+    >
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
           <div>
-            <h1 className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-pink-400 to-purple-400 mb-2">
+            <h1 className="text-4xl font-bold mb-2" style={{ color: '#FFFFFF' }}>
               📚 TalentStory History
             </h1>
-            <p className="text-gray-400">View and manage all your generated TalentStories</p>
+            <p style={{ color: '#9AA4B2' }}>View and manage all your generated TalentStories</p>
           </div>
           <div className="flex gap-3">
             <button
               onClick={() => router.push('/dashboard')}
-              className="px-6 py-3 rounded-lg bg-gray-500/20 border border-gray-500/30 text-gray-300 hover:bg-gray-500/30 font-semibold"
+              className="px-6 py-3 font-semibold transition-all duration-200"
+              style={{
+                background: 'rgba(255, 255, 255, 0.06)',
+                border: '1px solid rgba(255, 255, 255, 0.1)',
+                borderRadius: '14px',
+                color: '#9AA4B2'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.1)';
+                e.currentTarget.style.transform = 'translateY(-2px)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.06)';
+                e.currentTarget.style.transform = 'translateY(0)';
+              }}
             >
               🏠 Main Menu
             </button>
             <button
               onClick={() => router.push('/talent-story/builder')}
-              className="px-6 py-3 rounded-lg bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white font-semibold"
+              className="px-6 py-3 font-semibold transition-all duration-200"
+              style={{
+                background: 'linear-gradient(135deg, #4ff1e3, #536dfe)',
+                borderRadius: '14px',
+                color: '#FFFFFF',
+                boxShadow: '0 4px 15px rgba(79, 241, 227, 0.3)'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = 'translateY(-2px)';
+                e.currentTarget.style.boxShadow = '0 6px 20px rgba(79, 241, 227, 0.4)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'translateY(0)';
+                e.currentTarget.style.boxShadow = '0 4px 15px rgba(79, 241, 227, 0.3)';
+              }}
             >
               ✨ Create New
             </button>
@@ -132,11 +166,34 @@ export default function TalentStoryHistoryPage() {
         </div>
 
         {stories.length === 0 ? (
-          <div className="glass-card p-12 text-center">
-            <p className="text-gray-400 text-lg mb-4">No TalentStories yet</p>
+          <div
+            className="p-12 text-center"
+            style={{
+              background: 'rgba(255, 255, 255, 0.04)',
+              border: '1px solid rgba(255, 255, 255, 0.06)',
+              backdropFilter: 'blur(25px)',
+              boxShadow: '0 0 30px rgba(0, 0, 0, 0.4)',
+              borderRadius: '20px'
+            }}
+          >
+            <p className="text-lg mb-4" style={{ color: '#9AA4B2' }}>No TalentStories yet</p>
             <button
               onClick={() => router.push('/talent-story/builder')}
-              className="px-6 py-3 rounded-lg bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white font-semibold"
+              className="px-6 py-3 font-semibold transition-all duration-200"
+              style={{
+                background: 'linear-gradient(135deg, #4ff1e3, #536dfe)',
+                borderRadius: '14px',
+                color: '#FFFFFF',
+                boxShadow: '0 4px 15px rgba(79, 241, 227, 0.3)'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = 'translateY(-2px)';
+                e.currentTarget.style.boxShadow = '0 6px 20px rgba(79, 241, 227, 0.4)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'translateY(0)';
+                e.currentTarget.style.boxShadow = '0 4px 15px rgba(79, 241, 227, 0.3)';
+              }}
             >
               Create Your First TalentStory
             </button>
@@ -149,30 +206,50 @@ export default function TalentStoryHistoryPage() {
                 <div
                   key={story.id}
                   onClick={() => setSelectedStory(story)}
-                  className={`glass-card p-4 cursor-pointer transition-all ${
-                    selectedStory?.id === story.id
-                      ? 'ring-2 ring-pink-500 bg-pink-500/10'
-                      : 'hover:bg-white/5'
-                  }`}
+                  className="p-4 cursor-pointer transition-all duration-200"
+                  style={{
+                    background: selectedStory?.id === story.id ? 'rgba(79, 241, 227, 0.1)' : 'rgba(255, 255, 255, 0.04)',
+                    border: selectedStory?.id === story.id ? '2px solid rgba(79, 241, 227, 0.5)' : '1px solid rgba(255, 255, 255, 0.06)',
+                    backdropFilter: 'blur(25px)',
+                    boxShadow: '0 0 30px rgba(0, 0, 0, 0.4)',
+                    borderRadius: '20px'
+                  }}
+                  onMouseEnter={(e) => {
+                    if (selectedStory?.id !== story.id) {
+                      e.currentTarget.style.background = 'rgba(255, 255, 255, 0.06)';
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (selectedStory?.id !== story.id) {
+                      e.currentTarget.style.background = 'rgba(255, 255, 255, 0.04)';
+                    }
+                  }}
                 >
                   <div className="flex items-start justify-between mb-2">
                     <div className="flex-1">
                       <div className="flex items-center gap-2 mb-1">
-                        <span className="text-white font-semibold">
+                        <span className="font-semibold" style={{ color: '#FFFFFF' }}>
                           {new Date(story.created_at).toLocaleDateString()}
                         </span>
                         {story.is_active && (
-                          <span className="px-2 py-0.5 rounded-full bg-green-500/20 text-green-400 text-xs">
+                          <span
+                            className="px-2 py-0.5 rounded-full text-xs"
+                            style={{
+                              background: 'rgba(74, 222, 128, 0.15)',
+                              border: '1px solid rgba(74, 222, 128, 0.3)',
+                              color: '#4ade80'
+                            }}
+                          >
                             Active
                           </span>
                         )}
                       </div>
-                      <p className="text-gray-400 text-sm">
+                      <p className="text-sm" style={{ color: '#9AA4B2' }}>
                         {new Date(story.created_at).toLocaleTimeString()}
                       </p>
                     </div>
                   </div>
-                  <p className="text-gray-300 text-sm line-clamp-3">
+                  <p className="text-sm line-clamp-3" style={{ color: '#E5E7EB' }}>
                     {story.story.substring(0, 100)}...
                   </p>
                   <div className="flex gap-2 mt-3">
@@ -182,7 +259,18 @@ export default function TalentStoryHistoryPage() {
                           e.stopPropagation();
                           handleSetActive(story.id);
                         }}
-                        className="text-xs px-2 py-1 rounded bg-green-500/20 text-green-400 hover:bg-green-500/30"
+                        className="text-xs px-2 py-1 rounded transition-all duration-200"
+                        style={{
+                          background: 'rgba(74, 222, 128, 0.15)',
+                          border: '1px solid rgba(74, 222, 128, 0.3)',
+                          color: '#4ade80'
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.background = 'rgba(74, 222, 128, 0.25)';
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.background = 'rgba(74, 222, 128, 0.15)';
+                        }}
                       >
                         Set Active
                       </button>
@@ -192,7 +280,18 @@ export default function TalentStoryHistoryPage() {
                         e.stopPropagation();
                         handleDelete(story.id);
                       }}
-                      className="text-xs px-2 py-1 rounded bg-red-500/20 text-red-400 hover:bg-red-500/30"
+                      className="text-xs px-2 py-1 rounded transition-all duration-200"
+                      style={{
+                        background: 'rgba(255, 60, 60, 0.15)',
+                        border: '1px solid rgba(255, 60, 60, 0.4)',
+                        color: '#ff6b6b'
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.background = 'rgba(255, 60, 60, 0.25)';
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.background = 'rgba(255, 60, 60, 0.15)';
+                      }}
                     >
                       Delete
                     </button>
@@ -204,20 +303,41 @@ export default function TalentStoryHistoryPage() {
             {/* Story Preview */}
             <div className="lg:col-span-2">
               {selectedStory ? (
-                <div className="glass-card p-6 space-y-4">
+                <div
+                  className="p-6 space-y-4"
+                  style={{
+                    background: 'rgba(255, 255, 255, 0.04)',
+                    border: '1px solid rgba(255, 255, 255, 0.06)',
+                    backdropFilter: 'blur(25px)',
+                    boxShadow: '0 0 30px rgba(0, 0, 0, 0.4)',
+                    borderRadius: '20px'
+                  }}
+                >
                   <div className="flex items-center justify-between mb-4">
                     <div>
-                      <h2 className="text-2xl font-bold text-white mb-1">
+                      <h2 className="text-2xl font-bold mb-1" style={{ color: '#FFFFFF' }}>
                         TalentStory Preview
                       </h2>
-                      <p className="text-gray-400 text-sm">
+                      <p className="text-sm" style={{ color: '#9AA4B2' }}>
                         Created: {new Date(selectedStory.created_at).toLocaleString()}
                       </p>
                     </div>
                     <div className="flex gap-2">
                       <button
                         onClick={() => navigator.clipboard.writeText(selectedStory.story)}
-                        className="px-4 py-2 rounded-lg bg-pink-500/20 border border-pink-500/30 text-pink-400 hover:bg-pink-500/30 text-sm"
+                        className="px-4 py-2 text-sm transition-all duration-200"
+                        style={{
+                          background: 'rgba(79, 241, 227, 0.15)',
+                          border: '1px solid rgba(79, 241, 227, 0.3)',
+                          borderRadius: '12px',
+                          color: '#4ff1e3'
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.background = 'rgba(79, 241, 227, 0.25)';
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.background = 'rgba(79, 241, 227, 0.15)';
+                        }}
                       >
                         📋 Copy
                       </button>
@@ -230,20 +350,46 @@ export default function TalentStoryHistoryPage() {
                           a.download = `talent-story-${selectedStory.id}.md`;
                           a.click();
                         }}
-                        className="px-4 py-2 rounded-lg bg-pink-500/20 border border-pink-500/30 text-pink-400 hover:bg-pink-500/30 text-sm"
+                        className="px-4 py-2 text-sm transition-all duration-200"
+                        style={{
+                          background: 'rgba(79, 241, 227, 0.15)',
+                          border: '1px solid rgba(79, 241, 227, 0.3)',
+                          borderRadius: '12px',
+                          color: '#4ff1e3'
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.background = 'rgba(79, 241, 227, 0.25)';
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.background = 'rgba(79, 241, 227, 0.15)';
+                        }}
                       >
                         ⬇️ Download
                       </button>
                     </div>
                   </div>
 
-                  <div className="prose prose-invert prose-pink max-w-none">
+                  <div
+                    className="prose prose-invert prose-pink max-w-none"
+                    style={{
+                      color: '#FFFFFF'
+                    }}
+                  >
                     <ReactMarkdown>{selectedStory.story}</ReactMarkdown>
                   </div>
                 </div>
               ) : (
-                <div className="glass-card p-12 text-center h-full flex items-center justify-center">
-                  <p className="text-gray-400">Select a TalentStory to preview</p>
+                <div
+                  className="p-12 text-center h-full flex items-center justify-center"
+                  style={{
+                    background: 'rgba(255, 255, 255, 0.04)',
+                    border: '1px solid rgba(255, 255, 255, 0.06)',
+                    backdropFilter: 'blur(25px)',
+                    boxShadow: '0 0 30px rgba(0, 0, 0, 0.4)',
+                    borderRadius: '20px'
+                  }}
+                >
+                  <p style={{ color: '#9AA4B2' }}>Select a TalentStory to preview</p>
                 </div>
               )}
             </div>

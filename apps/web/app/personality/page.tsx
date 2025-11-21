@@ -355,8 +355,11 @@ export default function PersonalityQuestionnaire() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
-        <Loader2 className="w-8 h-8 text-pink-400 animate-spin" />
+      <div
+        className="min-h-screen flex items-center justify-center"
+        style={{ background: 'linear-gradient(135deg, #0D1117 0%, #0A0F14 100%)' }}
+      >
+        <Loader2 className="w-8 h-8 animate-spin" style={{ color: '#4ff1e3' }} />
       </div>
     )
   }
@@ -364,48 +367,92 @@ export default function PersonalityQuestionnaire() {
   if (isComplete) {
     const scores = calculateScores()
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 p-6 flex items-center justify-center">
-        <div className="bg-white/10 backdrop-blur-xl rounded-3xl shadow-2xl p-8 max-w-2xl w-full border border-white/20">
+      <div
+        className="min-h-screen p-6 flex items-center justify-center"
+        style={{ background: 'linear-gradient(135deg, #0D1117 0%, #0A0F14 100%)' }}
+      >
+        <div
+          className="p-8 max-w-2xl w-full"
+          style={{
+            background: 'rgba(255, 255, 255, 0.04)',
+            border: '1px solid rgba(255, 255, 255, 0.06)',
+            backdropFilter: 'blur(25px)',
+            boxShadow: '0 0 30px rgba(0, 0, 0, 0.4)',
+            borderRadius: '20px'
+          }}
+        >
           <div className="text-center mb-8">
-            <CheckCircle className="w-16 h-16 text-green-400 mx-auto mb-4" />
-            <h2 className="text-3xl font-bold text-white mb-2">Assessment Complete!</h2>
-            <p className="text-purple-200">Thank you for completing the personality questionnaire.</p>
+            <CheckCircle className="w-16 h-16 mx-auto mb-4" style={{ color: '#4ade80' }} />
+            <h2 className="text-3xl font-bold mb-2" style={{ color: '#FFFFFF' }}>Assessment Complete!</h2>
+            <p style={{ color: '#9AA4B2' }}>Thank you for completing the personality questionnaire.</p>
           </div>
           
           <div className="space-y-4">
-            <h3 className="text-xl font-semibold text-white mb-4">Your Scores:</h3>
+            <h3 className="text-xl font-semibold mb-4" style={{ color: '#FFFFFF' }}>Your Scores:</h3>
             {Object.entries(scores).map(([category, score]) => (
-              <div key={category} className="bg-white/5 rounded-xl p-4 border border-white/10">
+              <div
+                key={category}
+                className="rounded-xl p-4"
+                style={{
+                  background: 'rgba(255, 255, 255, 0.06)',
+                  border: '1px solid rgba(255, 255, 255, 0.1)'
+                }}
+              >
                 <div className="flex justify-between items-center mb-2">
-                  <span className="text-purple-200 font-medium capitalize">
+                  <span className="font-medium capitalize" style={{ color: '#E5E7EB' }}>
                     {category.replace('_', ' ')}
                   </span>
-                  <span className="text-pink-400 font-bold">{score}/100</span>
+                  <span className="font-bold" style={{ color: '#4ff1e3' }}>{score}/100</span>
                 </div>
-                <div className="w-full bg-white/10 rounded-full h-2">
+                <div
+                  className="w-full rounded-full h-2"
+                  style={{ background: 'rgba(79, 241, 227, 0.2)' }}
+                >
                   <div 
-                    className="bg-gradient-to-r from-pink-500 to-purple-500 h-2 rounded-full transition-all duration-500"
-                    style={{ width: `${score}%` } as React.CSSProperties}
+                    className="h-2 rounded-full transition-all duration-500"
+                    style={{
+                      background: 'linear-gradient(135deg, #4ff1e3, #536dfe)',
+                      width: `${score}%`
+                    }}
                   />
                 </div>
               </div>
             ))}
           </div>
           
-          <p className="text-sm text-purple-300 mt-6 text-center">
+          <p className="text-sm mt-6 text-center" style={{ color: '#9AA4B2' }}>
             These results have been saved to your application profile.
           </p>
 
-          <div className="mt-6 bg-purple-500/20 border border-purple-400/30 rounded-xl p-4">
-            <h3 className="text-sm font-semibold text-white mb-2">
+          <div
+            className="mt-6 rounded-xl p-4"
+            style={{
+              background: 'rgba(79, 241, 227, 0.1)',
+              border: '1px solid rgba(79, 241, 227, 0.3)'
+            }}
+          >
+            <h3 className="text-sm font-semibold mb-2" style={{ color: '#FFFFFF' }}>
               💡 Next Step: Self-Reflection Insights
             </h3>
-            <p className="text-xs text-purple-200 mb-3">
+            <p className="text-xs mb-3" style={{ color: '#9AA4B2' }}>
               Complete your career reflection to help us understand your goals, motivations, and aspirations.
             </p>
             <button
               onClick={() => router.push('/reflection')}
-              className="w-full px-4 py-2 bg-gradient-to-r from-pink-500 to-purple-500 text-white rounded-full hover:scale-105 transition-transform text-sm shadow-lg"
+              className="w-full px-4 py-2 rounded-full transition-all duration-200 text-sm shadow-lg"
+              style={{
+                background: 'linear-gradient(135deg, #4ff1e3, #536dfe)',
+                color: '#FFFFFF',
+                boxShadow: '0 4px 15px rgba(79, 241, 227, 0.3)'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = 'translateY(-2px)';
+                e.currentTarget.style.boxShadow = '0 6px 20px rgba(79, 241, 227, 0.4)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'translateY(0)';
+                e.currentTarget.style.boxShadow = '0 4px 15px rgba(79, 241, 227, 0.3)';
+              }}
             >
               Start Reflection Questionnaire
             </button>
@@ -414,7 +461,12 @@ export default function PersonalityQuestionnaire() {
           <div className="mt-4 flex justify-center gap-4">
             <button
               onClick={() => router.push('/dashboard')}
-              className="px-6 py-2 bg-white/20 backdrop-blur-sm border border-white/30 text-white rounded-full hover:bg-white/30 transition-all"
+              className="px-6 py-2 rounded-full transition-all duration-200"
+              style={{
+                background: 'rgba(255, 255, 255, 0.06)',
+                border: '1px solid rgba(255, 255, 255, 0.1)',
+                color: '#FFFFFF'
+              }}
             >
               Back to Dashboard
             </button>
@@ -425,56 +477,95 @@ export default function PersonalityQuestionnaire() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 p-6">
+    <div
+      className="min-h-screen p-6"
+      style={{ background: 'linear-gradient(135deg, #0D1117 0%, #0A0F14 100%)' }}
+    >
       <div className="max-w-4xl mx-auto">
         {/* Header */}
-        <div className="bg-white/10 backdrop-blur-xl rounded-3xl shadow-2xl p-8 mb-6 border border-white/20">
+        <div
+          className="p-8 mb-6"
+          style={{
+            background: 'rgba(255, 255, 255, 0.04)',
+            border: '1px solid rgba(255, 255, 255, 0.06)',
+            backdropFilter: 'blur(25px)',
+            boxShadow: '0 0 30px rgba(0, 0, 0, 0.4)',
+            borderRadius: '20px'
+          }}
+        >
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center">
-              <Brain className="w-8 h-8 text-pink-400 mr-3" />
-              <h1 className="text-3xl font-bold text-white">Personality & Work Style Assessment</h1>
+              <Brain className="w-8 h-8 mr-3" style={{ color: '#4ff1e3' }} />
+              <h1 className="text-3xl font-bold" style={{ color: '#FFFFFF' }}>Personality & Work Style Assessment</h1>
             </div>
             <button
               onClick={() => router.push('/dashboard')}
-              className="flex items-center gap-2 px-4 py-2 bg-white/20 backdrop-blur-sm rounded-full text-white hover:bg-white/30 transition-all border border-white/30"
+              className="flex items-center gap-2 px-4 py-2 rounded-full transition-all duration-200"
+              style={{
+                background: 'rgba(255, 255, 255, 0.06)',
+                border: '1px solid rgba(255, 255, 255, 0.1)',
+                color: '#FFFFFF'
+              }}
             >
               <ArrowLeft size={18} />
               Back
             </button>
           </div>
-          <p className="text-purple-200 mb-6">
+          <p className="mb-6" style={{ color: '#9AA4B2' }}>
             Please rate how much you agree with each statement. This helps us understand your work style and preferences.
           </p>
           
           {/* Progress Bar */}
           <div className="mb-4">
-            <div className="flex justify-between text-sm text-purple-200 mb-2">
+            <div className="flex justify-between text-sm mb-2" style={{ color: '#9AA4B2' }}>
               <span>Progress: {Object.keys(responses).length} of {questions.length} questions</span>
               <span>{Math.round(progressPercentage)}%</span>
             </div>
-            <div className="w-full bg-white/10 rounded-full h-3">
+            <div
+              className="w-full rounded-full h-3"
+              style={{ background: 'rgba(79, 241, 227, 0.2)' }}
+            >
               <div 
-                className="bg-gradient-to-r from-pink-500 to-purple-500 h-3 rounded-full transition-all duration-300 shadow-lg"
-                style={{ width: `${progressPercentage}%` } as React.CSSProperties}
+                className="h-3 rounded-full transition-all duration-300 shadow-lg"
+                style={{
+                  background: 'linear-gradient(135deg, #4ff1e3, #536dfe)',
+                  width: `${progressPercentage}%`
+                }}
               />
             </div>
           </div>
           
-          <p className="text-sm text-purple-200">
+          <p className="text-sm" style={{ color: '#9AA4B2' }}>
             Page {currentPage + 1} of {totalPages}
           </p>
         </div>
 
         {/* Questions */}
-        <div className="bg-white/10 backdrop-blur-xl rounded-3xl shadow-2xl p-8 mb-6 border border-white/20">
+        <div
+          className="p-8 mb-6"
+          style={{
+            background: 'rgba(255, 255, 255, 0.04)',
+            border: '1px solid rgba(255, 255, 255, 0.06)',
+            backdropFilter: 'blur(25px)',
+            boxShadow: '0 0 30px rgba(0, 0, 0, 0.4)',
+            borderRadius: '20px'
+          }}
+        >
           <div className="space-y-8">
             {getCurrentPageQuestions().map((question) => (
-              <div key={question.id} className="border-b border-white/10 pb-6 last:border-b-0">
+              <div
+                key={question.id}
+                className="pb-6 last:border-b-0"
+                style={{ borderBottom: '1px solid rgba(255, 255, 255, 0.1)' }}
+              >
                 <div className="mb-4">
-                  <span className="text-sm font-medium text-pink-400 uppercase tracking-wide">
+                  <span
+                    className="text-sm font-medium uppercase tracking-wide"
+                    style={{ color: '#4ff1e3' }}
+                  >
                     {question.dimension}
                   </span>
-                  <p className="text-lg text-white mt-2 font-medium">
+                  <p className="text-lg mt-2 font-medium" style={{ color: '#FFFFFF' }}>
                     {question.text}
                   </p>
                 </div>
@@ -484,17 +575,35 @@ export default function PersonalityQuestionnaire() {
                     <button
                       key={option.value}
                       onClick={() => handleResponseChange(question.id, option.value)}
-                      className={`
-                        px-4 py-3 rounded-xl border-2 transition-all duration-200
-                        ${responses[question.id] === option.value
-                          ? 'border-pink-400 bg-pink-400/20 text-pink-400 font-semibold shadow-lg shadow-pink-500/20'
-                          : 'border-white/20 bg-white/5 text-purple-200 hover:border-pink-400/50 hover:bg-white/10'
+                      className="px-4 py-3 rounded-xl transition-all duration-200"
+                      style={{
+                        border: responses[question.id] === option.value 
+                          ? '2px solid rgba(79, 241, 227, 0.6)' 
+                          : '2px solid rgba(255, 255, 255, 0.1)',
+                        background: responses[question.id] === option.value
+                          ? 'rgba(79, 241, 227, 0.15)'
+                          : 'rgba(255, 255, 255, 0.04)',
+                        color: responses[question.id] === option.value ? '#4ff1e3' : '#9AA4B2',
+                        boxShadow: responses[question.id] === option.value
+                          ? '0 4px 15px rgba(79, 241, 227, 0.2)'
+                          : 'none'
+                      }}
+                      onMouseEnter={(e) => {
+                        if (responses[question.id] !== option.value) {
+                          e.currentTarget.style.borderColor = 'rgba(79, 241, 227, 0.3)';
+                          e.currentTarget.style.background = 'rgba(255, 255, 255, 0.08)';
                         }
-                      `}
+                      }}
+                      onMouseLeave={(e) => {
+                        if (responses[question.id] !== option.value) {
+                          e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.1)';
+                          e.currentTarget.style.background = 'rgba(255, 255, 255, 0.04)';
+                        }
+                      }}
                     >
                       <div className="text-center">
-                        <div className="text-2xl font-bold mb-1">{option.value}</div>
-                        <div className="text-xs">{option.label}</div>
+                        <div className="text-2xl font-bold mb-1\">{option.value}</div>
+                        <div className="text-xs\">{option.label}</div>
                       </div>
                     </button>
                   ))}
@@ -509,13 +618,13 @@ export default function PersonalityQuestionnaire() {
           <button
             onClick={() => setCurrentPage(prev => prev - 1)}
             disabled={currentPage === 0}
-            className={`
-              flex items-center px-6 py-3 rounded-full font-semibold transition-all
-              ${currentPage === 0
-                ? 'bg-white/5 text-purple-400/50 cursor-not-allowed border border-white/10'
-                : 'bg-white/20 text-white hover:bg-white/30 shadow-lg backdrop-blur-sm border border-white/30'
-              }
-            `}
+            className="flex items-center px-6 py-3 rounded-full font-semibold transition-all duration-200"
+            style={{
+              background: currentPage === 0 ? 'rgba(255, 255, 255, 0.02)' : 'rgba(255, 255, 255, 0.06)',
+              border: '1px solid rgba(255, 255, 255, 0.1)',
+              color: currentPage === 0 ? 'rgba(154, 164, 178, 0.5)' : '#9AA4B2',
+              cursor: currentPage === 0 ? 'not-allowed' : 'pointer'
+            }}
           >
             <ChevronLeft className="w-5 h-5 mr-2" />
             Previous
@@ -525,13 +634,16 @@ export default function PersonalityQuestionnaire() {
             <button
               onClick={handleSubmit}
               disabled={!isPageComplete() || saving}
-              className={`
-                flex items-center px-8 py-3 rounded-full font-semibold transition-all
-                ${!isPageComplete() || saving
-                  ? 'bg-white/5 text-purple-400/50 cursor-not-allowed border border-white/10'
-                  : 'bg-gradient-to-r from-pink-500 to-purple-500 text-white hover:scale-105 shadow-lg'
-                }
-              `}
+              className="flex items-center px-8 py-3 rounded-full font-semibold transition-all duration-200 shadow-lg"
+              style={{
+                background: !isPageComplete() || saving 
+                  ? 'rgba(255, 255, 255, 0.02)' 
+                  : 'linear-gradient(135deg, #4ff1e3, #536dfe)',
+                border: '1px solid rgba(255, 255, 255, 0.1)',
+                color: !isPageComplete() || saving ? 'rgba(154, 164, 178, 0.5)' : '#FFFFFF',
+                cursor: !isPageComplete() || saving ? 'not-allowed' : 'pointer',
+                boxShadow: !isPageComplete() || saving ? 'none' : '0 4px 15px rgba(79, 241, 227, 0.3)'
+              }}
             >
               {saving ? (
                 <>
@@ -549,13 +661,16 @@ export default function PersonalityQuestionnaire() {
             <button
               onClick={() => setCurrentPage(prev => prev + 1)}
               disabled={!isPageComplete()}
-              className={`
-                flex items-center px-6 py-3 rounded-full font-semibold transition-all
-                ${!isPageComplete()
-                  ? 'bg-white/5 text-purple-400/50 cursor-not-allowed border border-white/10'
-                  : 'bg-gradient-to-r from-pink-500 to-purple-500 text-white hover:scale-105 shadow-lg'
-                }
-              `}
+              className="flex items-center px-6 py-3 rounded-full font-semibold transition-all duration-200 shadow-lg"
+              style={{
+                background: !isPageComplete() 
+                  ? 'rgba(255, 255, 255, 0.02)' 
+                  : 'linear-gradient(135deg, #4ff1e3, #536dfe)',
+                border: '1px solid rgba(255, 255, 255, 0.1)',
+                color: !isPageComplete() ? 'rgba(154, 164, 178, 0.5)' : '#FFFFFF',
+                cursor: !isPageComplete() ? 'not-allowed' : 'pointer',
+                boxShadow: !isPageComplete() ? 'none' : '0 4px 15px rgba(79, 241, 227, 0.3)'
+              }}
             >
               Next
               <ChevronRight className="w-5 h-5 ml-2" />

@@ -14,12 +14,3 @@ export const supabaseClient = (_browserUrl && _anonKey)
         throw new Error('NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY are not set. The Supabase browser client is unavailable during build. Ensure these env vars are configured in Vercel (Preview/Production).')
       }
     }) as any
-
-// Server-side client factory. Validates required env vars and returns a client when called.
-export function getSupabaseServer() {
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL
-  const key = process.env.SUPABASE_SERVICE_ROLE_KEY
-  if (!url) throw new Error('NEXT_PUBLIC_SUPABASE_URL is not set. Set this in your environment or Vercel project settings.')
-  if (!key) throw new Error('SUPABASE_SERVICE_ROLE_KEY is not set. Set this in your environment or Vercel project settings.')
-  return createClient(url, key)
-}
