@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { supabaseClient } from '@/lib/supabase'
-import { Mail, Github, Loader2, Eye, EyeOff } from 'lucide-react'
+import { Mail, Github, Loader2, Eye, EyeOff, Apple, Linkedin, Facebook, Twitter } from 'lucide-react'
 
 export default function LoginPage() {
   const router = useRouter()
@@ -13,6 +13,8 @@ export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [magicLinkSent, setMagicLinkSent] = useState(false)
+  const [showMagicLink, setShowMagicLink] = useState(false)
 
   const handleEmailLogin = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -71,7 +73,7 @@ export default function LoginPage() {
     }
   }
 
-  const handleSocialLogin = async (provider: 'google' | 'github') => {
+  const handleSocialLogin = async (provider: 'google' | 'github' | 'apple' | 'azure' | 'facebook' | 'linkedin_oidc' | 'twitter') => {
     setLoading(true)
     setError(null)
 
@@ -86,6 +88,33 @@ export default function LoginPage() {
       if (authError) {
         setError(authError.message)
       }
+    } catch (err) {
+      setError('An unexpected error occurred')
+      console.error(err)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const handleMagicLink = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setLoading(true)
+    setError(null)
+
+    try {
+      const { error: authError } = await supabaseClient.auth.signInWithOtp({
+        email,
+        options: {
+          emailRedirectTo: `${typeof window !== 'undefined' ? window.location.origin : ''}/auth/callback`,
+        },
+      })
+
+      if (authError) {
+        setError(authError.message)
+        return
+      }
+
+      setMagicLinkSent(true)
     } catch (err) {
       setError('An unexpected error occurred')
       console.error(err)
@@ -236,6 +265,93 @@ export default function LoginPage() {
             </p>
           </div>
 
+          {/* Magic Link Toggle */}
+          <div className="text-center mb-6">
+            <button
+              onClick={() => {
+                setShowMagicLink(!showMagicLink)
+                setMagicLinkSent(false)
+                setError(null)
+              }}
+              style={{ color: '#4ff1e3', fontSize: '14px' }}
+              className="hover:opacity-80 font-semibold transition"
+            >
+              {showMagicLink ? 'Use password instead' : 'Sign in with Magic Link (passwordless)'}
+            </button>
+          </div>
+
+          {/* Magic Link Form */}
+          {showMagicLink && (
+            <div className="mb-6">
+              {magicLinkSent ? (
+                <div style={{
+                  padding: '16px',
+                  background: 'rgba(79, 241, 227, 0.15)',
+                  border: '1px solid rgba(79, 241, 227, 0.4)',
+                  borderRadius: '12px',
+                  backdropFilter: 'blur(10px)'
+                }}>
+                  <p style={{ fontSize: '14px', color: '#4ff1e3', fontWeight: '500' }}>
+                    ✓ Check your email for a magic link to sign in!
+                  </p>
+                </div>
+              ) : (
+                <form onSubmit={handleMagicLink} className="space-y-4">
+                  <input
+                    type="email"
+                    placeholder="Enter your email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                    style={{
+                      background: 'rgba(255, 255, 255, 0.06)',
+                      border: '1px solid rgba(255, 255, 255, 0.1)',
+                      borderRadius: '12px',
+                      color: '#FFFFFF',
+                      padding: '12px 16px',
+                      width: '100%',
+                      transition: 'all 0.2s ease'
+                    }}
+                    className="placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:border-cyan-400"
+                  />
+                  <button
+                    type="submit"
+                    disabled={loading}
+                    style={{
+                      background: loading ? 'rgba(79, 241, 227, 0.4)' : 'linear-gradient(135deg, #4ff1e3, #536dfe)',
+                      borderRadius: '14px',
+                      padding: '12px',
+                      width: '100%',
+                      color: '#FFFFFF',
+                      fontWeight: 'bold',
+                      transition: 'all 0.2s ease',
+                      boxShadow: loading ? 'none' : '0 4px 15px rgba(79, 241, 227, 0.3)',
+                      cursor: loading ? 'not-allowed' : 'pointer',
+                      border: 'none',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: '8px'
+                    }}
+                    className={!loading ? 'hover:shadow-[0_6px_20px_rgba(79,241,227,0.4)] hover:-translate-y-0.5' : ''}
+                  >
+                    {loading ? (
+                      <>
+                        <Loader2 className="w-5 h-5 animate-spin" />
+                        Sending Magic Link...
+                      </>
+                    ) : (
+                      <>
+                        <Mail className="w-5 h-5" />
+                        Send Magic Link
+                      </>
+                    )}
+                  </button>
+                </form>
+              )}
+            </div>
+          )}
+
           {/* Divider */}
           <div className="relative mb-6">
             <div className="absolute inset-0 flex items-center">
@@ -249,7 +365,7 @@ export default function LoginPage() {
                 fontWeight: '500',
                 borderRadius: '12px',
                 backdropFilter: 'blur(10px)'
-              }}>or</span>
+              }}>or continue with</span>
             </div>
           </div>
 
@@ -277,7 +393,32 @@ export default function LoginPage() {
               className={!loading ? 'hover:border-cyan-400/50 hover:bg-white/10 hover:-translate-y-0.5' : ''}
             >
               <Mail className="w-5 h-5" />
-              Sign in with Google
+              Continue with Google
+            </button>
+
+            <button
+              onClick={() => handleSocialLogin('apple')}
+              disabled={loading}
+              style={{
+                background: 'rgba(255, 255, 255, 0.06)',
+                border: '1px solid rgba(255, 255, 255, 0.1)',
+                borderRadius: '14px',
+                padding: '12px',
+                width: '100%',
+                color: '#FFFFFF',
+                fontWeight: 'bold',
+                transition: 'all 0.2s ease',
+                cursor: loading ? 'not-allowed' : 'pointer',
+                opacity: loading ? '0.5' : '1',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '12px'
+              }}
+              className={!loading ? 'hover:border-cyan-400/50 hover:bg-white/10 hover:-translate-y-0.5' : ''}
+            >
+              <Apple className="w-5 h-5" />
+              Continue with Apple
             </button>
 
             <button
@@ -302,7 +443,109 @@ export default function LoginPage() {
               className={!loading ? 'hover:border-cyan-400/50 hover:bg-white/10 hover:-translate-y-0.5' : ''}
             >
               <Github className="w-5 h-5" />
-              Sign in with GitHub
+              Continue with GitHub
+            </button>
+
+            <button
+              onClick={() => handleSocialLogin('azure')}
+              disabled={loading}
+              style={{
+                background: 'rgba(255, 255, 255, 0.06)',
+                border: '1px solid rgba(255, 255, 255, 0.1)',
+                borderRadius: '14px',
+                padding: '12px',
+                width: '100%',
+                color: '#FFFFFF',
+                fontWeight: 'bold',
+                transition: 'all 0.2s ease',
+                cursor: loading ? 'not-allowed' : 'pointer',
+                opacity: loading ? '0.5' : '1',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '12px'
+              }}
+              className={!loading ? 'hover:border-cyan-400/50 hover:bg-white/10 hover:-translate-y-0.5' : ''}
+            >
+              <svg className="w-5 h-5" viewBox="0 0 21 21" fill="currentColor">
+                <path d="M0 0h10v10H0zM11 0h10v10H11zM0 11h10v10H0zM11 11h10v10H11z"/>
+              </svg>
+              Continue with Microsoft
+            </button>
+
+            <button
+              onClick={() => handleSocialLogin('linkedin_oidc')}
+              disabled={loading}
+              style={{
+                background: 'rgba(255, 255, 255, 0.06)',
+                border: '1px solid rgba(255, 255, 255, 0.1)',
+                borderRadius: '14px',
+                padding: '12px',
+                width: '100%',
+                color: '#FFFFFF',
+                fontWeight: 'bold',
+                transition: 'all 0.2s ease',
+                cursor: loading ? 'not-allowed' : 'pointer',
+                opacity: loading ? '0.5' : '1',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '12px'
+              }}
+              className={!loading ? 'hover:border-cyan-400/50 hover:bg-white/10 hover:-translate-y-0.5' : ''}
+            >
+              <Linkedin className="w-5 h-5" />
+              Continue with LinkedIn
+            </button>
+
+            <button
+              onClick={() => handleSocialLogin('facebook')}
+              disabled={loading}
+              style={{
+                background: 'rgba(255, 255, 255, 0.06)',
+                border: '1px solid rgba(255, 255, 255, 0.1)',
+                borderRadius: '14px',
+                padding: '12px',
+                width: '100%',
+                color: '#FFFFFF',
+                fontWeight: 'bold',
+                transition: 'all 0.2s ease',
+                cursor: loading ? 'not-allowed' : 'pointer',
+                opacity: loading ? '0.5' : '1',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '12px'
+              }}
+              className={!loading ? 'hover:border-cyan-400/50 hover:bg-white/10 hover:-translate-y-0.5' : ''}
+            >
+              <Facebook className="w-5 h-5" />
+              Continue with Facebook
+            </button>
+
+            <button
+              onClick={() => handleSocialLogin('twitter')}
+              disabled={loading}
+              style={{
+                background: 'rgba(255, 255, 255, 0.06)',
+                border: '1px solid rgba(255, 255, 255, 0.1)',
+                borderRadius: '14px',
+                padding: '12px',
+                width: '100%',
+                color: '#FFFFFF',
+                fontWeight: 'bold',
+                transition: 'all 0.2s ease',
+                cursor: loading ? 'not-allowed' : 'pointer',
+                opacity: loading ? '0.5' : '1',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '12px'
+              }}
+              className={!loading ? 'hover:border-cyan-400/50 hover:bg-white/10 hover:-translate-y-0.5' : ''}
+            >
+              <Twitter className="w-5 h-5" />
+              Continue with Twitter
             </button>
           </div>
 
