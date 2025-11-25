@@ -1,0 +1,68 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "userId": {
+      "type": "string",
+      "description": "The unique identifier for the user."
+    },
+    "name": {
+      "type": "string",
+      "description": "The full name of the user."
+    },
+    "email": {
+      "type": "string",
+      "format": "email",
+      "description": "The email address of the user."
+    },
+    "location": {
+      "type": "string",
+      "description": "The geographical location of the user."
+    },
+    "summary": {
+      "type": "string",
+      "description": "A brief summary or profile statement of the user."
+    },
+    "skills": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "A list of skills possessed by the user."
+    },
+    "experiences": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "The job title of the user in this experience."
+          },
+          "company": {
+            "type": "string",
+            "description": "The company where the user worked."
+          },
+          "dateRange": {
+            "type": "string",
+            "description": "The duration of the employment."
+          },
+          "fullStory": {
+            "type": "string",
+            "description": "A detailed description of the user's role and achievements."
+          },
+          "highlights": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Key achievements or responsibilities in this role."
+          }
+        },
+        "required": ["title", "company", "dateRange", "fullStory"]
+      },
+      "description": "A list of experiences the user has had."
+    }
+  },
+  "required": ["userId", "name", "email", "location", "summary", "skills", "experiences"]
+}

@@ -1,0 +1,47 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="resume.css">
+  <style>
+    @page { size: A4; margin: 16mm; }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <h1>{{user.name}}</h1>
+    <div class="contact">{{user.email}} • {{user.location}}</div>
+  </header>
+
+  <section class="summary">
+    <h2>Profile</h2>
+    <p>{{summary}}</p>
+  </section>
+
+  <section class="skills">
+    <h2>Skills</h2>
+    <ul class="skills-list">
+      {{#each skills}}<li>{{this}}</li>{{/each}}
+    </ul>
+  </section>
+
+  <section class="experience">
+    <h2>Experience</h2>
+    {{#each stories}}
+    <article class="role">
+      <div class="role-header">
+        <strong>{{this.experience.title}}</strong> • {{this.experience.company}} — {{this.experience.dateRange}}
+      </div>
+      <div class="role-body">
+        <p>{{this.fullStory}}</p>
+      </div>
+    </article>
+    {{/each}}
+  </section>
+
+  <footer class="footer">
+    <small>Generated with Careersie</small>
+  </footer>
+</body>
+</html>

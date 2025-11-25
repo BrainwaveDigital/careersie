@@ -1,0 +1,9 @@
+CREATE TABLE ExportHistory (
+    id SERIAL PRIMARY KEY,
+    userId VARCHAR(255) NOT NULL,
+    format VARCHAR(50) NOT NULL,
+    filename VARCHAR(255) NOT NULL,
+    fileUrl VARCHAR(255) NOT NULL,
+    settings JSONB,
+    createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);

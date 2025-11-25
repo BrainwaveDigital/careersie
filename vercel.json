@@ -1,0 +1,9 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "buildCommand": "pnpm turbo run build --filter=web",
+  "outputDirectory": "apps/web/.next",
+  "devCommand": "pnpm turbo run dev --filter=web",
+  "installCommand": "pnpm install",
+  "framework": null,
+  "ignoreCommand": "git diff --quiet HEAD^ HEAD ./apps/web"
+}

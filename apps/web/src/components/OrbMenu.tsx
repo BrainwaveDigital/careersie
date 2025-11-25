@@ -52,15 +52,6 @@ const OrbMenu = () => {
       href: '/profile'
     },
     {
-      id: 'stories',
-      icon: BookOpen,
-      title: 'STAR Stories',
-      description: 'Craft achievement narratives',
-      gradient: 'from-indigo-500 via-blue-500 to-cyan-500',
-      glowColor: 'rgba(99, 102, 241, 0.4)',
-      href: '/story-test'
-    },
-    {
       id: 'media',
       icon: Image,
       title: 'Media Library',
@@ -113,6 +104,24 @@ const OrbMenu = () => {
       gradient: 'from-blue-400 via-indigo-500 to-purple-600',
       glowColor: 'rgba(99, 102, 241, 0.5)',
       href: '/skills-3d-enhanced'
+    },
+    {
+      id: 'menu-test',
+      icon: Boxes,
+      title: 'Menu Test',
+      description: '3D carousel test',
+      gradient: 'from-purple-400 via-pink-500 to-red-500',
+      glowColor: 'rgba(168, 85, 247, 0.5)',
+      href: '/menu-test'
+    },
+    {
+      id: 'stories',
+      icon: BookOpen,
+      title: 'STAR Stories',
+      description: 'Craft achievement narratives',
+      gradient: 'from-indigo-500 via-blue-500 to-cyan-500',
+      glowColor: 'rgba(99, 102, 241, 0.4)',
+      href: '/story-test'
     }
   ];
 

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ATS-Friendly Resume</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 2rem;
+      color: #222;
+      background: #fff;
+    }
+    h1, h2, h3 {
+      margin-bottom: 0.5em;
+    }
+    section {
+      margin-bottom: 1.5em;
+    }
+    ul {
+      padding-left: 1.2em;
+    }
+    strong {
+      font-weight: bold;
+    }
+    em {
+      font-style: italic;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>{{name}}</h1>
+    <p>{{email}} | {{phone}} | {{location}}</p>
+  </header>
+  <section>
+    <h2>Summary</h2>
+    <p>{{summary}}</p>
+  </section>
+  <section>
+    <h2>Experience</h2>
+    <ul>
+      {{#each experience}}
+      <li>
+        <strong>{{role}}</strong> at <em>{{company}}</em> ({{start}} - {{end}})<br>
+        {{description}}
+      </li>
+      {{/each}}
+    </ul>
+  </section>
+  <section>
+    <h2>Education</h2>
+    <ul>
+      {{#each education}}
+      <li>
+        <strong>{{degree}}</strong>, {{institution}} ({{year}})
+      </li>
+      {{/each}}
+    </ul>
+  </section>
+  <section>
+    <h2>Skills</h2>
+    <ul>
+      {{#each skills}}
+      <li>{{this}}</li>
+      {{/each}}
+    </ul>
+  </section>
+</body>
+</html>
