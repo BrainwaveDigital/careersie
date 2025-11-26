@@ -13,3 +13,17 @@ model DownloadHistory {
   format    String
   createdAt DateTime @default(now())
 }
+
+model ExportHistory {
+  id         String   @id @default(cuid())
+  userId     String   @map("user_id")
+  format     String   // 'pdf' | 'docx' | 'linkedin' | 'seek' | 'text'
+  filename   String
+  fileUrl    String   @map("file_url")
+  settings   Json?    // export options used
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  @@index([userId])
+  @@index([createdAt(sort: Desc)])
+  @@map("export_history")
+}
