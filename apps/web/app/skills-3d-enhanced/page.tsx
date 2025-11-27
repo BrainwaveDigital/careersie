@@ -88,7 +88,7 @@ export default function EnhancedSkillVisualization() {
       console.log("📥 Skills response:", { skillsData, skillsError });
 
       if (skillsData && skillsData.length > 0) {
-        const extractedSkills = skillsData.map(s => s.skill);
+        const extractedSkills = skillsData.map((s: { skill: string }) => s.skill);
         console.log("✅ Extracted skills:", extractedSkills.length, extractedSkills);
         setSkills(extractedSkills);
       } else {

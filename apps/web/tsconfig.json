@@ -3,7 +3,8 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"]
+        "@/*": ["./src/*"],
+        "@/types/*": ["./src/types/*"]
     },
     "forceConsistentCasingInFileNames": true,
     "plugins": [

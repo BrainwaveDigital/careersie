@@ -5,7 +5,7 @@
  */
 
 import { NextRequest, NextResponse } from "next/server";
-import { getSupabaseServer } from "@/lib/supabase";
+import { getSupabaseServerWithAuth } from "@/lib/supabase.server";
 
 // Helper to extract access token from request headers/cookies
 function extractTokenFromHeaders(headers: Headers) {
@@ -78,7 +78,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Initialize Supabase server client
-    const supabaseServer = getSupabaseServer();
+    const supabaseServer = await getSupabaseServerWithAuth();
 
     // Find profile ID if not provided
     let actualProfileId: string = profileId || '';

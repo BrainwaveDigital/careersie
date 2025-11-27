@@ -1,10 +1,13 @@
 import { NextResponse } from 'next/server'
-import { getSupabaseServer } from '@/lib/supabase'
+import { getSupabaseServerWithAuth } from '@/lib/supabase.server'
 import { error } from 'ajv/dist/vocabularies/applicator/dependencies'
 
 // cSpell:ignore apikey
 
-export async function GET(req: Request, { params }: { params: { id: string } }) {
+import { NextRequest } from 'next/server'
+
+export async function GET(req: NextRequest, context: { params: Promise<{ id: string }> }) {
+  const { id } = await context.params
   try {
     // Try Authorization header first, then fall back to cookies (for browser sessions)
     let token: string | null = null
@@ -47,9 +50,13 @@ export async function GET(req: Request, { params }: { params: { id: string } }) 
     const userId = user?.id
     if (!userId) return new NextResponse(JSON.stringify({ error: 'Unable to determine user id' }), { status: 401 })
 
-    const id = params.id
-    const sb = getSupabaseServer()
-    const { data: docs, error: dErr } = await sb.from('parsed_documents').select('id, storage_path').eq('id', id).limit(1)
+    // id is already extracted above
+    const sb = await getSupabaseServerWithAuth()
+    const { data: docs, error: dErr } = await sb
+      .from('parsed_documents')
+      .select('id, storage_path')
+      .eq('id', id)
+      .limit(1) as unknown as { data: import('@/types/supabase').Database['public']['Tables']['parsed_documents']['Row'][]; error: any };
 
     if (dErr) return new NextResponse(JSON.stringify({ error: 'Failed to fetch parsed document', details: dErr }), { status: 500 })
     if (!docs || docs.length === 0) return new NextResponse(JSON.stringify({ error: 'Parsed document not found' }), { status: 404 })

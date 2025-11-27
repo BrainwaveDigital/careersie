@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getSupabaseServer } from '@/lib/supabase';
+import { getSupabaseServerWithAuth } from '@/lib/supabase.server';
 
 // Helper to extract access token from request headers/cookies
 function extractTokenFromHeaders(headers: Headers) {
@@ -61,7 +61,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Get server-side Supabase client
-    const supabase = getSupabaseServer();
+    const supabase = await getSupabaseServerWithAuth();
 
     // Parse request body
     const body = await request.json();
@@ -74,10 +74,13 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Generate a UUID for the required id field
+    const id = crypto.randomUUID();
     // Save customized story version
     const { data: customizedStory, error: insertError } = await supabase
       .from('customized_stories')
       .insert({
+        id,
         user_id: userId,
         profile_id,
         job_post_id,

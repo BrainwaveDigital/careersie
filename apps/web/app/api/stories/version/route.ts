@@ -2,14 +2,14 @@
  * POST /api/stories/version - Create a version snapshot
  */
 
-import { getSupabaseServer } from '@/lib/supabase.server';
+import { getSupabaseServerWithAuth } from '@/lib/supabase.server';
 import { NextRequest, NextResponse } from 'next/server';
 import { createVersionSchema, validateRequest } from '@/lib/storyValidation';
 import type { StoryVersion } from '@/lib/storyTypes';
 
 export async function POST(request: NextRequest) {
   try {
-    const supabase = getSupabaseServer();
+    const supabase = await getSupabaseServerWithAuth();
 
     // Parse and validate request body
     const body = await request.json();
@@ -42,13 +42,15 @@ export async function POST(request: NextRequest) {
     const { data: version, error: versionError } = await supabase
       .from('story_versions')
       .insert({
+        id: crypto.randomUUID(),
         story_id,
+        version_number: 1, // TODO: increment if needed
         situation: story.situation,
         task: story.task,
         action: story.action,
         result: story.result,
         full_story: story.full_story,
-        metrics: story.metrics,
+        metrics: story.metrics as unknown as import('@/types/supabase').Json,
         change_summary: change_summary || 'Manual version save',
         created_by_ai: false,
       })

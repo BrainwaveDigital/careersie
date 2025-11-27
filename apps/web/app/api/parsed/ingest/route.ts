@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { getSupabaseServer } from '@/lib/supabase'
+import { getSupabaseServerWithAuth } from '@/lib/supabase.server'
 import fs from 'fs'
 import path from 'path'
 import Ajv from 'ajv'
@@ -78,7 +78,7 @@ export async function POST(req: Request) {
     const educationPayload = Array.isArray(body.education) ? body.education : []
     const skillsPayload = Array.isArray(body.skills) ? body.skills : []
 
-    const supabase = getSupabaseServer()
+    const supabase = await getSupabaseServerWithAuth()
 
     // Ensure profile is created/updated and tied to this user
     if (profilePayload) {

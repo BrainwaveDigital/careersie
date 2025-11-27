@@ -12,6 +12,7 @@ export default function SignupPage() {
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
   const [fullName, setFullName] = useState('')
+  const [username, setUsername] = useState('')
   const [showPassword, setShowPassword] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -42,6 +43,7 @@ export default function SignupPage() {
         options: {
           data: {
             full_name: fullName,
+            username: username,
           },
           emailRedirectTo: `${typeof window !== 'undefined' ? window.location.origin : ''}/auth/callback`,
         }
@@ -61,6 +63,7 @@ export default function SignupPage() {
             userId: data.user.id,
             name: fullName,
             email: email,
+            username: username,
           }),
         })
 
@@ -201,6 +204,29 @@ export default function SignupPage() {
                 placeholder="John Doe"
                 value={fullName}
                 onChange={(e) => setFullName(e.target.value)}
+                required
+                style={{
+                  background: 'rgba(255, 255, 255, 0.06)',
+                  border: '1px solid rgba(255, 255, 255, 0.1)',
+                  borderRadius: '12px',
+                  color: '#FFFFFF',
+                  padding: '12px 16px',
+                  width: '100%',
+                  transition: 'all 0.2s ease'
+                }}
+                className="placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:border-cyan-400"
+              />
+            </div>
+            <div>
+              <label htmlFor="username" style={{ color: '#9AA4B2' }} className="block text-sm font-semibold mb-2">
+                Username
+              </label>
+              <input
+                id="username"
+                type="text"
+                placeholder="yourusername"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
                 required
                 style={{
                   background: 'rgba(255, 255, 255, 0.06)',

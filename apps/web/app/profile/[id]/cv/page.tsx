@@ -1,6 +1,6 @@
 import React from 'react'
 import Link from 'next/link'
-import { getSupabaseServer } from '@/lib/supabase'
+import { getSupabaseServerWithAuth } from '@/lib/supabase.server'
 import { Card, CardHeader, CardTitle, CardContent, CardDescription } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Edit, ArrowLeft } from 'lucide-react'
@@ -12,7 +12,7 @@ export default async function ProfileCvPage({ params }: Props) {
   const { id: profileId } = await params
 
   try {
-    const supabase = getSupabaseServer()
+    const supabase = await getSupabaseServerWithAuth()
 
     // fetch profile and normalized rows
     const [
@@ -113,34 +113,34 @@ export default async function ProfileCvPage({ params }: Props) {
             }}
           >
             <CardHeader>
-              <CardTitle style={{ color: '#FFFFFF' }}>{profile.full_name || profile.display_name || '—'}</CardTitle>
-              <CardDescription style={{ color: '#9AA4B2' }}>{profile.headline || 'No headline'}</CardDescription>
+              <CardTitle style={{ color: '#FFFFFF' }}>{profile?.full_name || '—'}</CardTitle>
+              <CardDescription style={{ color: '#9AA4B2' }}>{profile?.headline || 'No headline'}</CardDescription>
             </CardHeader>
             <CardContent className="space-y-3">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <div className="text-sm font-medium" style={{ color: '#9AA4B2' }}>Email</div>
-                  <div className="text-sm" style={{ color: '#E5E7EB' }}>{profile.email || '—'}</div>
+                  <div className="text-sm" style={{ color: '#E5E7EB' }}>{profile?.email || '—'}</div>
                 </div>
                 <div>
                   <div className="text-sm font-medium" style={{ color: '#9AA4B2' }}>Phone</div>
-                  <div className="text-sm" style={{ color: '#E5E7EB' }}>{profile.phone || '—'}</div>
+                  <div className="text-sm" style={{ color: '#E5E7EB' }}>{profile?.phone || '—'}</div>
                 </div>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <div className="text-sm font-medium" style={{ color: '#9AA4B2' }}>Location</div>
-                  <div className="text-sm" style={{ color: '#E5E7EB' }}>{profile.location || '—'}</div>
+                  <div className="text-sm" style={{ color: '#E5E7EB' }}>{profile?.location || '—'}</div>
                 </div>
                 <div>
                   <div className="text-sm font-medium" style={{ color: '#9AA4B2' }}>Website</div>
-                  <div className="text-sm" style={{ color: '#E5E7EB' }}>{profile.website || '—'}</div>
+                  <div className="text-sm" style={{ color: '#E5E7EB' }}>{profile?.website || '—'}</div>
                 </div>
               </div>
-              {profile.summary && (
+              {profile?.summary && (
                 <div>
                   <div className="text-sm font-medium mb-1" style={{ color: '#9AA4B2' }}>Summary</div>
-                  <p className="text-sm" style={{ color: '#E5E7EB' }}>{profile.summary}</p>
+                  <p className="text-sm" style={{ color: '#E5E7EB' }}>{profile?.summary}</p>
                 </div>
               )}
             </CardContent>

@@ -10,7 +10,7 @@
  */
 
 import { NextRequest, NextResponse } from "next/server";
-import { getSupabaseServer } from "@/lib/supabase";
+import { getSupabaseServerWithAuth } from "@/lib/supabase.server";
 import { getProfileStory } from "@/lib/profileStoryService";
 import { generateTalentStory } from "@/lib/talentStoryEngine";
 import { ProfileStoryPrompt } from "@/lib/profileStoryPrompt";
@@ -79,7 +79,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Initialize Supabase server client once
-    const supabaseServer = getSupabaseServer();
+    const supabaseServer = await getSupabaseServerWithAuth();
 
     // Get profile ID from request body (optional - can use user_id to find profile)
     const body = await request.json();
@@ -135,12 +135,13 @@ export async function POST(request: NextRequest) {
     const { data: savedStory, error: saveError } = await supabaseServer
       .from("talent_stories")
       .insert({
+        id: crypto.randomUUID(),
         user_id: userId,
         story,
         data: {
           ...profileStory,
           _promptConfig: promptConfig, // Store prompt config with data
-        },
+        } as unknown as import('@/types/supabase').Json,
         model: model || "gpt-4o-mini",
         is_active: true,
       })
@@ -210,7 +211,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Get active TalentStory
-    const supabaseServer = getSupabaseServer();
+    const supabaseServer = await getSupabaseServerWithAuth();
     const { data: story, error: storyError } = await supabaseServer
       .from("talent_stories")
       .select("*")

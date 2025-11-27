@@ -9,99 +9,11 @@ import { Button } from '@/components/ui/button'
 import { ArrowLeft, Edit } from 'lucide-react'
 
 export default function ProfilePage() {
-  const router = useRouter()
-  const [loading, setLoading] = useState(true)
-  const [profile, setProfile] = useState<any>(null)
-  const [experiences, setExperiences] = useState<any[]>([])
-  const [education, setEducation] = useState<any[]>([])
-  const [skills, setSkills] = useState<any[]>([])
-  const [certifications, setCertifications] = useState<any[]>([])
-  const [memberships, setMemberships] = useState<any[]>([])
-  const [voluntary, setVoluntary] = useState<any[]>([])
-
+  const router = useRouter();
   useEffect(() => {
-    async function loadProfile() {
-      try {
-        const { data: authData } = await supabaseClient.auth.getUser()
-        if (!authData?.user) {
-          router.push('/login')
-          return
-        }
-
-        // Get user's profile
-        const { data: profiles } = await supabaseClient
-          .from('profiles')
-          .select('*')
-          .eq('user_id', authData.user.id)
-          .limit(1)
-
-        if (!profiles || profiles.length === 0) {
-          // No profile exists, redirect to create
-          router.push('/profile/choose')
-          return
-        }
-
-        const userProfile = profiles[0]
-        setProfile(userProfile)
-
-        // Load related data
-        const [expRes, eduRes, skillRes, certRes, memRes, volRes] = await Promise.all([
-          supabaseClient.from('experiences').select('*').eq('profile_id', userProfile.id).order('order_index', { ascending: true }),
-          supabaseClient.from('education').select('*').eq('profile_id', userProfile.id).order('start_year', { ascending: false }),
-          supabaseClient.from('skills').select('*').eq('profile_id', userProfile.id),
-          supabaseClient.from('certifications').select('*').eq('profile_id', userProfile.id).order('issued_date', { ascending: false }),
-          supabaseClient.from('organizations').select('*').eq('profile_id', userProfile.id).eq('raw_json->>type', 'membership').order('issued_date', { ascending: false }),
-          supabaseClient.from('organizations').select('*').eq('profile_id', userProfile.id).eq('raw_json->>type', 'voluntary').order('issued_date', { ascending: false })
-        ])
-
-        setExperiences(expRes.data || [])
-        setEducation(eduRes.data || [])
-        setSkills(skillRes.data || [])
-        setCertifications(certRes.data || [])
-        setMemberships(memRes.data || [])
-        setVoluntary(volRes.data || [])
-        setLoading(false)
-      } catch (error) {
-        console.error('Error loading profile:', error)
-        setLoading(false)
-      }
-    }
-    loadProfile()
-  }, [router])
-
-  const fmtDate = (d: string | undefined | null) => {
-    try {
-      if (!d) return ''
-      const dt = new Date(d)
-      return new Intl.DateTimeFormat('en-GB', { year: 'numeric', month: 'short' }).format(dt)
-    } catch (e) {
-      return String(d)
-    }
-  }
-
-  if (loading) {
-    return (
-      <div style={{
-        minHeight: '100vh',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        background: 'linear-gradient(135deg, #0D1117 0%, #0A0F14 100%)'
-      }}>
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '12px' }}>
-          <div style={{
-            width: '48px',
-            height: '48px',
-            border: '4px solid rgba(79, 241, 227, 0.2)',
-            borderTop: '4px solid #4ff1e3',
-            borderRadius: '50%',
-            animation: 'spin 1s linear infinite'
-          }} />
-          <div style={{ color: '#9AA4B2' }}>Loading...</div>
-        </div>
-      </div>
-    )
-  }
+    router.push('/profile/choose');
+  }, [router]);
+  return null;
 
   if (!profile) {
     return (

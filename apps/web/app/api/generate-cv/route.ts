@@ -1,4 +1,4 @@
-import { getSupabaseServer } from '@/lib/supabase'
+import { getSupabaseServerWithAuth } from '@/lib/supabase.server'
 import OpenAI from 'openai'
 
 export async function POST(request: Request) {
@@ -9,7 +9,7 @@ export async function POST(request: Request) {
       return Response.json({ error: 'Profile ID is required' }, { status: 400 })
     }
 
-    const supabase = getSupabaseServer()
+    const supabase = await getSupabaseServerWithAuth()
 
     // Fetch all profile data
     const [

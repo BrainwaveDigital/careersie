@@ -15,6 +15,7 @@ import { useRouter } from 'next/navigation';
 import ProfileSelectionPanel from './ProfileSelectionPanel';
 import CVCategorySelection from './CVCategorySelection';
 import TalentStoryCustomizationPanel from './TalentStoryCustomizationPanel';
+import { ProfileStoryPrompt } from '@/lib/profileStoryPrompt';
 import ReactMarkdown from 'react-markdown';
 
 type FlowStep = 'select-profile' | 'select-categories' | 'customize' | 'preview';
@@ -42,9 +43,30 @@ export default function TalentStoryBuilder() {
     setCurrentStep('customize');
   };
 
-  const handleGenerationComplete = (story: string) => {
-    setGeneratedStory(story);
-    setCurrentStep('preview');
+
+  // New: async handler for TalentStoryCustomizationPanel
+  const handleGenerate = async (promptConfig?: Partial<ProfileStoryPrompt>) => {
+    try {
+      const response = await fetch('/api/talent-story/generate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({
+          profileId: selectedProfileId,
+          promptConfig: promptConfig || {},
+        }),
+      });
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({ error: 'Unknown error' }));
+        throw new Error(errorData.error || 'Failed to generate story');
+      }
+      const data = await response.json();
+      setGeneratedStory(data.story);
+      setCurrentStep('preview');
+    } catch (error) {
+      console.error('Generation error:', error);
+      alert('Failed to generate TalentStory. Please try again.');
+    }
   };
 
   const handleBack = () => {
@@ -329,7 +351,7 @@ export default function TalentStoryBuilder() {
 
             {/* Customization Panel */}
             <TalentStoryCustomizationPanel
-              onGenerate={handleGenerationComplete}
+              onGenerate={handleGenerate}
               cvData={profileData}
               profileId={selectedProfileId}
             />

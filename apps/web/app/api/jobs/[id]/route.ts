@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getSupabaseServer } from '@/lib/supabase';
+import { getSupabaseServerWithAuth } from '@/lib/supabase.server';
 
 // Helper to extract access token from request headers/cookies
 function extractTokenFromHeaders(headers: Headers) {
@@ -69,7 +69,7 @@ export async function GET(
     }
 
     // Get server-side Supabase client
-    const supabase = getSupabaseServer();
+    const supabase = await getSupabaseServerWithAuth();
 
     console.log('[API /jobs/[id]] Querying for job:', { jobId, userId });
 

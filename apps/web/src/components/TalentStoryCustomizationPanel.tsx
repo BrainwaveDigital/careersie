@@ -12,7 +12,7 @@ import { Button } from '@/components/ui/button';
 import { ProfileStoryPrompt, TONE_DESCRIPTIONS, STORY_TYPE_DESCRIPTIONS } from '@/lib/profileStoryPrompt';
 
 interface CustomizationPanelProps {
-  onGenerate: (story: string) => void; // Receives the generated story text
+  onGenerate: (promptConfig?: Partial<ProfileStoryPrompt>) => Promise<void>;
   cvData?: any; // Optional CV data from Step 1
   profileId?: string | null; // Profile ID for API request
   loading?: boolean;
@@ -46,7 +46,6 @@ export default function TalentStoryCustomizationPanel({
 
   const handleGenerate = async () => {
     setGenerating(true);
-    
     try {
       const finalConfig: Partial<ProfileStoryPrompt> = {
         ...config,
@@ -56,27 +55,7 @@ export default function TalentStoryCustomizationPanel({
         customPrompt: customPromptInput || undefined,
         targetRole: targetRoleInput || undefined,
       };
-
-      // Call API to generate story
-      const response = await fetch('/api/talent-story/generate', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include', // Include cookies for authentication
-        body: JSON.stringify({ 
-          profileId,
-          promptConfig: finalConfig 
-        }),
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => ({ error: 'Unknown error' }));
-        console.error('API Error:', errorData);
-        throw new Error(errorData.error || 'Failed to generate story');
-      }
-
-      const data = await response.json();
-      onGenerate(data.story); // Pass the story text back
-      
+      await onGenerate(finalConfig);
     } catch (error) {
       console.error('Generation error:', error);
       alert('Failed to generate TalentStory. Please try again.');

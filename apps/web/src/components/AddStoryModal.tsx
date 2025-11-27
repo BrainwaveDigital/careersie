@@ -343,15 +343,13 @@ export function AddStoryModal({
           </Button>
           {mode === 'choose' ? null : (
             <>
-              {mode !== 'choose' && (
-                <Button
-                  onClick={() => setMode('choose')}
-                  variant="ghost"
-                  disabled={isLoading}
-                >
-                  Back
-                </Button>
-              )}
+              <Button
+                onClick={() => setMode('choose')}
+                variant="ghost"
+                disabled={isLoading}
+              >
+                Back
+              </Button>
               <Button
                 onClick={mode === 'manual' ? handleManualCreate : handleAIGenerate}
                 disabled={isLoading}

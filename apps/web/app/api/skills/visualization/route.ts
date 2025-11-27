@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getSupabaseServer } from "@/lib/supabase";
+import { getSupabaseServerWithAuth } from "@/lib/supabase.server";
 import { prepareSkillNodes, extractSkillsFromCV, type SkillInput } from "@/lib/skillClustering";
 
-const supabaseServer = getSupabaseServer();
+
 
 /**
  * GET /api/skills/visualization
@@ -16,6 +16,8 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
+
+    const supabaseServer = await getSupabaseServerWithAuth();
     const token = authHeader.replace("Bearer ", "");
     const { data: { user }, error: authError } = await supabaseServer.auth.getUser(token);
 
@@ -45,6 +47,12 @@ export async function GET(request: NextRequest) {
     }
 
     const parsedDoc = parsedDocs[0];
+    if (!parsedDoc) {
+      return NextResponse.json(
+        { error: "Parsed document not found" },
+        { status: 404 }
+      );
+    }
 
     // Extract skills from parsed CV
     const skillInputs: SkillInput[] = extractSkillsFromCV(parsedDoc);

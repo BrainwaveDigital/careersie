@@ -73,10 +73,14 @@ export function validateRequest<T>(
   } catch (error) {
     if (error instanceof z.ZodError) {
       const firstError = error.errors[0];
-      return {
-        success: false,
-        error: `${firstError.path.join('.')}: ${firstError.message}`,
-      };
+      if (firstError) {
+        return {
+          success: false,
+          error: `${firstError.path.join('.')}: ${firstError.message}`,
+        };
+      } else {
+        return { success: false, error: 'Invalid request data' };
+      }
     }
     return { success: false, error: 'Invalid request data' };
   }

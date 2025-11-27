@@ -10,6 +10,7 @@ import Link from 'next/link'
 import { supabaseClient } from '@/lib/supabase'
 import { ArrowLeft, Upload, Home } from 'lucide-react'
 import ProcessParsedClient from './ProcessParsedClient'
+import { ProfileEditForm } from '@/components/profile/ProfileEditForm'
 
 export default function ParsedPage() {
   const params = useParams()
@@ -18,9 +19,13 @@ export default function ParsedPage() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [doc, setDoc] = useState<any | null>(null)
-  const [experiences, setExperiences] = useState<any[] | null>(null)
-  const [education, setEducation] = useState<any[] | null>(null)
-  const [skills, setSkills] = useState<any[] | null>(null)
+  const [profile, setProfile] = useState<any | null>(null)
+  const [experiences, setExperiences] = useState<any[]>([])
+  const [education, setEducation] = useState<any[]>([])
+  const [skills, setSkills] = useState<any[]>([])
+  const [certifications, setCertifications] = useState<any[]>([])
+  const [memberships, setMemberships] = useState<any[]>([])
+  const [voluntaryRoles, setVoluntaryRoles] = useState<any[]>([])
   const [user, setUser] = useState<any | null>(null)
 
   useEffect(() => {
@@ -96,14 +101,22 @@ export default function ParsedPage() {
 
         // load normalized rows if profile_id set
         if (docRow.profile_id) {
-          const [expRes, edRes, skRes] = await Promise.all([
+          const [profileRes, expRes, edRes, skRes, certRes, memRes, volRes] = await Promise.all([
+            supabaseClient.from('profiles').select('*').eq('id', docRow.profile_id).single(),
             supabaseClient.from('experiences').select('*').eq('profile_id', docRow.profile_id).order('order_index', { ascending: true }),
             supabaseClient.from('education').select('*').eq('profile_id', docRow.profile_id).order('start_year', { ascending: false }),
             supabaseClient.from('skills').select('*').eq('profile_id', docRow.profile_id),
+            supabaseClient.from('certifications').select('*').eq('profile_id', docRow.profile_id),
+            supabaseClient.from('organizations').select('*').eq('profile_id', docRow.profile_id).eq('raw_json->>type', 'membership'),
+            supabaseClient.from('organizations').select('*').eq('profile_id', docRow.profile_id).eq('raw_json->>type', 'voluntary'),
           ])
+          setProfile(profileRes.data || null)
           setExperiences(expRes.data || [])
           setEducation(edRes.data || [])
           setSkills(skRes.data || [])
+          setCertifications(certRes.data || [])
+          setMemberships(memRes.data || [])
+          setVoluntaryRoles(volRes.data || [])
         }
 
         setLoading(false)
@@ -157,9 +170,10 @@ export default function ParsedPage() {
     skillsCount: llm?.skills?.length || 0
   })
 
-  const skillList = (llm && Array.isArray(llm.skills)) ? llm.skills : (Array.isArray(skills) ? skills : [])
-  const experiencesList = (llm && Array.isArray(llm.experiences)) ? llm.experiences : (Array.isArray(experiences) ? experiences : [])
-  const educationList = (llm && Array.isArray(llm.education)) ? llm.education : (Array.isArray(education) ? education : [])
+  // Use normalized data if available, fallback to parsed JSON if not
+  const skillList = skills && skills.length ? skills : (llm && Array.isArray(llm.skills) ? llm.skills : [])
+  const experiencesList = experiences && experiences.length ? experiences : (llm && Array.isArray(llm.experiences) ? llm.experiences : [])
+  const educationList = education && education.length ? education : (llm && Array.isArray(llm.education) ? llm.education : [])
 
   const fmtDate = (d: string | undefined | null) => {
     try {
@@ -227,6 +241,25 @@ export default function ParsedPage() {
           </Link>
         </div>
 
+        {/* Normalized Profile Preview */}
+        {profile && user && (
+          <ProfileEditForm
+            user={user}
+            profileId={profile.id}
+            initialProfile={profile}
+            initialExperiences={experiences}
+            initialEducation={education}
+            initialSkills={skills}
+            initialCertifications={certifications}
+            initialMemberships={memberships}
+            initialVoluntaryRoles={voluntaryRoles}
+            onSave={() => {
+              // Optionally reload data after save
+            }}
+          />
+        )}
+
+        {/* Raw/Metadata and controls */}
         <div
           className="p-8"
           style={{
@@ -237,86 +270,6 @@ export default function ParsedPage() {
             borderRadius: '24px'
           }}
         >
-          <div className="mb-6">
-            <h1 className="text-3xl font-bold mb-2" style={{ color: '#FFFFFF' }}>{name}</h1>
-            <p className="text-sm" style={{ color: '#9AA4B2' }}>{doc.file_name || doc.storage_path}</p>
-          </div>
-
-          <div className="flex gap-6 items-center mb-6 pb-6" style={{ borderBottom: '1px solid rgba(255, 255, 255, 0.06)' }}>
-            <div className="text-sm">
-              <span style={{ color: '#9AA4B2' }}>Email: </span>
-              <span className="font-medium" style={{ color: '#FFFFFF' }}>{email}</span>
-            </div>
-            <div className="text-sm">
-              <span style={{ color: '#9AA4B2' }}>Phone: </span>
-              <span className="font-medium" style={{ color: '#FFFFFF' }}>{phone}</span>
-            </div>
-          </div>
-
-          <h3 className="text-lg font-semibold mb-2" style={{ color: '#4ff1e3' }}>Summary</h3>
-          <p className="mb-6 text-sm" style={{ color: '#E5E7EB' }}>
-            {llm && llm.summary ? llm.summary : parsed.raw_text_excerpt ? parsed.raw_text_excerpt.slice(0, 1000) : 'No summary available.'}
-          </p>
-
-          <h3 className="text-lg font-semibold mb-3" style={{ color: '#4ff1e3' }}>Skills</h3>
-          <div className="mb-6 flex flex-wrap gap-2">
-            {skillList.length ? skillList.map((s: any, i: number) => (
-              <span
-                key={i}
-                className="px-3 py-1 rounded-lg text-sm"
-                style={{
-                  background: 'rgba(79, 241, 227, 0.15)',
-                  border: '1px solid rgba(79, 241, 227, 0.3)',
-                  color: '#4ff1e3'
-                }}
-              >
-                {typeof s === 'string' ? s : s.skill || JSON.stringify(s)}
-              </span>
-            )) : <div className="text-sm" style={{ color: '#9AA4B2' }}>No skills parsed.</div>}
-          </div>
-
-          <h3 className="text-lg font-semibold mb-3" style={{ color: '#4ff1e3' }}>Experience</h3>
-          <div className="space-y-3 mb-6">
-            {experiencesList.length ? experiencesList.map((e: any, idx: number) => (
-              <div
-                key={idx}
-                className="p-4 rounded-xl"
-                style={{
-                  background: 'rgba(255, 255, 255, 0.05)',
-                  border: '1px solid rgba(255, 255, 255, 0.1)'
-                }}
-              >
-                <div className="font-semibold mb-1" style={{ color: '#FFFFFF' }}>
-                  {e.title || e.job_title || '—'} — <span className="font-medium">{e.company || e.employer || '—'}</span>
-                </div>
-                <div className="text-sm mb-2" style={{ color: '#9AA4B2' }}>
-                  {fmtDate(e.start_date || e.start_year)} — {e.is_current ? 'Present' : fmtDate(e.end_date || e.end_year)}
-                </div>
-                {e.description && <p className="text-sm" style={{ color: '#E5E7EB' }}>{e.description}</p>}
-              </div>
-            )) : <div className="text-sm" style={{ color: '#9AA4B2' }}>No experiences parsed.</div>}
-          </div>
-
-          <h3 className="text-lg font-semibold mb-3" style={{ color: '#4ff1e3' }}>Education</h3>
-          <div className="space-y-3 mb-6">
-            {educationList.length ? educationList.map((ed: any, i: number) => (
-              <div
-                key={i}
-                className="p-4 rounded-xl"
-                style={{
-                  background: 'rgba(255, 255, 255, 0.05)',
-                  border: '1px solid rgba(255, 255, 255, 0.1)'
-                }}
-              >
-                <div className="font-semibold mb-1" style={{ color: '#FFFFFF' }}>{ed.school || ed.institution || '—'}</div>
-                <div className="text-sm" style={{ color: '#9AA4B2' }}>
-                  {ed.degree || ed.qualification || ''} • {ed.start_year || ''} - {ed.end_year || ''}
-                </div>
-                {ed.description && <p className="mt-2 text-sm" style={{ color: '#E5E7EB' }}>{ed.description}</p>}
-              </div>
-            )) : <div className="text-sm" style={{ color: '#9AA4B2' }}>No education parsed.</div>}
-          </div>
-
           <h3 className="text-lg font-semibold mb-3" style={{ color: '#4ff1e3' }}>Raw / Metadata</h3>
           <div className="text-sm mb-3" style={{ color: '#9AA4B2' }}>
             Parsed at: {doc.parsed_at || parsed.parsed_at || '—'}

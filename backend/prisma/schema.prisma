@@ -1,15 +1,454 @@
+model User {
+  id         String   @id @default(uuid())
+  email      String?  @unique
+  username   String?
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now())
+
+  @@map("users")
+}
 datasource db {
   provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 generator client {
-  provider = "prisma-client"
+  provider = "prisma-client-js"
   output   = "../src/generated/prisma"
 }
 
-model DownloadHistory {
+model ExportHistory {
+  id         String   @id @default(cuid())
+  userId     String   @map("user_id")
+  format     String
+  filename   String
+  fileUrl    String   @map("file_url")
+  settings   Json?
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  @@index([userId])
+  @@index([createdAt(sort: Desc)])
+  @@map("export_history")
+}
+
+model Profile {
+  id             String   @id @default(uuid())
+  user_id        String?
+  full_name      String?
+  preferred_name String?
+  headline       String?
+  summary        String?
+  location       String?
+  website        String?
+  email          String?
+  phone          String?
+  about          String?
+  created_at     DateTime @default(now())
+  updated_at     DateTime @default(now())
+  experiences    Experience[]
+  education      Education[]
+  skills         Skill[]
+  certifications Certification[]
+  projects       Project[]
+  volunteering   Volunteering[]
+  languages      Language[]
+  organizations  Organization[]
+  parsed_documents ParsedDocument[]
+
+  mediaLibrary   MediaLibrary[]
+  customizedStories CustomizedStory[]
+
+  @@map("profiles")
+}
+
+model ParsedDocument {
+  id              String   @id @default(uuid())
+  profile_id      String?
+  user_id         String?
+  file_name       String?
+  storage_path    String?
+  content_type    String?
+  size_bytes      Int?
+  text_extracted  String?
+  parsed_json     Json?
+  parser_version  String?
+  status          String?  @default("uploaded")
+  error_text      String?
+  parsed_at       DateTime?
+  created_at      DateTime @default(now())
+  parsing_jobs    ParsingJob[]
+
+  profile         Profile? @relation(fields: [profile_id], references: [id])
+
+  @@map("parsed_documents")
+}
+
+model Experience {
+  id          String   @id @default(uuid())
+  profile_id  String
+  title       String?
+  company     String?
+  location    String?
+  start_date  DateTime?
+  end_date    DateTime?
+  is_current  Boolean  @default(false)
+  description String?
+  raw_json    Json?
+  order_index Int?
+  created_at  DateTime @default(now())
+
+  profile     Profile  @relation(fields: [profile_id], references: [id])
+
+  stories     Story[]
+
+  @@map("experiences")
+}
+
+model Education {
+  id            String   @id @default(uuid())
+  profile_id    String
+  school        String?
+  degree        String?
+  field_of_study String?
+  start_year    Int?
+  end_year      Int?
+  description   String?
+  raw_json      Json?
+  created_at    DateTime @default(now())
+
+  profile       Profile  @relation(fields: [profile_id], references: [id])
+
+  @@map("education")
+}
+
+model Skill {
+  id          String   @id @default(uuid())
+  profile_id  String
+  skill       String?
+  confidence  Float?
+  raw_json    Json?
+  created_at  DateTime @default(now())
+
+  profile     Profile  @relation(fields: [profile_id], references: [id])
+
+  storySkills StorySkill[]
+
+  @@map("skills")
+}
+
+model Certification {
+  id          String   @id @default(uuid())
+  profile_id  String
+  name        String?
+  authority   String?
+  issued_date DateTime?
+  expiry_date DateTime?
+  raw_json    Json?
+  created_at  DateTime @default(now())
+
+  profile     Profile  @relation(fields: [profile_id], references: [id])
+
+  @@map("certifications")
+}
+
+model ParsingJob {
+  id                 String   @id @default(uuid())
+  parsed_document_id String
+  status             String?  @default("pending")
+  attempts           Int?     @default(0)
+  worker             String?
+  started_at         DateTime?
+  finished_at        DateTime?
+  created_at         DateTime @default(now())
+
+  parsed_document    ParsedDocument @relation(fields: [parsed_document_id], references: [id])
+
+  @@map("parsing_jobs")
+}
+
+model Project {
+  id          String   @id @default(uuid())
+  profile_id  String
+  name        String?
+  authority   String?
+  issued_date DateTime?
+  expiry_date DateTime?
+  raw_json    Json?
+  created_at  DateTime @default(now())
+
+  profile     Profile  @relation(fields: [profile_id], references: [id])
+
+  @@map("projects")
+}
+
+model Volunteering {
+  id          String   @id @default(uuid())
+  profile_id  String
+  name        String?
+  authority   String?
+  issued_date DateTime?
+  expiry_date DateTime?
+  raw_json    Json?
+  created_at  DateTime @default(now())
+
+  profile     Profile  @relation(fields: [profile_id], references: [id])
+
+  @@map("volunteering")
+}
+
+model Language {
+  id          String   @id @default(uuid())
+  profile_id  String
+  language    String?
+  proficiency String?
+  raw_json    Json?
+  created_at  DateTime @default(now())
+
+  profile     Profile  @relation(fields: [profile_id], references: [id])
+
+  @@map("languages")
+}
+
+model Organization {
+  id          String   @id @default(uuid())
+  profile_id  String
+  name        String?
+  authority   String?
+  issued_date DateTime?
+  expiry_date DateTime?
+  raw_json    Json?
+  created_at  DateTime @default(now())
+
+  profile     Profile  @relation(fields: [profile_id], references: [id])
+
+  @@map("organizations")
+}
+
+model MediaLibrary {
+  id             String    @id @default(uuid())
+  profile_id     String
+  file_name      String
+  file_type      String
+  mime_type      String
+  file_size      BigInt
+  storage_path   String
+  storage_bucket String    @default("media-library")
+  title          String?
+  description    String?
+  tags           String[]
+  metadata       Json?     @default("{}")
+  created_at     DateTime  @default(now())
+  updated_at     DateTime  @default(now())
+
+  profile        Profile   @relation(fields: [profile_id], references: [id], onDelete: Cascade)
+
+  @@map("media_library")
+  @@index([profile_id], name: "idx_media_library_profile_id")
+  @@index([file_type], name: "idx_media_library_file_type")
+  @@index([created_at(sort: Desc)], name: "idx_media_library_created_at")
+}
+
+model PersonalityAssessment {
+  id                        String    @id @default(uuid())
+  users_id                  String
+  assessment_date           DateTime  @default(now())
+  completed                 Boolean   @default(false)
+  time_taken_seconds        Int?
+  openness_score            Int?
+  conscientiousness_score   Int?
+  extraversion_score        Int?
+  agreeableness_score       Int?
+  emotional_stability_score Int?
+  overall_score             Float?
+  responses                 Json?
+  created_at                DateTime  @default(now())
+  updated_at                DateTime  @default(now())
+
+  // user                      User?     @relation(fields: [users_id], references: [id])
+  responses_rel             PersonalityResponse[]
+
+  @@map("personality_assessments")
+  @@index([users_id], name: "idx_personality_assessments_applicant")
+  @@index([assessment_date], name: "idx_personality_assessments_date")
+  @@index([completed], name: "idx_personality_assessments_completed")
+}
+
+model PersonalityResponse {
+  id             String    @id @default(uuid())
+  assessment_id  String
+  question_id    String
+  question_text  String
+  dimension      String
+  response_value Int
+  created_at     DateTime  @default(now())
+
+  assessment     PersonalityAssessment @relation(fields: [assessment_id], references: [id])
+
+  @@map("personality_responses")
+  @@index([assessment_id], name: "idx_personality_responses_assessment")
+  @@index([dimension], name: "idx_personality_responses_dimension")
+}
+
+model AppAdmin {
+  id                  String    @id @default(uuid())
+  user_id             String
+  role                String    @default("viewer")
+  permissions         String[]  @default([])
+  is_active           Boolean   @default(true)
+  email               String
+  full_name           String?
+  department          String?
+  access_level        Int       @default(1)
+  allowed_actions     String[]  @default([])
+  restricted_actions  String[]  @default([])
+  last_login_at       DateTime?
+  last_activity_at    DateTime?
+  login_count         Int       @default(0)
+  failed_login_attempts Int     @default(0)
+  account_locked_until DateTime?
+  must_change_password Boolean  @default(false)
+  two_factor_enabled  Boolean   @default(false)
+  created_by          String?
+  created_at          DateTime  @default(now())
+  updated_by          String?
+  updated_at          DateTime  @default(now())
+  deactivated_at      DateTime?
+  deactivated_by      String?
+  deactivation_reason String?
+  notes               String?
+  metadata            Json?     @default("{}")
+
+  @@unique([user_id], name: "unique_user_admin")
+  @@map("app_admins")
+  @@index([user_id], name: "idx_app_admins_user_id")
+  @@index([role], name: "idx_app_admins_role")
+  @@index([is_active], name: "idx_app_admins_is_active")
+  @@index([email], name: "idx_app_admins_email")
+  @@index([last_activity_at(sort: Desc)], name: "idx_app_admins_last_activity")
+}
+
+model TalentStory {
+  id         String   @id @default(uuid())
+  user_id    String
+  story      String
+  data       Json
+  model      String?  @default("gpt-4o")
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now())
+  version    Int?     @default(1)
+  is_active  Boolean  @default(true)
+
+  @@map("talent_stories")
+  @@index([user_id], name: "idx_talent_stories_user_id")
+  @@index([user_id, is_active], name: "idx_talent_stories_is_active")
+}
+
+model JobPost {
+  id             String   @id @default(uuid())
+  user_id        String
+  title          String
+  company        String?
+  location       String?
+  raw_description String
+  job_url        String?
+  parsed_data    Json
+  created_at     DateTime @default(now())
+  updated_at     DateTime @default(now())
+  status         String?  @default("active")
+  applied_at     DateTime?
+
+  customized_stories CustomizedStory[]
+
+  @@map("job_posts")
+  @@index([user_id], name: "idx_job_posts_user_id")
+  @@index([user_id, status], name: "idx_job_posts_status")
+}
+
+model CustomizedStory {
+  id                 String   @id @default(uuid())
+  user_id            String
+  profile_id         String?
+  job_post_id        String?
+  story              String
+  reordered_experience Json?
+  highlighted_skills String[]
+  match_score        Int
+  score_breakdown    Json
+  created_at         DateTime @default(now())
+  updated_at         DateTime @default(now())
+  is_active          Boolean  @default(true)
+  version_name       String?
+
+  job_post           JobPost? @relation(fields: [job_post_id], references: [id])
+  profile            Profile? @relation(fields: [profile_id], references: [id])
+
+  @@map("customized_stories")
+  @@index([user_id], name: "idx_customized_stories_user_id")
+  @@index([job_post_id], name: "idx_customized_stories_job_post_id")
+  @@index([user_id, is_active], name: "idx_customized_stories_is_active")
+}
+
+model Story {
+  id              String    @id @default(uuid())
+  experience_id   String
+  created_at      DateTime  @default(now())
+  updated_at      DateTime  @default(now())
+  situation       String?
+  task            String?
+  action          String?
+  result          String?
+  full_story      String?
+  ai_generated    Boolean   @default(false)
+  metrics         Json?
+  title           String?
+  tags            String[]
+  is_draft        Boolean   @default(true)
+  relevance_score Float?
+  job_match_scores Json?
+
+  experience      Experience @relation(fields: [experience_id], references: [id])
+  versions        StoryVersion[]
+  skills          StorySkill[]
+
+  @@map("stories")
+  @@index([experience_id], name: "idx_stories_experience_id")
+  @@index([updated_at], name: "idx_stories_updated_at")
+  @@index([is_draft], name: "idx_stories_is_draft")
+}
+
+model StoryVersion {
+  id             String    @id @default(uuid())
+  story_id       String
+  created_at     DateTime  @default(now())
+  version_number Int
+  situation      String?
+  task           String?
+  action         String?
+  result         String?
+  full_story     String?
+  metrics        Json?
+  change_summary String?
+  created_by_ai  Boolean   @default(false)
+
+  story          Story     @relation(fields: [story_id], references: [id])
+
+  @@unique([story_id, version_number])
+  @@map("story_versions")
+  @@index([story_id], name: "idx_story_versions_story_id")
+  @@index([created_at], name: "idx_story_versions_created_at")
+}
+
+model StorySkill {
   id        String   @id @default(uuid())
-  userId    String
-  format    String
-  createdAt DateTime @default(now())
+  story_id  String
+  skill_id  String
+  created_at DateTime @default(now())
+
+  story     Story    @relation(fields: [story_id], references: [id])
+  skill     Skill    @relation(fields: [skill_id], references: [id])
+
+  @@unique([story_id, skill_id])
+  @@map("story_skills")
+  @@index([story_id], name: "idx_story_skills_story_id")
+  @@index([skill_id], name: "idx_story_skills_skill_id")
 }

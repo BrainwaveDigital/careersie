@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getSupabaseServer } from '@/lib/supabase';
+import { getSupabaseServerWithAuth } from '@/lib/supabase.server';
+import type { Json } from '@/types/supabase';
 
 // Question definitions (must match frontend)
 const QUESTIONS = [
@@ -32,7 +33,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const supabase = getSupabaseServer();
+    const supabase = await getSupabaseServerWithAuth();
 
     // Look up the profile_id from the user_id (auth.uid)
     console.log('Looking up profile for user_id:', userId);
@@ -115,16 +116,12 @@ export async function POST(request: NextRequest) {
 
     // Insert individual responses for detailed analysis
     const responseRecords = Object.entries(responses).map(([questionId, value]) => {
-      const question = QUESTIONS.find(q => q.id === questionId);
-      if (!question) return null;
-
+      // Only insert allowed fields for reflection_responses
       return {
         reflection_id: reflection.id,
         question_id: questionId,
-        question_text: question.text,
-        question_category: question.category,
-        question_type: question.type,
-        response_value: typeof value === 'object' ? JSON.stringify(value) : String(value)
+        answer: value as Json,
+        user_id: userId // userId should be available in your context
       };
     }).filter(Boolean);
 
@@ -165,7 +162,7 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    const supabase = getSupabaseServer();
+    const supabase = await getSupabaseServerWithAuth();
 
     // Look up the profile_id from the user_id
     const { data: profile, error: profileError } = await supabase
@@ -233,7 +230,7 @@ export async function PUT(request: NextRequest) {
       );
     }
 
-    const supabase = getSupabaseServer();
+    const supabase = await getSupabaseServerWithAuth();
 
     // Look up the profile_id from the user_id
     const { data: profile, error: profileError } = await supabase

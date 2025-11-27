@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { clusterSkillsWithOpenAI, generateSkillEmbeddingsWithCache } from "@/lib/embeddingsClustering";
-import { getSupabaseServer } from "@/lib/supabase";
+import { getSupabaseServerWithAuth } from "@/lib/supabase.server";
 
-const supabaseServer = getSupabaseServer();
+
 
 /**
  * POST /api/skills/cluster
@@ -21,12 +21,13 @@ export async function POST(request: NextRequest) {
     }
 
     // Optional: Check if user is authenticated
+    let supabaseServer;
     if (userId) {
+      supabaseServer = await getSupabaseServerWithAuth();
       const authHeader = request.headers.get("authorization");
       if (authHeader) {
         const token = authHeader.replace("Bearer ", "");
         const { data: { user }, error } = await supabaseServer.auth.getUser(token);
-        
         if (error || !user || user.id !== userId) {
           return NextResponse.json(
             { error: "Unauthorized" },
@@ -81,6 +82,8 @@ export async function GET(request: NextRequest) {
       );
     }
 
+
+    const supabaseServer = await getSupabaseServerWithAuth();
     // Fetch user's skills from database
     const { data: parsedDocs, error } = await supabaseServer
       .from("parsed_documents")
@@ -104,8 +107,11 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    const skills = parsedDocs[0]?.skills || [];
-    
+    const skillsData = parsedDocs[0]?.skills;
+    const skillsRaw = Array.isArray(skillsData) ? skillsData : [];
+    // Remove duplicates
+    const skills = [...new Set(skillsRaw.filter((s): s is string => typeof s === 'string'))];
+
     if (skills.length === 0) {
       return NextResponse.json(
         { error: "User has no skills" },

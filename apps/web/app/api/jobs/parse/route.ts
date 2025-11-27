@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { parseJobDescription } from '@/lib/jobParser';
-import { getSupabaseServer } from '@/lib/supabase';
+import { randomUUID } from 'crypto';
+import { getSupabaseServerWithAuth } from '@/lib/supabase.server';
 
 // Helper to extract access token from request headers/cookies
 function extractTokenFromHeaders(headers: Headers) {
@@ -78,12 +79,14 @@ export async function POST(request: NextRequest) {
     console.log('Job parsed successfully:', parsedData);
 
     // Get server-side Supabase client
-    const supabase = getSupabaseServer();
+    const supabase = await getSupabaseServerWithAuth();
     
     // Insert into database
+    const id = randomUUID();
     const { data: jobPost, error: insertError } = await supabase
       .from('job_posts')
       .insert({
+        id,
         user_id: userId,
         title,
         company: company || null,
@@ -151,7 +154,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Get server-side Supabase client
-    const supabase = getSupabaseServer();
+    const supabase = await getSupabaseServerWithAuth();
 
     // Get query parameters
     const searchParams = request.nextUrl.searchParams;

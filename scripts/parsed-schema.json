@@ -36,8 +36,8 @@
         "properties": {
           "school": { "type": "string" },
           "degree": { "type": "string" },
-          "start_year": { "type": ["string", "number", "null"] },
-          "end_year": { "type": ["string", "number", "null"] },
+          "start_year": { "type": ["number", "null"] },
+          "end_year": { "type": ["number", "null"] },
           "description": { "type": "string" }
         },
         "additionalProperties": true

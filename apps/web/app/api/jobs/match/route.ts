@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getSupabaseServer } from '@/lib/supabase';
+import { getSupabaseServerWithAuth } from '@/lib/supabase.server';
 import { calculateRelevanceScore } from '@/lib/relevanceScorer';
 import { ParsedJobData } from '@/lib/jobParser';
 
@@ -63,7 +63,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Get server-side Supabase client
-    const supabase = getSupabaseServer();
+    const supabase = await getSupabaseServerWithAuth();
 
     // Parse request body
     const body = await request.json();
@@ -105,10 +105,10 @@ export async function POST(request: NextRequest) {
 
     // Prepare profile data for scoring
     const profileData = {
-      hard_skills: profile.hard_skills || [],
-      soft_skills: profile.soft_skills || [],
-      experience: profile.experience || [],
-      seniority: profile.seniority || 'mid',
+      hard_skills: Array.isArray(profile.hard_skills) ? profile.hard_skills as string[] : [],
+      soft_skills: Array.isArray(profile.soft_skills) ? profile.soft_skills as string[] : [],
+      experience: Array.isArray(profile.experience) ? profile.experience as any[] : [],
+      seniority: typeof profile.seniority === 'string' ? profile.seniority : 'mid',
     };
 
     // Calculate relevance score
@@ -131,7 +131,7 @@ export async function POST(request: NextRequest) {
       },
       profile: {
         id: profile.id,
-        name: profile.name,
+        full_name: profile.full_name,
       },
     });
   } catch (error: any) {

@@ -10,7 +10,7 @@ interface ProfileData {
   seniority?: string;
 }
 
-interface ScoreBreakdown {
+export interface ScoreBreakdown {
   hard_skills: number;
   soft_skills: number;
   responsibilities: number;
@@ -19,7 +19,7 @@ interface ScoreBreakdown {
   overall: number;
 }
 
-interface MatchDetails {
+export interface MatchDetails {
   matched_hard_skills: string[];
   missing_hard_skills: string[];
   matched_soft_skills: string[];

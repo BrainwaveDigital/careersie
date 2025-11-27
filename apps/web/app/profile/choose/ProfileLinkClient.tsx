@@ -1,8 +1,10 @@
 "use client"
 
+
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { supabaseClient } from '@/lib/supabase'
+import { Button } from '@/components/ui/button'
 
 export default function ProfileLinkClient() {
   const [href, setHref] = useState<string | null>(null)
@@ -44,7 +46,13 @@ export default function ProfileLinkClient() {
 
   return (
     <Link href={link}>
-      <button className="bg-white border px-3 py-1 rounded text-sm">View Profile</button>
+      <Button variant="default" style={{
+        background: 'linear-gradient(135deg, #4ff1e3, #536dfe)',
+        borderRadius: '14px',
+        boxShadow: '0 4px 15px rgba(79, 241, 227, 0.3)'
+      }}>
+        View Profile
+      </Button>
     </Link>
   )
 }

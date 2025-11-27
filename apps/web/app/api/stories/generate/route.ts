@@ -2,7 +2,7 @@
  * POST /api/stories/generate - Generate a STAR story using AI (GPT-4)
  */
 
-import { getSupabaseServer } from '@/lib/supabase.server';
+import { getSupabaseServerWithAuth } from '@/lib/supabase.server';
 import { NextRequest, NextResponse } from 'next/server';
 import OpenAI from 'openai';
 import { generateStorySchema, validateRequest } from '@/lib/storyValidation';
@@ -52,7 +52,7 @@ interface STARGenerationResponse {
 
 export async function POST(request: NextRequest) {
   try {
-    const supabase = getSupabaseServer();
+    const supabase = await getSupabaseServerWithAuth();
 
     // Parse and validate request body
     const body = await request.json();
@@ -158,13 +158,14 @@ Generate a compelling STAR story from these bullet points.`;
     const { data: story, error: storyError } = await supabase
       .from('stories')
       .insert({
+        id: crypto.randomUUID(),
         experience_id,
         situation: aiResponse.situation,
         task: aiResponse.task,
         action: aiResponse.action,
         result: aiResponse.result,
         full_story: aiResponse.full_story,
-        metrics: aiResponse.metrics,
+        metrics: aiResponse.metrics as unknown as import('@/types/supabase').Json,
         ai_generated: true,
         is_draft: false, // AI-generated stories are not drafts
         title: `Story for ${experience.title || 'experience'}`,
@@ -183,6 +184,7 @@ Generate a compelling STAR story from these bullet points.`;
     // Link skills if provided
     if (skill_ids && skill_ids.length > 0) {
       const skillLinks = skill_ids.map((skill_id) => ({
+        id: crypto.randomUUID(),
         story_id: story.id,
         skill_id,
       }));
@@ -192,13 +194,15 @@ Generate a compelling STAR story from these bullet points.`;
 
     // Create initial version
     await supabase.from('story_versions').insert({
+      id: crypto.randomUUID(),
       story_id: story.id,
+      version_number: 1, // TODO: increment if needed
       situation: aiResponse.situation,
       task: aiResponse.task,
       action: aiResponse.action,
       result: aiResponse.result,
       full_story: aiResponse.full_story,
-      metrics: aiResponse.metrics,
+      metrics: aiResponse.metrics as unknown as import('@/types/supabase').Json,
       change_summary: 'AI-generated initial version',
       created_by_ai: true,
     });

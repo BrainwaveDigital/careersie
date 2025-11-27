@@ -4,7 +4,7 @@
  * DELETE /api/stories/:id - Delete a story
  */
 
-import { getSupabaseServer } from '@/lib/supabase.server';
+import { getSupabaseServerWithAuth } from '@/lib/supabase.server';
 import { NextRequest, NextResponse } from 'next/server';
 import { updateStorySchema, validateRequest } from '@/lib/storyValidation';
 import type { Story, StoryWithDetails } from '@/lib/storyTypes';
@@ -18,8 +18,14 @@ export async function GET(
   context: RouteContext
 ) {
   try {
-    const supabase = getSupabaseServer();
+    const supabase = await getSupabaseServerWithAuth();
     const { id } = await context.params;
+    // Get authenticated user
+    const { data: userData, error: userError } = await supabase.auth.getUser();
+    if (userError || !userData?.user) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+    const user = userData.user;
 
     // Fetch story with all details
     const { data: story, error: storyError } = await supabase
@@ -61,6 +67,16 @@ export async function GET(
     // Format response with typed data
     const storyWithDetails: StoryWithDetails = {
       ...story,
+      metrics: story.metrics
+        ? (typeof story.metrics === 'string'
+            ? JSON.parse(story.metrics)
+            : story.metrics) as import('@/lib/storyTypes').ImpactMetrics
+        : null,
+      job_match_scores: story.job_match_scores
+        ? (typeof story.job_match_scores === 'string'
+            ? JSON.parse(story.job_match_scores)
+            : story.job_match_scores) as Record<string, number>
+        : null,
       experience: {
         id: experience.id,
         title: experience.title,
@@ -88,8 +104,14 @@ export async function PATCH(
   context: RouteContext
 ) {
   try {
-    const supabase = getSupabaseServer();
+    const supabase = await getSupabaseServerWithAuth();
     const { id } = await context.params;
+    // Get authenticated user
+    const { data: userData, error: userError } = await supabase.auth.getUser();
+    if (userError || !userData?.user) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+    const user = userData.user;
 
     // Parse and validate request body
     const body = await request.json();
@@ -159,6 +181,7 @@ export async function PATCH(
       // Insert new links
       if (skill_ids.length > 0) {
         const skillLinks = skill_ids.map((skill_id) => ({
+          id: crypto.randomUUID(),
           story_id: id,
           skill_id,
         }));
@@ -170,7 +193,9 @@ export async function PATCH(
     // Create version snapshot unless it's an autosave
     if (!autosave) {
       await supabase.from('story_versions').insert({
+        id: crypto.randomUUID(),
         story_id: id,
+        version_number: 1, // TODO: increment based on existing versions if needed
         situation: updatedStory.situation,
         task: updatedStory.task,
         action: updatedStory.action,
@@ -197,8 +222,14 @@ export async function DELETE(
   context: RouteContext
 ) {
   try {
-    const supabase = getSupabaseServer();
+    const supabase = await getSupabaseServerWithAuth();
     const { id } = await context.params;
+    // Get authenticated user
+    const { data: userData, error: userError } = await supabase.auth.getUser();
+    if (userError || !userData?.user) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+    const user = userData.user;
 
     // Delete the story
     const { data: existingStory, error: checkError } = await supabase

@@ -190,7 +190,7 @@ export default function Profile3DOrbOptimized({
           instancedMesh.setMatrixAt(idx, matrix);
 
           // Store original index in instance
-          instancedMesh.setColorAt(idx, tempColor.setHex(color));
+          instancedMesh.setColorAt(idx, tempColor.setHex(color ?? 0xffffff));
         });
 
         instancedMesh.instanceMatrix.needsUpdate = true;

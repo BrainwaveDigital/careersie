@@ -1,4 +1,4 @@
-import { getSupabaseServer } from '@/lib/supabase'
+import { getSupabaseServerWithAuth } from '@/lib/supabase.server'
 
 export async function POST(request: Request) {
   try {
@@ -15,7 +15,7 @@ export async function POST(request: Request) {
     }
 
     // This runs on the server with service role key → safe to bypass RLS
-    const supabaseServer = getSupabaseServer()
+    const supabaseServer = await getSupabaseServerWithAuth()
     
     // Split name into first and last
     const nameParts = name.trim().split(' ')
@@ -55,9 +55,11 @@ export async function POST(request: Request) {
     console.log('[API /profiles POST] Attempting to create profile...')
 
     // 2. Create profile in profiles table
+    const profileId = crypto.randomUUID();
     const { data, error } = await supabaseServer
       .from('profiles')
       .insert({ 
+        id: profileId,
         user_id: userId, 
         full_name: name, 
         email: email 
@@ -104,7 +106,7 @@ export async function GET(request: Request) {
     }
 
     // Fetch user profile
-    const supabaseServer = getSupabaseServer()
+    const supabaseServer = await getSupabaseServerWithAuth()
     const { data, error } = await supabaseServer
       .from('profiles')
       .select()

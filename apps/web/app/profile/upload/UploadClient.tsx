@@ -1,9 +1,11 @@
 "use client"
 
+
 import Link from 'next/link'
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import { supabaseClient } from '@/lib/supabase'
+import { Button } from '@/components/ui/button'
 
 export default function UploadClient() {
   const [file, setFile] = useState<File | null>(null)
@@ -11,6 +13,7 @@ export default function UploadClient() {
   const [result, setResult] = useState<any>(null)
   const [error, setError] = useState<string | null>(null)
   const router = useRouter()
+  const fileInputRef = useRef<HTMLInputElement>(null)
 
   const handleFile = (e: React.ChangeEvent<HTMLInputElement>) => {
     const f = e.target.files && e.target.files[0]
@@ -103,12 +106,27 @@ export default function UploadClient() {
               type="file"
               accept=".pdf,.doc,.docx"
               onChange={handleFile}
-              style={{
-                margin: '0 auto',
-                color: '#9AA4B2',
-                fontSize: '14px'
-              }}
+              style={{ display: 'none' }}
+              ref={fileInputRef}
             />
+            <Button
+              type="button"
+              variant="default"
+              style={{
+                background: 'linear-gradient(135deg, #4ff1e3, #536dfe)',
+                borderRadius: '14px',
+                boxShadow: '0 4px 15px rgba(79, 241, 227, 0.3)',
+                margin: '0 auto',
+                fontSize: '15px',
+                padding: '10px 24px',
+                cursor: 'pointer',
+                color: '#fff',
+                fontWeight: 500
+              }}
+              onClick={() => fileInputRef.current?.click()}
+            >
+              {file ? `Selected: ${file.name}` : 'Choose File'}
+            </Button>
             <p style={{ color: '#6B7280', marginTop: '12px', fontSize: '14px' }}>Choose a file to upload (max size depends on your Supabase storage limits)</p>
           </div>
 

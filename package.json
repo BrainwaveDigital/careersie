@@ -3,6 +3,8 @@
   "private": true,
   "dependencies": {
     "@prisma/client": "^6.19.0",
+    "@supabase/auth-helpers-nextjs": "^0.10.0",
+    "@supabase/ssr": "^0.7.0",
     "docx": "^8.5.0",
     "mammoth": "^1.4.20",
     "openai": "^4.10.0",
@@ -20,7 +22,8 @@
     "dotenv": "^16.0.3",
     "pg": "^8.16.3",
     "prettier": "^3.6.2",
-    "turbo": "^2.6.0",
+    "supabase": "^2.62.5",
+    "turbo": "^2.6.1",
     "typescript": "5.9.2"
   },
   "packageManager": "pnpm@9.0.0",

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getSupabaseServer } from '@/lib/supabase';
+import { getSupabaseServerWithAuth } from '@/lib/supabase.server';
 
 // Helper to extract access token from request headers/cookies
 function extractTokenFromHeaders(headers: Headers) {
@@ -65,7 +65,7 @@ export async function DELETE(
       return NextResponse.json({ error: 'Unauthorized. Unable to determine user.' }, { status: 401 });
     }
 
-    const supabase = getSupabaseServer();
+    const supabase = await getSupabaseServerWithAuth();
 
     // Delete the story (RLS will ensure user owns it)
     const { error } = await supabase

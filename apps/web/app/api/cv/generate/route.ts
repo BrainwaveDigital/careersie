@@ -1,4 +1,4 @@
-import { getSupabaseServer } from '@/lib/supabase'
+import { getSupabaseServerWithAuth } from '@/lib/supabase.server'
 import OpenAI from 'openai'
 
 export async function POST(request: Request) {
@@ -9,7 +9,7 @@ export async function POST(request: Request) {
       return Response.json({ error: 'Missing profileId' }, { status: 400 })
     }
 
-    const supabase = getSupabaseServer()
+    const supabase = await getSupabaseServerWithAuth()
 
     // Fetch profile and all related data
     const [profileRes, experiencesRes, educationRes, skillsRes] = await Promise.all([
