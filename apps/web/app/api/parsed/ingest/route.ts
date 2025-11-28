@@ -82,15 +82,26 @@ export async function POST(req: Request) {
 
     // Ensure profile is created/updated and tied to this user
     if (profilePayload) {
-      const safeProfile = { ...profilePayload, user_id: userId }
+      const safeProfile = { ...profilePayload, user_id: String(userId) }
+      
       // try update first
-      const { data: existing, error: selErr } = await supabase.from('profiles').select('id').eq('user_id', userId).limit(1)
+      const { data: existing, error: selErr } = await supabase
+        .from('profiles')
+        .select('id')
+        .eq('user_id', String(userId))  // ← Add String()
+        .limit(1)
+        
       if (selErr) {
         console.error('Error checking existing profile', selErr)
         return NextResponse.json({ error: 'Database error' }, { status: 500 })
       }
+      
       if (existing && existing.length > 0) {
-        const { error: upErr } = await supabase.from('profiles').update(safeProfile).eq('user_id', userId)
+        const { error: upErr } = await supabase
+          .from('profiles')
+          .update(safeProfile)
+          .eq('user_id', String(userId))  // ← Fix: String (capital S)
+          
         if (upErr) {
           console.error('Error updating profile', upErr)
           return NextResponse.json({ error: 'Database error' }, { status: 500 })

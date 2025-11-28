@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Search, FileText, Star, User, Image, Brain, Lightbulb, LogOut, Target, Boxes, BookOpen } from 'lucide-react';
+import { Search, FileText, Star, User, Image, Brain, Lightbulb, Target, Boxes, BookOpen } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { supabaseClient } from '@/lib/supabase';
 
@@ -9,39 +9,12 @@ const OrbMenu = () => {
   const [hoveredOrb, setHoveredOrb] = useState<string | null>(null);
   const router = useRouter();
 
-  const handleLogout = async () => {
-    await supabaseClient.auth.signOut();
-    router.push('/login');
+
+  const handleOrbClick = (href: string) => {
+    router.push(href);
   };
 
   const menuItems = [
-    {
-      id: 'find-jobs',
-      icon: Search,
-      title: 'Find Jobs',
-      description: 'Browse thousands of opportunities',
-      gradient: 'from-pink-500 via-purple-500 to-indigo-500',
-      glowColor: 'rgba(236, 72, 153, 0.4)',
-      href: '/jobs'
-    },
-    {
-      id: 'applications',
-      icon: FileText,
-      title: 'My Applications',
-      description: 'Track your job applications',
-      gradient: 'from-cyan-400 via-blue-500 to-purple-600',
-      glowColor: 'rgba(34, 211, 238, 0.4)',
-      href: '/applications'
-    },
-    {
-      id: 'saved',
-      icon: Star,
-      title: 'Saved Jobs',
-      description: 'Your favorite postings',
-      gradient: 'from-amber-400 via-orange-500 to-pink-500',
-      glowColor: 'rgba(251, 191, 36, 0.4)',
-      href: '/saved'
-    },
     {
       id: 'profile',
       icon: User,
@@ -51,7 +24,7 @@ const OrbMenu = () => {
       glowColor: 'rgba(74, 222, 128, 0.4)',
       href: '/profile'
     },
-    {
+     {
       id: 'media',
       icon: Image,
       title: 'Media Library',
@@ -90,7 +63,7 @@ const OrbMenu = () => {
     {
       id: 'job-customizer',
       icon: Target,
-      title: 'Job Customizer',
+      title: 'Customize for Job',
       description: 'Tailor your story to each job',
       gradient: 'from-emerald-400 via-teal-500 to-cyan-500',
       glowColor: 'rgba(52, 211, 153, 0.5)',
@@ -122,12 +95,36 @@ const OrbMenu = () => {
       gradient: 'from-indigo-500 via-blue-500 to-cyan-500',
       glowColor: 'rgba(99, 102, 241, 0.4)',
       href: '/story-test'
+
+    },
+    {
+      id: 'find-jobs',
+      icon: Search,
+      title: 'Find Jobs',
+      description: 'Browse thousands of opportunities',
+      gradient: 'from-pink-500 via-purple-500 to-indigo-500',
+      glowColor: 'rgba(236, 72, 153, 0.4)',
+      href: '/jobs'
+    },
+    {
+      id: 'applications',
+      icon: FileText,
+      title: 'My Applications',
+      description: 'Track your job applications',
+      gradient: 'from-cyan-400 via-blue-500 to-purple-600',
+      glowColor: 'rgba(34, 211, 238, 0.4)',
+      href: '/applications'
+    },
+    {
+      id: 'saved',
+      icon: Star,
+      title: 'Saved Jobs',
+      description: 'Your favorite postings',
+      gradient: 'from-amber-400 via-orange-500 to-pink-500',
+      glowColor: 'rgba(251, 191, 36, 0.4)',
+      href: '/saved'
     }
   ];
-
-  const handleOrbClick = (href: string) => {
-    router.push(href);
-  };
 
   return (
     <div style={{ background: 'linear-gradient(135deg, #0D1117 0%, #0A0F14 100%)' }} className="min-h-screen p-8">
@@ -140,8 +137,12 @@ const OrbMenu = () => {
             </h1>
             <p style={{ color: '#9AA4B2' }} className="text-lg">Welcome back! 👋</p>
           </div>
-          <button 
-            onClick={handleLogout}
+          <button
+            onClick={async () => {
+              // sign out and redirect to login
+              await supabaseClient.auth.signOut();
+              router.push('/login');
+            }}
             style={{
               background: 'rgba(255, 255, 255, 0.06)',
               border: '1px solid rgba(255, 255, 255, 0.1)',
@@ -155,18 +156,17 @@ const OrbMenu = () => {
             }}
             className="hover:bg-white/10 hover:-translate-y-0.5"
           >
-            <LogOut size={20} />
+            {/* Logout icon */}
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a2 2 0 01-2 2H7a2 2 0 01-2-2V7a2 2 0 012-2h4a2 2 0 012 2v1" /></svg>
             Logout
           </button>
         </div>
       </div>
-
       {/* Orb Grid */}
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {menuItems.map((item) => {
           const Icon = item.icon;
           const isHovered = hoveredOrb === item.id;
-          
           return (
             <div
               key={item.id}
@@ -187,17 +187,17 @@ const OrbMenu = () => {
                   transform: 'scale(1.1)'
                 }}
               />
-              
               {/* Glass Card */}
               <div style={{
-                background: 'rgba(255, 255, 255, 0.04)',
+                background: 'rgba(20, 24, 31, 0.96)',
                 border: '1px solid rgba(255, 255, 255, 0.06)',
                 backdropFilter: 'blur(25px)',
                 borderRadius: '24px',
                 padding: '32px',
                 height: '100%',
                 overflow: 'hidden',
-                position: 'relative'
+                position: 'relative',
+                boxShadow: '0 4px 32px 0 rgba(0,0,0,0.25)'
               }}>
                 {/* Animated Gradient Background */}
                 <div
@@ -275,11 +275,12 @@ const OrbMenu = () => {
       {/* Bottom CTA */}
       <div className="max-w-7xl mx-auto mt-16 text-center">
         <div style={{
-          background: 'rgba(255, 255, 255, 0.04)',
+          background: 'rgba(20, 24, 31, 0.96)',
           border: '1px solid rgba(255, 255, 255, 0.06)',
           backdropFilter: 'blur(25px)',
           borderRadius: '24px',
-          padding: '32px'
+          padding: '32px',
+          boxShadow: '0 4px 32px 0 rgba(0,0,0,0.25)'
         }}>
           <h2 style={{ color: '#FFFFFF' }} className="text-3xl font-bold mb-4">
             Ready to level up your career? 🚀

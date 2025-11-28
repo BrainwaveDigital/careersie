@@ -137,21 +137,22 @@ export default function ProcessParsedClient({ parsed, docId }: Props) {
 
   useEffect(() => {
     let mounted = true;
-    supabaseClient.auth.getSession().then((res: { data?: { session?: { user?: { email?: string; id?: string } } } }) => {
+    supabaseClient.auth.getSession().then(({ data, error }) => {
       if (!mounted) return;
-      setSession(res?.data?.session ?? null);
+      if (error) console.error('Auth error:', error);
+      setSession(data.session);
       setLoading(false);
     }).catch(() => setLoading(false));
 
     const { data } = supabaseClient.auth.onAuthStateChange(
-      (_event: unknown, session: { user?: { email?: string; id?: string } }) => {
+      (_event, session) => {
         if (mounted) setSession(session);
       }
     );
 
     return () => {
       mounted = false;
-      try { data?.subscription?.unsubscribe?.(); } catch { /* ignore */ }
+      data?.subscription?.unsubscribe();
     };
   }, []);
 
